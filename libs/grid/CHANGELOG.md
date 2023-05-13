@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.0](https://github.com/clayton-duarte/cpd/compare/grid-0.1.0...grid-0.2.0) (2023-05-13)
+
+
+### Features
+
+* add new basic components ([19b97a1](https://github.com/clayton-duarte/cpd/commit/19b97a1d1af3652579d5cd7077886a6aff6d8c6b))
+
 ## 0.1.0 (2023-05-13)
 
 
