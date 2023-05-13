@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.2.1](https://github.com/clayton-duarte/cpd/compare/grid-0.2.0...grid-0.2.1) (2023-05-13)
+
 ## [0.2.0](https://github.com/clayton-duarte/cpd/compare/grid-0.1.0...grid-0.2.0) (2023-05-13)
 
 
