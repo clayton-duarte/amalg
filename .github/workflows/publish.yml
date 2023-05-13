@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      all:
+        description: 'Force NX to run tasks on all projects'
+        required: false
+        default: 'false'
 
 jobs:
   publish:
@@ -22,14 +27,24 @@ jobs:
         with:
           node-version: 16
 
+      - name: Setup Git
+        run: |
+          git config user.name "CPD Bot"
+          git config user.email "cpd@duck.com"
+
       - name: Install
         run: npm ci
 
       - name: Lint
-        run: npx nx affected -t lint
+        run: npx nx affected -t lint --all=${{ github.event.inputs.all }}
 
       - name: Test
-        run: npx nx affected -t test
+        run: npx nx affected -t test --all=${{ github.event.inputs.all }}
 
       - name: Build
-        run: npx nx affected -t build
+        run: npx nx affected -t build --all=${{ github.event.inputs.all }}
+
+      - name: Version
+        run: npx nx affected -t version --all=${{ github.event.inputs.all }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
