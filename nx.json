@@ -35,6 +35,7 @@
       "library": {
         "style": "@emotion/styled",
         "unitTestRunner": "vitest",
+        "publishable": true,
         "linter": "eslint",
         "bundler": "vite"
       }
@@ -54,6 +55,7 @@
       "library": {
         "style": "@emotion/styled",
         "unitTestRunner": "vitest",
+        "publishable": true,
         "linter": "eslint",
         "bundler": "vite"
       }

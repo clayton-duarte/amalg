@@ -6,6 +6,8 @@
     "test": "nx affected -t test",
     "lint": "nx affected -t lint",
     "format": "nx format:write",
+    "g:version": "nx g @jscutlery/semver:install",
+    "g:deploy": "nx g ngx-deploy-npm:install",
     "prepare": "husky install"
   },
   "private": true,

@@ -54,6 +54,6 @@ jobs:
         run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
       - name: Publish
-        run: npx nx affected -t deploy --all=${{ github.event.inputs.all }}
+        run: npx nx affected -t publish --all=${{ github.event.inputs.all }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
