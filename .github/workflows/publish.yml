@@ -46,7 +46,7 @@ jobs:
         run: npx nx affected -t build --all=${{ github.event.inputs.all }}
 
       - name: Version
-        run: npx nx affected -t version --all=${{ github.event.inputs.all }}
+        run: npx nx affected -t version --all=${{ github.event.inputs.all }} --parallel 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -8,7 +8,7 @@
       }
     }
   },
-  "npmScope": "cpd",
+  "npmScope": "amalg",
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "affected": {

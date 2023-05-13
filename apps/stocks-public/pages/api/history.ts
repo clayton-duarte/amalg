@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getYahooHistory } from '@cpd/yahoo-events';
+import { getYahooHistory } from '@amalg/yahoo-events';
 
 export default async function handler(
   req: NextApiRequest,
