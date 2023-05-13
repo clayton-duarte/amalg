@@ -15,8 +15,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "jsx": "react-jsx",
     "paths": {
+      "@amalg/button": ["libs/button/src/index.ts"],
       "@amalg/grid": ["libs/grid/src/index.ts"],
+      "@amalg/text": ["libs/text/src/index.ts"],
+      "@amalg/theme": ["libs/theme/src/index.ts"],
       "@amalg/yahoo-events": ["libs/yahoo-events/src/index.ts"]
     }
   },

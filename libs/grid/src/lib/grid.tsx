@@ -1,18 +1,12 @@
-import { Theme } from '@emotion/react';
+import { Breakpoints, ColorNames } from '@amalg/theme';
 import styled from '@emotion/styled';
 
-export enum Breakpoints {
-  XS = '0px',
-  SM = '425px',
-  MD = '768px',
-  LG = '1024px',
-  XL = '1280px',
-}
-
-export default styled.div<{
-  bg?: keyof Omit<Theme, keyof Breakpoints>;
+export interface StyledTextProps {
+  bg?: ColorNames;
   justify?: string;
+  justifySelf?: string;
   align?: string;
+  alignSelf?: string;
   xs?: string;
   sm?: string;
   md?: string;
@@ -30,16 +24,19 @@ export default styled.div<{
   maxHeight?: string;
   container?: boolean;
   area?: string;
-}>`
+}
+
+export default styled.div<StyledTextProps>`
   display: grid;
-  background: ${(props) => (props.bg ? props.theme[props.bg] : 'transparent')};
   margin: ${(props) => (props.m ? props.m : props.container ? '0 auto' : 0)};
   max-width: ${(props) => (props.container ? Breakpoints.XL : '100%')};
   justify-content: ${(props) => props.justify ?? 'start'};
+  justify-self: ${(props) => props.justifySelf ?? 'start'};
   grid-template-columns: ${(props) => props.xs ?? '1fr'};
   grid-template-rows: ${(props) => props.xsy ?? 'auto'};
   max-height: ${(props) => props.maxHeight ?? 'auto'};
   align-items: ${(props) => props.align ?? 'start'};
+  align-self: ${(props) => props.alignSelf ?? 'start'};
   grid-area: ${(props) => props.area ?? 'auto'};
   height: ${(props) => props.height ?? 'auto'};
   gap: ${(props) => props.gap ?? '1rem'};
@@ -47,6 +44,7 @@ export default styled.div<{
   width: 100%;
   min-height: ${(props) =>
     props.xsy || props.mdy || props.lgy || props.xly ? '100%' : 'auto'};
+  background: ${(props) => (props.bg ? props.theme[props.bg] : 'transparent')};
   // Responsive
   @media (min-width: ${Breakpoints.SM}) {
     grid-template-columns: ${(props) => props.sm ?? props.xs ?? '1fr'};

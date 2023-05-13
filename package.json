@@ -15,7 +15,10 @@
     "test"
   ],
   "dependencies": {
+    "@amalg/button": "^0.0.1",
     "@amalg/grid": "^0.0.1",
+    "@amalg/text": "^0.0.1",
+    "@amalg/theme": "^0.0.1",
     "@amalg/yahoo-events": "^0.0.1",
     "@emotion/react": "11.10.6",
     "@emotion/server": "11.10.0",

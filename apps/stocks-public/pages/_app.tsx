@@ -1,17 +1,19 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import './styles.css';
+
+import Grid from '@amalg/grid';
+import { ThemeProvider } from '@amalg/theme';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ThemeProvider>
       <Head>
-        <title>Welcome to stocks-static!</title>
+        <title>Welcome to stocks-public!</title>
       </Head>
-      <main className="app">
+      <Grid p="1rem" xsy="1fr">
         <Component {...pageProps} />
-      </main>
-    </>
+      </Grid>
+    </ThemeProvider>
   );
 }
 

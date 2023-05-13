@@ -1,11 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Grid from './grid';
+import Button from './button';
 
-describe('Grid', () => {
+describe('Button', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Grid />);
-
+    const { baseElement } = render(<Button />);
     expect(baseElement).toBeTruthy();
   });
 });

@@ -1,2 +1,3 @@
-export * from './lib/grid';
 export { default } from './lib/grid';
+
+export * from './lib/grid';

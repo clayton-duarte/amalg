@@ -31,6 +31,14 @@
     }
   },
   "generators": {
+    "@nx/js": {
+      "library": {
+        "style": "@emotion/styled",
+        "unitTestRunner": "vitest",
+        "linter": "eslint",
+        "bundler": "vite"
+      }
+    },
     "@nx/next": {
       "application": {
         "style": "@emotion/styled",
@@ -40,11 +48,14 @@
     },
     "@nx/react": {
       "application": {
+        "e2eTestRunner": "none",
         "babel": true
       },
       "library": {
         "style": "@emotion/styled",
-        "unitTestRunner": "vitest"
+        "unitTestRunner": "vitest",
+        "linter": "eslint",
+        "bundler": "vite"
       }
     }
   }
