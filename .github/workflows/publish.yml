@@ -7,9 +7,10 @@ on:
   workflow_dispatch:
     inputs:
       all:
-        description: 'Force NX to run tasks on all projects'
+        description: Force NX to run all tasks on all projects
+        type: boolean
         required: false
-        default: 'false'
+        default: false
 
 jobs:
   publish:
@@ -49,7 +50,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: NPM Publish
+      - name: Setup NPM
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+
+      - name: Publish
         run: npx nx affected -t deploy --all=${{ github.event.inputs.all }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
