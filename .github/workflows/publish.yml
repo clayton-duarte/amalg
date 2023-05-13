@@ -12,6 +12,10 @@ on:
         required: false
         default: false
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -30,7 +34,7 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config user.name "CPD Bot"
+          git config user.name "CPD"
           git config user.email "cpd@duck.com"
 
       - name: Install
@@ -46,7 +50,9 @@ jobs:
         run: npx nx affected -t build --all=${{ github.event.inputs.all }}
 
       - name: Version
-        run: npx nx affected -t version --all=${{ github.event.inputs.all }} --parallel 1
+        run: |
+          npx nx affected -t version --all=${{ github.event.inputs.all }} --parallel 1
+          git push --follow-tags origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -54,6 +60,6 @@ jobs:
         run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
       - name: Publish
-        run: npx nx affected -t publish --all=${{ github.event.inputs.all }}
+        run: npx nx affected -t deploy --all=${{ github.event.inputs.all }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

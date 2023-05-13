@@ -3,6 +3,5 @@
 
 nx format:write && \
 nx affected -t lint && \
-nx affected -t test && \
-printf "thumbs up"
+nx affected -t test 
 

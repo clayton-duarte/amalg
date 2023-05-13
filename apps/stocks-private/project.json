@@ -24,6 +24,7 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "stocks-private:build",
+        "port": 3100,
         "dev": true
       },
       "configurations": {

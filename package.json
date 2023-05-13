@@ -3,19 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "nx affected -t test",
-    "lint": "nx affected -t lint",
-    "format": "nx format:write",
     "g:version": "nx g @jscutlery/semver:install",
     "g:deploy": "nx g ngx-deploy-npm:install",
     "prepare": "husky install"
   },
   "private": true,
-  "pre-commit": [
-    "format",
-    "lint",
-    "test"
-  ],
   "dependencies": {
     "@amalg/button": "^0.0.1",
     "@amalg/grid": "^0.0.1",
@@ -31,7 +23,6 @@
     "csvtojson": "^2.0.10",
     "dayjs": "^1.11.7",
     "next": "13.3.0",
-    "pre-commit": "^1.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tslib": "^2.3.0"
