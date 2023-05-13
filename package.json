@@ -2,8 +2,17 @@
   "name": "cpd",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "test": "nx affected -t test",
+    "lint": "nx affected -t lint",
+    "format": "nx format:write"
+  },
   "private": true,
+  "pre-commit": [
+    "format",
+    "lint",
+    "test"
+  ],
   "dependencies": {
     "@cpd/yahoo-events": "^0.0.1",
     "@emotion/react": "11.10.6",
@@ -15,6 +24,7 @@
     "csvtojson": "^2.0.10",
     "dayjs": "^1.11.7",
     "next": "13.3.0",
+    "pre-commit": "^1.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tslib": "^2.3.0"
