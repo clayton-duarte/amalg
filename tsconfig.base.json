@@ -16,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@cpd/grid": ["libs/grid/src/index.ts"],
       "@cpd/yahoo-events": ["libs/yahoo-events/src/index.ts"]
     }
   },

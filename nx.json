@@ -1,5 +1,4 @@
 {
-  "npmScope": "cpd",
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx-cloud",
@@ -9,6 +8,7 @@
       }
     }
   },
+  "npmScope": "cpd",
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "affected": {
