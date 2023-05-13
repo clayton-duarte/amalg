@@ -51,8 +51,9 @@ jobs:
 
       - name: Version
         run: |
+          git pull --tags
           npx nx affected -t version --all=${{ github.event.inputs.all }} --parallel 1
-          git push --follow-tags origin main
+          git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
