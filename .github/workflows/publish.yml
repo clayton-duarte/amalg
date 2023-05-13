@@ -48,3 +48,8 @@ jobs:
         run: npx nx affected -t version --all=${{ github.event.inputs.all }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: NPM Publish
+        run: npx nx affected -t deploy --all=${{ github.event.inputs.all }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
