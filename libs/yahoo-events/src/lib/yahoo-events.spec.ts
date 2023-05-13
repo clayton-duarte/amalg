@@ -1,7 +1,7 @@
-import { yahooEvents } from './yahoo-events';
+import { getYahooHistory } from './yahoo-events';
 
 describe('yahooEvents', () => {
   it('should work', () => {
-    expect(yahooEvents()).toEqual('yahoo-events');
+    expect(getYahooHistory).toBeTruthy();
   });
 });
