@@ -1,7 +1,63 @@
 {
   "root": true,
+  "extends": "next/core-web-vitals",
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
+  "plugins": ["@typescript-eslint", "import", "@nx"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/padding-line-between-statements": [
+      "warn",
+      // Adds a blank line between any statements
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "*"
+      },
+      // Removes blank lines between variable definitions to group them
+      {
+        "blankLine": "never",
+        "prev": ["singleline-const", "singleline-let", "singleline-var"],
+        "next": ["singleline-const", "singleline-let", "singleline-var"]
+      },
+      // Adds a blank lines around arrow functions
+      { "blankLine": "always", "prev": "block-like", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "block-like" },
+      // Allows any number of lines between import statements, "import/order" rule takes care of it
+      { "blankLine": "any", "prev": "import", "next": "import" }
+    ],
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          ["builtin", "external"],
+          "internal",
+          ["parent", "sibling", "index", "object"],
+          ["unknown"]
+        ],
+        "pathGroups": [
+          // Group namespaced packages together
+          {
+            "pattern": "@**/*",
+            "group": "external",
+            "position": "after"
+          },
+          // Internal symlinks have priority
+          {
+            "pattern": "~/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [],
+        "newlines-between": "always",
+        "alphabetize": {
+          "caseInsensitive": true,
+          "order": "asc"
+        }
+      }
+    ]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
