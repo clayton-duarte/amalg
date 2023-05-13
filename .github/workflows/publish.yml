@@ -52,7 +52,11 @@ jobs:
       - name: Version
         run: |
           git pull --tags
-          npx nx affected -t version --all=${{ github.event.inputs.all }} --parallel 1
+          npx nx affected \
+          -t version \
+          --parallel 1 \
+          --all=${{ github.event.inputs.all }} \
+          --allowEmptyRelease=${{ github.event.inputs.all }}
           git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
