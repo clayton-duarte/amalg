@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.1.1](https://github.com/clayton-duarte/cpd/compare/yahoo-events-0.1.0...yahoo-events-0.1.1) (2023-05-13)
+
 ## 0.1.0 (2023-05-13)
 
 
