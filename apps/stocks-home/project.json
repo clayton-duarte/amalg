@@ -1,7 +1,7 @@
 {
-  "name": "home",
+  "name": "stocks-home",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/home",
+  "sourceRoot": "apps/stocks-home",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,12 +9,12 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "root": "apps/home",
-        "outputPath": "dist/apps/home"
+        "root": "apps/stocks-home",
+        "outputPath": "dist/apps/stocks-home"
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/home"
+          "outputPath": "apps/stocks-home"
         },
         "production": {}
       }
@@ -23,17 +23,17 @@
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "home:build",
+        "buildTarget": "stocks-home:build",
         "port": 3000,
         "dev": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "home:build:development",
+          "buildTarget": "stocks-home:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "home:build:production",
+          "buildTarget": "stocks-home:build:production",
           "dev": false
         }
       }
@@ -41,14 +41,14 @@
     "export": {
       "executor": "@nx/next:export",
       "options": {
-        "buildTarget": "home:build:production"
+        "buildTarget": "stocks-home:build:production"
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/home/jest.config.ts",
+        "jestConfig": "apps/stocks-home/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -62,7 +62,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/home/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/stocks-home/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
