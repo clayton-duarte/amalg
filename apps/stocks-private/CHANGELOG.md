@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.0.0](https://github.com/clayton-duarte/cpd/compare/stocks-private-0.1.0...stocks-private-1.0.0) (2023-05-14)
+
+
+### Features
+
+* **WIP:** micro-frontends config ([d76407d](https://github.com/clayton-duarte/cpd/commit/d76407d7932791e995a40b7a7e68eeb0c5dc1422))
+
+
+### Bug Fixes
+
+* rewrite production paths ([d80a537](https://github.com/clayton-duarte/cpd/commit/d80a537aca75847c8b66caf8d1845d20f4ee9227))
+
 ## 0.1.0 (2023-05-13)
 
 
