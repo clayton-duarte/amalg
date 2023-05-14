@@ -6,11 +6,18 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      all:
-        description: Force NX to run all tasks on all projects
-        type: boolean
-        required: false
-        default: false
+      releaseAs:
+        description: Force a release of a specific version on all packages
+        type: choice
+        required: true
+        options:
+          - patch
+          - minor
+          - major
+          - prepatch
+          - preminor
+          - premajor
+          - prerelease
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
