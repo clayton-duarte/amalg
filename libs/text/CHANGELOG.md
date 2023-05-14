@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [1.0.1](https://github.com/clayton-duarte/cpd/compare/text-1.0.0...text-1.0.1) (2023-05-14)
+
 ## [1.0.0](https://github.com/clayton-duarte/cpd/compare/text-0.1.0...text-1.0.0) (2023-05-14)
 
 ## 0.1.0 (2023-05-13)
