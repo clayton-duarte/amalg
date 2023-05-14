@@ -7,11 +7,7 @@ const { composePlugins, withNx } = require('@nx/next');
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-  nx: {
-    // Set this to true if you would like to to use SVGR
-    // See: https://github.com/gregberge/svgr
-    svgr: false,
-  },
+  nx: { svgr: false },
   rewrites: async () => [
     {
       source: '/:path*',
@@ -19,19 +15,19 @@ const nextConfig = {
     },
     {
       source: '/private',
-      destination: 'http://localhost:3100/private',
+      destination: `${process.env.STOCKS_PRIVATE_URL}`,
     },
     {
       source: '/private/:path*',
-      destination: 'http://localhost:3100/private/:path*',
+      destination: `${process.env.STOCKS_PRIVATE_URL}/:path*`,
     },
     {
       source: '/public',
-      destination: 'http://localhost:3200/public',
+      destination: `${process.env.STOCKS_PUBLIC_URL}`,
     },
     {
       source: '/public/:path*',
-      destination: 'http://localhost:3200/public/:path*',
+      destination: `${process.env.STOCKS_PUBLIC_URL}/:path*`,
     },
   ],
 };
