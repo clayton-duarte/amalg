@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.1.0](https://github.com/clayton-duarte/cpd/compare/text-1.0.0...text-1.1.0) (2023-05-14)
+
+
+### Features
+
+* adds bold prop to Text ([cbb0919](https://github.com/clayton-duarte/cpd/commit/cbb09199fa8ceaca882c791a7141ab134feca2d7))
+
 ## [1.0.0](https://github.com/clayton-duarte/cpd/compare/text-0.1.0...text-1.0.0) (2023-05-14)
 
 ## 0.1.0 (2023-05-13)
