@@ -12,7 +12,28 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
-  basePath: '/private',
+  rewrites: async () => [
+    {
+      source: '/:path*',
+      destination: `/:path*`,
+    },
+    {
+      source: '/private',
+      destination: 'http://localhost:3100/private',
+    },
+    {
+      source: '/private/:path*',
+      destination: 'http://localhost:3100/private/:path*',
+    },
+    {
+      source: '/public',
+      destination: 'http://localhost:3200/public',
+    },
+    {
+      source: '/public/:path*',
+      destination: 'http://localhost:3200/public/:path*',
+    },
+  ],
 };
 
 const plugins = [
