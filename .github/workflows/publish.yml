@@ -1,20 +1,37 @@
 name: Publish
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
     inputs:
-      all:
-        description: Force NX to run all tasks on all projects
+      dryRun:
+        description: Run the publish workflow without publishing
         type: boolean
         required: false
-        default: false
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+        default: true
+      releaseAs:
+        description: Force a release of a specific version on all packages
+        type: choice
+        required: true
+        options:
+          - patch
+          - minor
+          - major
+          - prepatch
+          - preminor
+          - premajor
+          - prerelease
+      all:
+        description: Force NX scripts to run on all packages
+        type: boolean
+        required: false
+        default: true
 
 jobs:
   publish:
@@ -65,7 +82,8 @@ jobs:
           -t=version \
           --parallel=1 \
           --all=${{ github.event.inputs.all || false  }} \
-          --allowEmptyRelease=${{ github.event.inputs.all || false  }}
+          --releaseAs=${{ github.event.inputs.releaseAs }} \
+          --dryRun=${{ github.event.inputs.dryRun || false  }}
           git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,6 +95,7 @@ jobs:
         run: |
           npx nx affected \
           --all=${{ github.event.inputs.all || false  }} \
+          --dry-run=${{ github.event.inputs.dryRun || false  }} \
           -t=deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
