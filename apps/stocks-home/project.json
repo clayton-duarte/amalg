@@ -64,6 +64,12 @@
       "options": {
         "lintFilePatterns": ["apps/stocks-home/**/*.{ts,tsx,js,jsx}"]
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
+      }
     }
   },
   "tags": []
