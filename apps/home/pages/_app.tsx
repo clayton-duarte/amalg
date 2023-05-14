@@ -4,15 +4,17 @@ import Head from 'next/head';
 import Grid from '@amalg/grid';
 import { ThemeProvider } from '@amalg/theme';
 
+const Main = Grid.withComponent('main');
+
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
       <Head>
-        <title>Welcome to stocks-public!</title>
+        <title>Welcome to home!</title>
       </Head>
-      <Grid p="1rem" xsy="1fr">
+      <Main p="1rem" xsy="1fr">
         <Component {...pageProps} />
-      </Grid>
+      </Main>
     </ThemeProvider>
   );
 }
