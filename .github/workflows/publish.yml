@@ -75,7 +75,21 @@ jobs:
           --all=${{ github.event.inputs.all || false  }} \
           -t=build
 
-      - name: Version
+      - name: Version Auto
+        if: ${{ !github.event.inputs.releaseAs }}
+        run: |
+          git pull --tags
+          npx nx affected \
+          -t=version \
+          --parallel=1 \
+          --all=${{ github.event.inputs.all || false  }} \
+          --allowEmptyRelease=true
+          git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Version Manual
+        if: github.event.inputs.releaseAs
         run: |
           git pull --tags
           npx nx affected \
@@ -83,7 +97,8 @@ jobs:
           --parallel=1 \
           --all=${{ github.event.inputs.all || false  }} \
           --releaseAs=${{ github.event.inputs.releaseAs }} \
-          --dryRun=${{ github.event.inputs.dryRun || false  }}
+          --dryRun=${{ github.event.inputs.dryRun || false  }} \
+          --allowEmptyRelease=true
           git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

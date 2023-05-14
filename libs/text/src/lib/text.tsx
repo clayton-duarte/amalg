@@ -7,8 +7,9 @@ export interface StyledTextProps {
   transform?: 'uppercase' | 'lowercase' | 'capitalize' | 'none';
   align?: 'left' | 'right' | 'center' | 'justify';
   color?: ColorNames;
-  bg?: ColorNames;
   small?: boolean;
+  bg?: ColorNames;
+  bold?: boolean;
   p?: string;
   m?: string;
 }
@@ -18,6 +19,7 @@ const StyledText = styled.span<StyledTextProps>`
   text-align: ${({ align: textAlign }) => textAlign ?? 'left'};
   font-size: ${({ small }) => (small ? '0.825em' : 'auto')};
   text-transform: ${({ transform }) => transform ?? 'none'};
+  font-weight: ${({ bold }) => (bold ? 'bold' : 'normal')};
   color: ${({ theme, color }) => theme[color || 'WHITE']};
   padding: ${({ p }) => p ?? 0};
   margin: ${({ m }) => m ?? 0};
