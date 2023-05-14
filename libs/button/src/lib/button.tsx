@@ -8,13 +8,15 @@ export interface ButtonProps {
 
 export default styled.button<ButtonProps>`
   text-transform: ${({ transform }) => transform ?? 'uppercase'};
-  color: ${(props) => props.theme.WHITE};
+  background: ${(props) => props.theme.DARK};
   padding: 0.25rem 0.5rem;
   font-weight: bold;
   cursor: pointer;
   border: none;
-  background: ${(props) =>
+  color: ${(props) =>
     props.color ? props.theme[props.color] : props.theme.PRIMARY};
+  border: 1px solid
+    ${(props) => (props.color ? props.theme[props.color] : props.theme.PRIMARY)};
   &:hover {
     filter: brightness(1.1);
   }
