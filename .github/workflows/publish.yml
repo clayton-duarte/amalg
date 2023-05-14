@@ -34,7 +34,7 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config user.name "CPD"
+          git config user.name "CPD Bot"
           git config user.email "cpd@duck.com"
 
       - name: Install
