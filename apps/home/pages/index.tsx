@@ -1,10 +1,9 @@
-import Link from 'next/link';
-
 import Grid from '@amalg/grid';
+import Link from '@amalg/link';
 
 export default function HomePage() {
   return (
-    <Grid p="1rem">
+    <Grid align="start">
       <Link href="/public">public</Link>
       <Link href="/private">private</Link>
     </Grid>

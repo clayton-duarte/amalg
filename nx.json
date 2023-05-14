@@ -55,6 +55,7 @@
       "library": {
         "style": "@emotion/styled",
         "unitTestRunner": "vitest",
+        "importPath": "@amalg/{projectName}",
         "publishable": true,
         "linter": "eslint",
         "bundler": "vite"
