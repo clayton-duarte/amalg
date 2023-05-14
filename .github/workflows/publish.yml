@@ -41,22 +41,31 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npx nx affected -t lint --all=${{ github.event.inputs.all }}
+        run: |
+          npx nx affected \
+          --all=${{ github.event.inputs.all || false  }} \
+          -t=lint
 
       - name: Test
-        run: npx nx affected -t test --all=${{ github.event.inputs.all }}
+        run: |
+          npx nx affected \
+          --all=${{ github.event.inputs.all || false }} \
+          -t=test
 
       - name: Build
-        run: npx nx affected -t build --all=${{ github.event.inputs.all }}
+        run: |
+          npx nx affected \
+          --all=${{ github.event.inputs.all || false  }} \
+          -t=build
 
       - name: Version
         run: |
           git pull --tags
           npx nx affected \
-          -t version \
-          --parallel 1 \
-          --all=${{ github.event.inputs.all }} \
-          --allowEmptyRelease=${{ github.event.inputs.all }}
+          -t=version \
+          --parallel=1 \
+          --all=${{ github.event.inputs.all || false  }} \
+          --allowEmptyRelease=${{ github.event.inputs.all || false  }}
           git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -65,6 +74,9 @@ jobs:
         run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
       - name: Publish
-        run: npx nx affected -t deploy --all=${{ github.event.inputs.all }}
+        run: |
+          npx nx affected \
+          --all=${{ github.event.inputs.all || false  }} \
+          -t=deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
