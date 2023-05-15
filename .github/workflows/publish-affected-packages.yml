@@ -40,6 +40,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CPD_BOT_TOKEN }}
 
       - name: Setup, Format, Lint, Test & Build
         uses: ./.github/actions/setup-format-lint-test-build
@@ -49,30 +51,26 @@ jobs:
       - name: Version Auto
         if: ${{ !github.event.inputs.releaseAs }}
         run: |
-          git pull --tags
           npx nx affected \
           -t=version \
           --parallel=1 \
           --all=${{ github.event.inputs.all || false  }} \
-          --allowEmptyRelease=true
-          git push --tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          --allowEmptyRelease=true \
+          --noVerify \
+          --push
 
       - name: Version Manual
         if: github.event.inputs.releaseAs
         run: |
-          git pull --tags
           npx nx affected \
           -t=version \
           --parallel=1 \
           --all=${{ github.event.inputs.all || false  }} \
           --releaseAs=${{ github.event.inputs.releaseAs }} \
           --dryRun=${{ github.event.inputs.dryRun || false  }} \
-          --allowEmptyRelease=true
-          git push --tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          --allowEmptyRelease=true \
+          --noVerify \
+          --push
 
       - name: Setup NPM
         run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
@@ -83,5 +81,3 @@ jobs:
           --all=${{ github.event.inputs.all || false  }} \
           --dry-run=${{ github.event.inputs.dryRun || false  }} \
           -t=deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

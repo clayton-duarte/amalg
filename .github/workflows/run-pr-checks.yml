@@ -34,3 +34,10 @@ jobs:
 
       - name: Setup, Format, Lint, Test & Build
         uses: ./.github/actions/setup-format-lint-test-build
+
+      - name: Version
+        run: |
+          npx nx affected \
+          --all=${{ github.event.inputs.all || false  }} \
+          --dryRun \
+          -t=version

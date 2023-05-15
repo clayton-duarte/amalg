@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-nx format:write && \
+nx format:check || (echo "Error: please run 'nx format:write'" && error 1) && \
 nx affected -t lint && \
 nx affected -t test 
 
