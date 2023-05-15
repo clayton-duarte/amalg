@@ -6,6 +6,8 @@ concurrency:
 
 on:
   pull_request:
+    branches:
+      - main
     types:
       - opened
       - edited
@@ -27,5 +29,8 @@ jobs:
     name: Run PR Checks
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Setup, Format, Lint, Test & Build
-        uses: clayton-duarte/amalg/.github/workflows/setup-format-lint-test-build.yml
+        uses: ./.github/actions/setup-format-lint-test-build
