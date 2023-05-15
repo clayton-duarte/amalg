@@ -21,6 +21,7 @@
       "@amalg/grid": ["libs/grid/src/index.ts"],
       "@amalg/letter-icon": ["libs/letter-icon/src/index.ts"],
       "@amalg/link": ["libs/link/src/index.ts"],
+      "@amalg/plugin": ["libs/plugin/src/index.ts"],
       "@amalg/text": ["libs/text/src/index.ts"],
       "@amalg/theme": ["libs/theme/src/index.ts"],
       "@amalg/yahoo-events": ["libs/yahoo-events/src/index.ts"]

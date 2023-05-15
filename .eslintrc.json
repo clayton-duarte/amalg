@@ -8,23 +8,31 @@
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/padding-line-between-statements": [
       "warn",
-      // Adds a blank line between any statements
       {
         "blankLine": "always",
         "prev": "*",
         "next": "*"
       },
-      // Removes blank lines between variable definitions to group them
       {
         "blankLine": "never",
         "prev": ["singleline-const", "singleline-let", "singleline-var"],
         "next": ["singleline-const", "singleline-let", "singleline-var"]
       },
-      // Adds a blank lines around arrow functions
-      { "blankLine": "always", "prev": "block-like", "next": "*" },
-      { "blankLine": "always", "prev": "*", "next": "block-like" },
-      // Allows any number of lines between import statements, "import/order" rule takes care of it
-      { "blankLine": "any", "prev": "import", "next": "import" }
+      {
+        "blankLine": "always",
+        "prev": "block-like",
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "block-like"
+      },
+      {
+        "blankLine": "any",
+        "prev": "import",
+        "next": "import"
+      }
     ],
     "import/order": [
       "warn",
@@ -36,13 +44,11 @@
           ["unknown"]
         ],
         "pathGroups": [
-          // Group namespaced packages together
           {
             "pattern": "@**/*",
             "group": "external",
             "position": "after"
           },
-          // Internal symlinks have priority
           {
             "pattern": "~/**",
             "group": "internal",
@@ -85,6 +91,11 @@
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": "*.json",
+      "parser": "jsonc-eslint-parser",
       "rules": {}
     }
   ]
