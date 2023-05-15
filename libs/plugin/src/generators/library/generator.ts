@@ -15,7 +15,10 @@ export default async function library(
   await libraryGenerator(tree, {
     name: options.name,
     importPath: `@${workspaceConfigs.npmScope}/${options.name}`,
+    unitTestRunner: 'vitest',
     publishable: true,
+    linter: 'eslint',
+    bundler: 'vite',
   });
 
   await installVersioning(tree, {

@@ -5,38 +5,29 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/dividend-history",
-        "main": "libs/dividend-history/src/index.ts",
-        "tsConfig": "libs/dividend-history/tsconfig.lib.json",
-        "assets": ["libs/dividend-history/*.md"]
+        "outputPath": "dist/libs/dividend-history"
       }
     },
     "publish": {
       "command": "node tools/scripts/publish.mjs dividend-history {args.ver} {args.tag}",
       "dependsOn": ["build"]
     },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/libs/dividend-history"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/libs/dividend-history"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/dividend-history/**/*.ts"]
-      }
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/dividend-history/jest.config.ts",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
       }
     },
     "version": {

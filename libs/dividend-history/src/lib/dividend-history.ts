@@ -1,6 +1,5 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import dayjs from 'dayjs';
 
 const TICKER_NAME_SELECTOR =
   'body > div > div:nth-child(2) > div:nth-child(2) > h4';
@@ -37,39 +36,6 @@ const PE_LABEL = 'PE Ratio:';
 const MARKETCAP_LABEL = 'Market Cap:';
 const FREQUENCY_LABEL = 'Frequency:';
 const TABLE_LABEL = 'Dividend History (adjusted for splits)';
-
-function decomposeSymbol(symbol: string) {
-  const symbolMembers = symbol.toLocaleUpperCase().split('.');
-
-  if (symbolMembers.length === 1) {
-    const [ticker] = symbolMembers;
-
-    return {
-      ticker,
-      exchange: 'TO',
-    };
-  }
-
-  if (symbolMembers.length === 2) {
-    const [ticker, exchange] = symbolMembers;
-
-    return {
-      ticker,
-      exchange,
-    };
-  }
-
-  if (symbolMembers.length === 3) {
-    const [ticker, tickerSulfix, exchange] = symbolMembers;
-
-    return {
-      ticker: [ticker, tickerSulfix].join('.'),
-      exchange,
-    };
-  }
-
-  throw new Error(`Invalid symbol: ${symbol}`);
-}
 
 const mapExchange = {
   TO: 'TSX',
@@ -116,12 +82,54 @@ const mapExchange = {
   NSEIND: 'NSE',
 } as const;
 
+type Exchange = keyof typeof mapExchange;
+
+function decomposeSymbol(symbol: string): {
+  ticker: string;
+  exchange: Exchange;
+} {
+  const symbolMembers = symbol.toLocaleUpperCase().split('.');
+
+  if (symbolMembers.length === 1) {
+    const [ticker] = symbolMembers;
+
+    return {
+      ticker,
+      exchange: 'TO',
+    };
+  }
+
+  if (symbolMembers.length === 2) {
+    const [ticker, exchange] = symbolMembers as [string, Exchange];
+
+    return {
+      ticker,
+      exchange,
+    };
+  }
+
+  if (symbolMembers.length === 3) {
+    const [ticker, tickerSulfix, exchange] = symbolMembers as [
+      string,
+      string,
+      Exchange
+    ];
+
+    return {
+      ticker: [ticker, tickerSulfix].join('.'),
+      exchange,
+    };
+  }
+
+  throw new Error(`Invalid symbol: ${symbol}`);
+}
+
 function getUrl(symbol: string) {
   const { ticker, exchange } = decomposeSymbol(symbol);
 
   return `https://dividendhistory.org/payout/${mapExchange[
     exchange
-  ].toLowerCase()}/${ticker}`;
+  ]?.toLowerCase()}/${ticker}`;
 }
 
 async function loadDividendHistoryOrg(
