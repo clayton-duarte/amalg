@@ -1,0 +1,58 @@
+name: Setup, Format, Lint, Test & Build
+description: Do all the things
+
+inputs:
+  all:
+    description: 'Run on all projects'
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set SHAs
+      uses: nrwl/nx-set-shas@v3
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16
+
+    - name: Setup Git
+      shell: bash
+      run: |
+        git config user.name "CPD Bot"
+        git config user.email "cpd@duck.com"
+
+    - name: Install
+      shell: bash
+      run: npm ci
+
+    - name: Format
+      shell: bash
+      run: npx nx format:check
+
+    - name: Lint
+      shell: bash
+      run: |
+        npx nx affected \
+        --all=${{ github.event.inputs.all || false  }} \
+        -t=lint
+
+    - name: Test
+      shell: bash
+      run: |
+        npx nx affected \
+        --all=${{ github.event.inputs.all || false }} \
+        -t=test
+
+    - name: Build
+      shell: bash
+      run: |
+        npx nx affected \
+        --all=${{ github.event.inputs.all || false  }} \
+        -t=build
