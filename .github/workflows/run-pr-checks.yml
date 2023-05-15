@@ -6,12 +6,26 @@ concurrency:
 
 on:
   pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
 
 jobs:
+  lint-pr-title:
+    name: Lint PR Title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        with:
+          validateSingleCommit: true
+          validateSingleCommitMatchesPrTitle: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   run_pr_checks:
     name: Run PR Checks
     runs-on: ubuntu-latest
     steps:
       - name: Setup, Format, Lint, Test & Build
-        uses: clayton-duarte/amalg/.github/workflows/setup_format_lint_test_build.yml@main
+        uses: clayton-duarte/amalg/.github/workflows/setup-format-lint-test-build.yml
