@@ -60,6 +60,13 @@
           "codeCoverage": true
         }
       }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run-many -t serve"
+      }
     }
   },
   "tags": []
