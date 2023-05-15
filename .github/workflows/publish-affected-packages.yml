@@ -34,46 +34,14 @@ on:
         default: true
 
 jobs:
-  publish:
+  publish-affected-packages:
+    name: Publish Affected Packages
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Setup, Format, Lint, Test & Build
+        uses: clayton-duarte/amalg/.github/workflows/setup-format-lint-test-build.yml
         with:
-          fetch-depth: 0
-
-      - name: Set SHAs
-        uses: nrwl/nx-set-shas@v1
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
-      - name: Setup Git
-        run: |
-          git config user.name "CPD Bot"
-          git config user.email "cpd@duck.com"
-
-      - name: Install
-        run: npm ci
-
-      - name: Lint
-        run: |
-          npx nx affected \
-          --all=${{ github.event.inputs.all || false  }} \
-          -t=lint
-
-      - name: Test
-        run: |
-          npx nx affected \
-          --all=${{ github.event.inputs.all || false }} \
-          -t=test
-
-      - name: Build
-        run: |
-          npx nx affected \
-          --all=${{ github.event.inputs.all || false  }} \
-          -t=build
+          all: ${{ github.event.inputs.all || false  }}
 
       - name: Version Auto
         if: ${{ !github.event.inputs.releaseAs }}
