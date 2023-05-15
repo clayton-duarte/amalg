@@ -43,7 +43,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set SHAs
-        uses: nrwl/nx-set-shas@v1
+        uses: nrwl/nx-set-shas@v3
 
       - uses: actions/setup-node@v2
         with:
