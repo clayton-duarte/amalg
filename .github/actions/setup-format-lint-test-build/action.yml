@@ -56,3 +56,11 @@ runs:
         npx nx affected \
         --all=${{ github.event.inputs.all || false  }} \
         -t=build
+
+    - name: Version
+      shell: bash
+      run: |
+        npx nx affected \
+        --all=${{ github.event.inputs.all || false  }} \
+        --dryRun \
+        -t=version
