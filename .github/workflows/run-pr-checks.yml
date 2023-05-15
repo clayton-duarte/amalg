@@ -1,0 +1,18 @@
+name: PR Checks
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run_pr_checks:
+    name: Run PR Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup, Format, Lint, Test & Build
+        uses: clayton-duarte/amalg/.github/workflows/setup_format_lint_test_build.yml@main
