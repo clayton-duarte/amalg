@@ -6,10 +6,9 @@ concurrency:
 
 on:
   pull_request:
-    branches:
-      - main
 
 jobs:
+
   run_pr_checks:
     name: Run PR Checks
     runs-on: ubuntu-latest

@@ -34,12 +34,12 @@ on:
         default: true
 
 jobs:
-  publish_affected_packages:
+  publish-affected-packages:
     name: Publish Affected Packages
     runs-on: ubuntu-latest
     steps:
       - name: Setup, Format, Lint, Test & Build
-        uses: clayton-duarte/amalg/.github/workflows/setup_format_lint_test_build.yml
+        uses: clayton-duarte/amalg/.github/workflows/setup-format-lint-test-build.yml
         with:
           all: ${{ github.event.inputs.all || false  }}
 

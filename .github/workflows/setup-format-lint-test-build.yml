@@ -17,7 +17,7 @@ on:
         default: true
 
 jobs:
-  setup_format_lint_test_build:
+  setup-format-lint-test-build:
     name: Setup, Format, Lint, Test & Build
     runs-on: ubuntu-latest
     steps:
