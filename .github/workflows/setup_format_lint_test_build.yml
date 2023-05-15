@@ -10,15 +10,6 @@ on:
       - main
   workflow_call:
     inputs:
-      dryRun:
-        description: Run the publish workflow without publishing
-        type: boolean
-        required: false
-        default: true
-      releaseAs:
-        description: Force a release of a specific version on all packages
-        type: string
-        required: true
       all:
         description: Force NX scripts to run on all packages
         type: boolean

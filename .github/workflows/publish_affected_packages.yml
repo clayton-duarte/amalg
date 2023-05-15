@@ -41,8 +41,6 @@ jobs:
       - name: Setup, Format, Lint, Test & Build
         uses: clayton-duarte/amalg/.github/workflows/setup_format_lint_test_build.yml
         with:
-          releaseAs: ${{ github.event.inputs.releaseAs }}
-          dryRun: ${{ github.event.inputs.dryRun || false  }}
           all: ${{ github.event.inputs.all || false  }}
 
       - name: Version Auto
