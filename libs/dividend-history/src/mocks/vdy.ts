@@ -1,5 +1,6 @@
+import { DeepReadonly } from '@amalg/types';
+
 import { DividendData } from '../lib/dividend-history';
-import { DeepReadonly } from '../types';
 
 export const html = `
 <!DOCTYPE html>
