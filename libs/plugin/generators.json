@@ -5,6 +5,12 @@
       "schema": "./src/generators/library/schema.json",
       "description": "library generator",
       "aliases": ["lib"]
+    },
+    "component": {
+      "factory": "./src/generators/component/generator",
+      "schema": "./src/generators/component/schema.json",
+      "description": "component generator",
+      "aliases": ["comp"]
     }
   }
 }

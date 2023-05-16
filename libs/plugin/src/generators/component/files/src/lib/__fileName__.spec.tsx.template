@@ -1,0 +1,13 @@
+import { render } from '@testing-library/react';
+
+import <%= componentName %> from './<%= fileName %>';
+
+describe('<%= componentName %>', () => {
+  it('should render successfully', () => {
+    const { baseElement } = render(
+      <<%= componentName %> color="tomato">test</<%= componentName %>>
+    );
+
+    expect(baseElement).toBeTruthy();
+  });
+});

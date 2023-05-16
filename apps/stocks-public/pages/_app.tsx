@@ -12,7 +12,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Welcome to stocks-public!</title>
       </Head>
-      <Main p="1rem" xsy="1fr">
+      <Main p="1.5rem">
         <Component {...pageProps} />
       </Main>
     </ThemeProvider>

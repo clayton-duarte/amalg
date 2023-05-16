@@ -77,7 +77,7 @@ Text.Span = (props: TextProps<HTMLParagraphElement>) =>
   Text<HTMLParagraphElement>({ variant: 'span', ...props });
 
 Text.Strong = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'strong', ...props });
+  Text<HTMLParagraphElement>({ variant: 'strong', bold: true, ...props });
 
 Text.Em = (props: TextProps<HTMLParagraphElement>) =>
   Text<HTMLParagraphElement>({ variant: 'em', ...props });
