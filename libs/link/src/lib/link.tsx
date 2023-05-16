@@ -1,22 +1,26 @@
-import NextLink from 'next/link';
+import NextLinkComponent from 'next/link';
+import { ReactNode } from 'react';
 
 import { ColorNames } from '@amalg/theme';
 import styled from '@emotion/styled';
 
-export interface LinkProps {
+interface LinkProps {
+  children: ReactNode;
+  href: string;
   color?: ColorNames;
   disabled?: boolean;
   variant?: 'bold';
 }
 
-export default styled(NextLink)<LinkProps>`
+export const Link = styled.a<LinkProps>`
+  font-weight: ${(props) => (props.variant === 'bold' ? 'bold' : 'normal')};
+  ${(props) => props.disabled && `filter: grayscale(1); opacity: 0.5`};
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
+  color: ${(props) => props.theme[props.color ?? 'PRIMARY']};
   text-decoration: underline;
   cursor: pointer;
-  font-weight: ${(props) => (props.variant === 'bold' ? 'bold' : 'normal')};
-  text-decoration: ${(props) => (props.disabled ? 'none' : 'underline')};
-  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
-  color: ${(props) =>
-    props.disabled
-      ? props.theme.SECONDARY
-      : props.theme[props.color ?? 'PRIMARY']};
 `;
+
+export const NextLink = Link.withComponent(NextLinkComponent);
+
+export default Link;
