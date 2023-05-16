@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.0](https://github.com/clayton-duarte/amalg/compare/stocks-private-1.0.0...stocks-private-2.0.0) (2023-05-16)
+
+
+### Features
+
+* updates manual release ([e49017d](https://github.com/clayton-duarte/amalg/commit/e49017dd246c036617238b76153a9568f679f609))
+
+
+### Bug Fixes
+
+* multi-zone config ([11521aa](https://github.com/clayton-duarte/amalg/commit/11521aac8907452dddc54aceb5f93d9908befc46))
+
 ## [1.0.0](https://github.com/clayton-duarte/cpd/compare/stocks-private-0.1.0...stocks-private-1.0.0) (2023-05-14)
 
 ### Features
