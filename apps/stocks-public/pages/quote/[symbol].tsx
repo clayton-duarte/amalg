@@ -1,5 +1,5 @@
-import { NextLink } from '@amalg/link';
 import { withParams } from '@amalg/page-decorators';
+import Table from '@amalg/table';
 
 export const getStaticPaths = () => {
   return {
@@ -29,7 +29,22 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
 export default function SymbolPage() {
   return (
     <>
-      <NextLink href="/quote/vdy.to">VDY.TO</NextLink>
+      <Table
+        data={[
+          {
+            test: 'asd',
+            test2: 2,
+            etc: { test: 'test' },
+            a: 'a',
+          },
+        ]}
+        headers={{
+          test: 'Test',
+          test2: 'Test 2',
+          etc: 'Etc',
+          a: 'A',
+        }}
+      />
     </>
   );
 }
