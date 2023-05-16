@@ -40,8 +40,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.CPD_BOT_TOKEN }}
 
       - name: Setup, Format, Lint, Test & Build
         uses: ./.github/actions/setup-format-lint-test-build
@@ -58,6 +56,8 @@ jobs:
           --allowEmptyRelease=true \
           --noVerify \
           --push
+        env:
+          GITHUB_TOKEN: ${{ secrets.CPD_BOT_TOKEN }}
 
       - name: Version Manual
         if: github.event.inputs.releaseAs
@@ -71,6 +71,8 @@ jobs:
           --allowEmptyRelease=true \
           --noVerify \
           --push
+        env:
+          GITHUB_TOKEN: ${{ secrets.CPD_BOT_TOKEN }}
 
       - name: Setup NPM
         run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}

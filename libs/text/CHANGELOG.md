@@ -4,10 +4,9 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ## [2.0.0](https://github.com/clayton-duarte/amalg/compare/text-1.0.0...text-2.0.0) (2023-05-16)
 
-
 ### Features
 
-* adds bold prop to Text ([cbb0919](https://github.com/clayton-duarte/amalg/commit/cbb09199fa8ceaca882c791a7141ab134feca2d7))
+- adds bold prop to Text ([cbb0919](https://github.com/clayton-duarte/amalg/commit/cbb09199fa8ceaca882c791a7141ab134feca2d7))
 
 ## [1.0.0](https://github.com/clayton-duarte/cpd/compare/text-0.1.0...text-1.0.0) (2023-05-14)
 
