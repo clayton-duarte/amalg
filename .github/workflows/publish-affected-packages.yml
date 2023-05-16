@@ -57,7 +57,7 @@ jobs:
           --noVerify \
           --push
         env:
-          GITHUB_TOKEN: ${{ secrets.CPD_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Version Manual
         if: github.event.inputs.releaseAs
@@ -72,7 +72,7 @@ jobs:
           --noVerify \
           --push
         env:
-          GITHUB_TOKEN: ${{ secrets.CPD_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup NPM
         run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
