@@ -50,7 +50,7 @@ export function withParams<
     }
 
     for (const param of params) {
-      if (ctx.params[param] === undefined) {
+      if (ctx.params[param as Q] === undefined) {
         throw new Error(`Missing required route parameter: ${param as string}`);
       }
     }
