@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [2.0.1](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.0.0...stocks-public-2.0.1) (2023-05-16)
+
 ## [2.0.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-1.0.0...stocks-public-2.0.0) (2023-05-16)
 
 ### Features
