@@ -52,7 +52,7 @@ type TableData = { [key: string]: any };
 
 export interface DataTableProps<D extends TableData> {
   data: D[];
-  headers: { [key in keyof D]: string };
+  headers: { [key in keyof D]?: string };
   scrollable?: boolean;
 }
 
