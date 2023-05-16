@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [1.1.1](https://github.com/clayton-duarte/amalg/compare/stocks-home-1.1.0...stocks-home-1.1.1) (2023-05-16)
+
 ## [1.1.0](https://github.com/clayton-duarte/amalg/compare/stocks-home-1.0.0...stocks-home-1.1.0) (2023-05-16)
 
 ## 1.0.0 (2023-05-16)
