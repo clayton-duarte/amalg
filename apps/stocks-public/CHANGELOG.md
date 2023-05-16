@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.0.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-1.0.0...stocks-public-2.0.0) (2023-05-16)
+
+
+### Features
+
+* Adds dividend history api and its new libraries ([#3](https://github.com/clayton-duarte/amalg/issues/3)) ([7df2783](https://github.com/clayton-duarte/amalg/commit/7df2783c720a51a6754af7b4fea58469b1870691))
+* updates manual release ([e49017d](https://github.com/clayton-duarte/amalg/commit/e49017dd246c036617238b76153a9568f679f609))
+
+
+### Bug Fixes
+
+* multi-zone config ([11521aa](https://github.com/clayton-duarte/amalg/commit/11521aac8907452dddc54aceb5f93d9908befc46))
+
 ## [1.0.0](https://github.com/clayton-duarte/cpd/compare/stocks-public-0.1.0...stocks-public-1.0.0) (2023-05-14)
 
 ### Features
