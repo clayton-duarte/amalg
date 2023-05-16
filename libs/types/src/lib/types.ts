@@ -27,3 +27,20 @@ export type DeepReadonly<T> = T extends Array<infer ArrayType>
   : T extends object
   ? { [P in keyof T]: Readonly<T[P]> }
   : T;
+
+/** @description Makes specific fields required */
+export type RequireFields<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;
+
+/** @description Changes specific fields types*/
+export type ReType<T, K extends keyof T, R> = Omit<T, K> & {
+  [P in K]: R;
+};
+
+/** @description Creates a tuple out of a given union */
+export type TupleUnion<U extends string, R extends string[] = []> = {
+  [S in U]: Exclude<U, S> extends never
+    ? [...R, S]
+    : TupleUnion<Exclude<U, S>, [...R, S]>;
+}[U] &
+  string[];

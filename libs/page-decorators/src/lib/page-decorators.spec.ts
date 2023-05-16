@@ -1,7 +1,7 @@
-import { pageDecorators } from './page-decorators';
+import { withParams } from './page-decorators';
 
-describe('pageDecorators', () => {
+describe('withParams', () => {
   it('should work', () => {
-    expect(pageDecorators()).toEqual('page-decorators');
+    expect(withParams(() => null, '')).toBeDefined();
   });
 });
