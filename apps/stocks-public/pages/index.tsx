@@ -6,9 +6,7 @@ export default function HomePage() {
   return (
     <Grid xs="auto" justify="center" alignSelf="center">
       <Text.H1>Welcome to stocks-public!</Text.H1>
-      <Link href="/" disabled>
-        home
-      </Link>
+      <Link href="/">home</Link>
       <NextLink href="/quote">quote</NextLink>
       <NextLink href="/compare">compare</NextLink>
     </Grid>

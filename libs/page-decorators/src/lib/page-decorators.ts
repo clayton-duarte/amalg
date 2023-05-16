@@ -5,9 +5,7 @@ import { ReType, TupleUnion } from '@amalg/types';
 type GetServerSidePropsWithParams<Q extends string> = ReType<
   GetServerSidePropsContext,
   'params',
-  {
-    [key in Q]: string;
-  }
+  { [key in Q]: string }
 >;
 
 /**

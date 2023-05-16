@@ -1,0 +1,9 @@
+import styled from '@emotion/styled';
+
+export interface <%= componentName %>Props {
+  color: string;
+}
+
+export default styled.p<<%= componentName %>Props>`
+  color: ${(props) => props.color};
+`;
