@@ -41,7 +41,6 @@ runs:
       run: |
         npx nx affected \
         --all=${{ github.event.inputs.all || false  }} \
-        --parallel=5 \
         -t=lint
 
     - name: Test
@@ -49,7 +48,6 @@ runs:
       run: |
         npx nx affected \
         --all=${{ github.event.inputs.all || false }} \
-        --parallel=5 \
         -t=test
 
     - name: Build
@@ -57,5 +55,4 @@ runs:
       run: |
         npx nx affected \
         --all=${{ github.event.inputs.all || false  }} \
-        --parallel=5 \
         -t=build

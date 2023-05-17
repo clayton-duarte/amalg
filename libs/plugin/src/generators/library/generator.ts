@@ -3,8 +3,10 @@ import installPublishing from 'ngx-deploy-npm/src/generators/install/generator';
 
 import {
   addDependenciesToPackageJson,
-  formatFiles,
+  updateProjectConfiguration,
+  readProjectConfiguration,
   generateFiles,
+  formatFiles,
   readNxJson,
   Tree,
 } from '@nx/devkit';
@@ -18,6 +20,7 @@ export default async function library(
 ) {
   const workspaceConfigs = readNxJson(tree);
   const importPath = `@${workspaceConfigs.npmScope}/${options.name}`;
+  const projectConfiguration = readProjectConfiguration(tree, options.name);
 
   await libraryGenerator(tree, {
     name: options.name,
@@ -34,6 +37,28 @@ export default async function library(
   });
 
   await addDependenciesToPackageJson(tree, { [importPath]: 'latest' }, {});
+
+  await updateProjectConfiguration(tree, options.name, {
+    root: `libs/${options.name}`,
+    targets: {
+      ...projectConfiguration.targets,
+      version: {
+        executor: '@jscutlery/semver:version',
+        options: {
+          postTargets: [`${options.name}:deploy`],
+          preset: 'conventional',
+        },
+      },
+      deploy: {
+        executor: 'ngx-deploy-npm:deploy',
+        options: {
+          buildTarget: 'production',
+          dryRun: '${dryRun}',
+          access: 'public',
+        },
+      },
+    },
+  });
 
   await installVersioning(tree, {
     projects: [options.name],

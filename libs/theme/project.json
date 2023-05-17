@@ -29,12 +29,14 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-        "preset": "conventional"
+        "preset": "conventional",
+        "postTargets": ["theme:deploy"]
       }
     },
     "deploy": {
       "executor": "ngx-deploy-npm:deploy",
       "options": {
+        "dryRun": "${dryRun}",
         "access": "public"
       }
     }

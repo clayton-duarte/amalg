@@ -46,6 +46,9 @@ jobs:
         with:
           all: ${{ github.event.inputs.all || false  }}
 
+      - name: Setup NPM
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+
       - name: Version Auto
         if: ${{ !github.event.inputs.releaseAs }}
         run: |
@@ -53,14 +56,10 @@ jobs:
           -t=version \
           --parallel=1 \
           --all=${{ github.event.inputs.all || false  }} \
-          --postTargets=deploy \
           --noVerify \
           --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup NPM
-        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
       - name: Version Manual
         if: github.event.inputs.releaseAs
@@ -72,7 +71,6 @@ jobs:
           --dryRun=${{ github.event.inputs.dryRun || false  }} \
           --releaseAs=${{ github.event.inputs.releaseAs }} \
           --all=${{ github.event.inputs.all || false  }} \
-          --postTargets=deploy \
           --noVerify \
           --push
         env:
