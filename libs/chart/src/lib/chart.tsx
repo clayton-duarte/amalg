@@ -1,9 +1,76 @@
-import styled from '@emotion/styled';
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 
-export interface ChartProps {
-  color: string;
+import Grid from '@amalg/grid';
+import Text from '@amalg/text';
+
+const Line = dynamic(
+  () => import('@ant-design/plots').then((mod) => mod.Line),
+  { loading: () => <Text>Loading...</Text>, ssr: false }
+);
+
+const options = {
+  maintainAspectRatio: false,
+  responsive: true,
+  elements: {
+    line: {
+      borderWidth: 2,
+    },
+    point: {
+      borderWidth: 0,
+      hoverBorderWidth: 0,
+      pointStyle: 'cross',
+    },
+  },
+  plugins: {
+    colors: {
+      enabled: true,
+    },
+  },
+};
+
+type ChartData = { [key: string]: any };
+
+export interface ChartProps<D extends ChartData = ChartData> {
+  data: D[];
+  yAxis: keyof D;
+  xAxis: keyof D;
+  reversed?: boolean;
+  title?: string;
 }
 
-export default styled.p<ChartProps>`
-  color: ${(props) => props.color};
-`;
+export default function Chart<D extends ChartData = ChartData>({
+  reversed,
+  title,
+  yAxis,
+  xAxis,
+  data,
+}: ChartProps<D>) {
+  const parsedData = useMemo(() => {
+    if (data.length < 1) return null;
+
+    if (reversed) {
+      return [...data].reverse();
+    }
+
+    return data;
+  }, [reversed, data]);
+
+  if (data.length < 1) return null;
+
+  return (
+    <Grid height="100%" bg="DARK" p="1rem">
+      {title && <Text variant="h3">{title}</Text>}
+      <Grid height="100%">
+        {/* https://charts.ant.design/en/api/plots/line */}
+        <Line
+          data={parsedData}
+          yField={String(yAxis)}
+          xField={String(xAxis)}
+          yAxis={{ min: 100 }}
+          renderer="svg"
+        />
+      </Grid>
+    </Grid>
+  );
+}
