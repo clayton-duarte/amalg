@@ -53,7 +53,7 @@ jobs:
           -t=version \
           --parallel=1 \
           --all=${{ github.event.inputs.all || false  }} \
-          --allowEmptyRelease=true \
+          --postTargets=deploy \
           --noVerify \
           --push
         env:

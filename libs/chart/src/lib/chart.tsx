@@ -10,26 +10,6 @@ const Line = dynamic(
   { loading: () => <Text>Loading...</Text>, ssr: false }
 );
 
-const options = {
-  maintainAspectRatio: false,
-  responsive: true,
-  elements: {
-    line: {
-      borderWidth: 2,
-    },
-    point: {
-      borderWidth: 0,
-      hoverBorderWidth: 0,
-      pointStyle: 'cross',
-    },
-  },
-  plugins: {
-    colors: {
-      enabled: true,
-    },
-  },
-};
-
 type ChartData = { [key: string]: any };
 
 export interface ChartProps<D extends ChartData = ChartData> {
