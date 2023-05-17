@@ -40,7 +40,6 @@
     "deploy": {
       "executor": "ngx-deploy-npm:deploy",
       "options": {
-        "dryRun": "${dryRun}",
         "access": "public"
       }
     }

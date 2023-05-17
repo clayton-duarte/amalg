@@ -1,6 +1,3 @@
-import installVersioning from '@jscutlery/semver/src/generators/install';
-import installPublishing from 'ngx-deploy-npm/src/generators/install/generator';
-
 import {
   addDependenciesToPackageJson,
   updateProjectConfiguration,
@@ -53,22 +50,10 @@ export default async function library(
         executor: 'ngx-deploy-npm:deploy',
         options: {
           buildTarget: 'production',
-          dryRun: '${dryRun}',
           access: 'public',
         },
       },
     },
-  });
-
-  await installVersioning(tree, {
-    projects: [options.name],
-    enforceConventionalCommits: true,
-    preset: 'conventional',
-    syncVersions: false,
-  });
-
-  await installPublishing(tree, {
-    projects: [options.name],
   });
 
   await formatFiles(tree);
