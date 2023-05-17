@@ -9,23 +9,27 @@ const QUOTE_DATA_SELECTOR =
 
 const DIVIDEND_TABLE_SELECTOR = '#dividend_table > tbody';
 
-export type DividendDataItem = {
+export interface DividendHistoryData {
   changePct: number;
   payDate: string;
   exDate: string;
   amount: number;
-};
+}
 
 const columnMap = ['exDate', 'payDate', 'amount', 'changePct'] as const;
 const COLUMN_COUNT = 5;
 
-export interface DividendData {
+export interface QuoteData {
   name: string;
   closePrice: string;
   divYieldPct: string;
   peRatio: string;
   frequency: string;
-  data: DividendDataItem[];
+}
+
+export interface DividendData {
+  quote: QuoteData;
+  history: DividendHistoryData[];
 }
 
 const CLOSE_PRICE_LABEL = 'Last Close Price: $';
@@ -195,7 +199,7 @@ export async function getDividendHistory(
           payDate: '',
           amount: 0,
           changePct: 0,
-        } as DividendDataItem;
+        } as DividendHistoryData;
       }
 
       if (curr == null || curr === 'unconfirmed/estimated') {
@@ -230,14 +234,16 @@ export async function getDividendHistory(
       }
 
       return acc;
-    }, [] as DividendDataItem[]);
+    }, [] as DividendHistoryData[]);
 
   return {
-    name,
-    closePrice,
-    divYieldPct,
-    peRatio,
-    frequency,
-    data: table,
+    quote: {
+      name,
+      closePrice,
+      divYieldPct,
+      peRatio,
+      frequency,
+    },
+    history: table,
   };
 }

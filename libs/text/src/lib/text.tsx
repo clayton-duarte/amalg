@@ -25,14 +25,13 @@ const StyledText = styled.span<StyledTextProps>`
   margin: ${({ m }) => m ?? 0};
 `;
 
-type TextProps<T extends HTMLParagraphElement> = StyledTextProps &
-  DetailedHTMLProps<HTMLAttributes<T>, T>;
+type TextProps = StyledTextProps & HTMLAttributes<HTMLParagraphElement>;
 
-function Text<T extends HTMLParagraphElement>({
-  variant = 'p',
+function Text({
+  component = 'p',
   ...textProps
-}: {
-  variant?:
+}: TextProps & {
+  component?:
     | 'p'
     | 'h1'
     | 'h2'
@@ -46,49 +45,38 @@ function Text<T extends HTMLParagraphElement>({
     | 'code'
     | 'legend'
     | 'label';
-} & TextProps<T>) {
-  const Component = StyledText.withComponent(variant);
+}) {
+  const Component = StyledText.withComponent(component);
 
   return <Component {...textProps} />;
 }
 
-Text.P = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'p', ...props });
+Text.P = (props: TextProps) => Text({ component: 'p', ...props });
 
-Text.H1 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h1', ...props });
+Text.H1 = (props: TextProps) => Text({ component: 'h1', bold: true, ...props });
 
-Text.H2 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h2', ...props });
+Text.H2 = (props: TextProps) => Text({ component: 'h2', bold: true, ...props });
 
-Text.H3 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h3', ...props });
+Text.H3 = (props: TextProps) => Text({ component: 'h3', bold: true, ...props });
 
-Text.H4 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h4', ...props });
+Text.H4 = (props: TextProps) => Text({ component: 'h4', bold: true, ...props });
 
-Text.H5 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h5', ...props });
+Text.H5 = (props: TextProps) => Text({ component: 'h5', bold: true, ...props });
 
-Text.H6 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h6', ...props });
+Text.H6 = (props: TextProps) => Text({ component: 'h6', bold: true, ...props });
 
-Text.Span = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'span', ...props });
+Text.Span = (props: TextProps) => Text({ component: 'span', ...props });
 
-Text.Strong = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'strong', bold: true, ...props });
+Text.Strong = (props: TextProps) =>
+  Text({ component: 'strong', bold: true, ...props });
 
-Text.Em = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'em', ...props });
+Text.Em = (props: TextProps) => Text({ component: 'em', ...props });
 
-Text.Code = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'code', ...props });
+Text.Code = (props: TextProps) => Text({ component: 'code', ...props });
 
-Text.Legend = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'legend', ...props });
+Text.Legend = (props: TextProps) => Text({ component: 'legend', ...props });
 
-Text.Label = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'label', ...props });
+Text.Label = (props: TextProps) =>
+  Text({ component: 'label', bold: true, ...props });
 
 export default Text;

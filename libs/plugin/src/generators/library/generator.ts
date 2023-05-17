@@ -1,7 +1,13 @@
 import installVersioning from '@jscutlery/semver/src/generators/install';
 import installPublishing from 'ngx-deploy-npm/src/generators/install/generator';
 
-import { formatFiles, readNxJson, Tree } from '@nx/devkit';
+import {
+  addDependenciesToPackageJson,
+  formatFiles,
+  generateFiles,
+  readNxJson,
+  Tree,
+} from '@nx/devkit';
 import { libraryGenerator } from '@nx/js';
 
 import { LibraryGeneratorSchema } from './schema';
@@ -11,15 +17,23 @@ export default async function library(
   options: LibraryGeneratorSchema
 ) {
   const workspaceConfigs = readNxJson(tree);
+  const importPath = `@${workspaceConfigs.npmScope}/${options.name}`;
 
   await libraryGenerator(tree, {
     name: options.name,
-    importPath: `@${workspaceConfigs.npmScope}/${options.name}`,
     unitTestRunner: 'vitest',
     publishable: true,
     linter: 'eslint',
     bundler: 'vite',
+    importPath,
   });
+
+  await generateFiles(tree, `${__dirname}/files`, `libs/${options.name}`, {
+    fileName: options.name,
+    name: options.name,
+  });
+
+  await addDependenciesToPackageJson(tree, { [importPath]: 'latest' }, {});
 
   await installVersioning(tree, {
     projects: [options.name],

@@ -27,10 +27,7 @@ export const StyledTh = styled.th<{ onClick?: () => void }>`
   color: ${(props) => props.theme.SECONDARY};
   padding: 0.25rem 0.5rem;
   font-weight: bold;
-  position: sticky;
   text-align: left;
-  left: 0;
-  top: 0;
 `;
 
 export const StyledTd = styled.td<{ color?: ColorNames }>`
@@ -61,6 +58,32 @@ function RenderTable<D extends TableData>({
   data,
 }: Omit<DataTableProps<D>, 'scrollable'>) {
   const keys = Object.keys(headers);
+
+  if (data.length === 1) {
+    const row = data[0];
+
+    return (
+      <StyledTable>
+        <StyledTbody>
+          {keys.map((key, i) => {
+            const contents = row[key];
+
+            const parsedContents =
+              typeof contents !== 'string'
+                ? JSON.stringify(contents, null, 1)
+                : contents;
+
+            return (
+              <StyledTr key={`table-row-${i}`}>
+                <StyledTh>{headers[keys[i]]}</StyledTh>
+                <StyledTd>{parsedContents}</StyledTd>
+              </StyledTr>
+            );
+          })}
+        </StyledTbody>
+      </StyledTable>
+    );
+  }
 
   return (
     <StyledTable>

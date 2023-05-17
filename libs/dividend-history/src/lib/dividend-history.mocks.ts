@@ -916,8 +916,14 @@ export const html = `
 `;
 
 export const result: DeepReadonly<DividendData> = {
-  closePrice: '42.10',
-  data: [
+  quote: {
+    closePrice: '42.10',
+    divYieldPct: '4.56',
+    frequency: 'Monthly',
+    name: 'Vanguard FTSE Canadian High Dividend Yield Index',
+    peRatio: '11.2',
+  },
+  history: [
     {
       amount: 0.16198,
       changePct: 0,
@@ -1699,8 +1705,4 @@ export const result: DeepReadonly<DividendData> = {
       payDate: '2012-12-10',
     },
   ],
-  divYieldPct: '4.56',
-  frequency: 'Monthly',
-  name: 'Vanguard FTSE Canadian High Dividend Yield Index',
-  peRatio: '11.2',
 } as const;
