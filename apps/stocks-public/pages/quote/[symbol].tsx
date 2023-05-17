@@ -1,3 +1,4 @@
+import Chart from '@amalg/chart';
 import { getDividendHistory, DividendData } from '@amalg/dividend-history';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
@@ -48,12 +49,19 @@ export default function SymbolPage({
           peRatio: 'PE',
         }}
       />
+      <Chart
+        title="Dividend History"
+        data={dividendHistory.history}
+        xAxis="payDate"
+        yAxis="amount"
+        reversed
+      />
       <Text.H2>Dividend History</Text.H2>
       <Table
         data={dividendHistory.history}
         headers={{
-          amount: 'Amount',
           exDate: 'Ex Date',
+          amount: 'Amount',
           payDate: 'Pay Date',
           changePct: 'Change %',
         }}

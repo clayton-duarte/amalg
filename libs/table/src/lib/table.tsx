@@ -27,10 +27,7 @@ export const StyledTh = styled.th<{ onClick?: () => void }>`
   color: ${(props) => props.theme.SECONDARY};
   padding: 0.25rem 0.5rem;
   font-weight: bold;
-  position: sticky;
   text-align: left;
-  left: 0;
-  top: 0;
 `;
 
 export const StyledTd = styled.td<{ color?: ColorNames }>`
