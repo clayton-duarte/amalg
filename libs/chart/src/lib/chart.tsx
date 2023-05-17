@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 
 import Grid from '@amalg/grid';
 import Text from '@amalg/text';
+import { ColorNames, Colors } from '@amalg/theme';
 
 const Line = dynamic(
   () => import('@ant-design/plots').then((mod) => mod.Line),
@@ -37,10 +38,12 @@ export interface ChartProps<D extends ChartData = ChartData> {
   xAxis: keyof D;
   reversed?: boolean;
   title?: string;
+  color?: ColorNames;
 }
 
 export default function Chart<D extends ChartData = ChartData>({
   reversed,
+  color,
   title,
   yAxis,
   xAxis,
@@ -65,6 +68,7 @@ export default function Chart<D extends ChartData = ChartData>({
         {/* https://charts.ant.design/en/api/plots/line */}
         <Line
           data={parsedData}
+          color={Colors[color || 'PRIMARY']}
           yField={String(yAxis)}
           xField={String(xAxis)}
           yAxis={{ min: 100 }}

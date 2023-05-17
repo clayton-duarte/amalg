@@ -7,8 +7,8 @@ export default function HomePage() {
     <Grid xs="auto" justify="center" alignSelf="center">
       <Text.H1>Welcome to stocks-public!</Text.H1>
       <Link href="/">home</Link>
-      <NextLink href="/quote">quote</NextLink>
-      <NextLink href="/compare">compare</NextLink>
+      <NextLink href="/vdy.to">quote example</NextLink>
+      <NextLink href="/compare">compare example</NextLink>
     </Grid>
   );
 }

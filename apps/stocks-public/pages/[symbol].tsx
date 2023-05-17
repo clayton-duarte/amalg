@@ -3,6 +3,7 @@ import { getDividendHistory, DividendData } from '@amalg/dividend-history';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
 import Text from '@amalg/text';
+import { getYahooHistory, HistoryData } from '@amalg/yahoo-events';
 
 export const getStaticPaths = () => {
   return {
@@ -14,17 +15,20 @@ export const getStaticPaths = () => {
 interface SymbolPageProps {
   symbol: string;
   dividendHistory: DividendData;
+  history: HistoryData[];
 }
 
 export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
   async (ctx) => {
     const { symbol } = ctx.params;
     const dividendHistory = await getDividendHistory(symbol);
+    const history = await getYahooHistory(symbol);
 
     return {
       props: {
-        symbol,
         dividendHistory,
+        history,
+        symbol,
       },
       revalidate: 60 * 60 * 24, // 24 hours
     };
@@ -35,6 +39,7 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
 export default function SymbolPage({
   symbol,
   dividendHistory,
+  history,
 }: SymbolPageProps) {
   return (
     <>
@@ -49,6 +54,7 @@ export default function SymbolPage({
           peRatio: 'PE',
         }}
       />
+      <Chart title="Price History" data={history} xAxis="date" yAxis="close" />
       <Chart
         title="Dividend History"
         data={dividendHistory.history}
