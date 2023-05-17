@@ -67,21 +67,23 @@ function RenderTable<D extends TableData>({
 
     return (
       <StyledTable>
-        {keys.map((key, i) => {
-          const contents = row[key];
+        <StyledTbody>
+          {keys.map((key, i) => {
+            const contents = row[key];
 
-          const parsedContents =
-            typeof contents !== 'string'
-              ? JSON.stringify(contents, null, 1)
-              : contents;
+            const parsedContents =
+              typeof contents !== 'string'
+                ? JSON.stringify(contents, null, 1)
+                : contents;
 
-          return (
-            <StyledTr key={`table-row-${i}`}>
-              <StyledTh>{headers[keys[i]]}</StyledTh>
-              <StyledTd>{parsedContents}</StyledTd>
-            </StyledTr>
-          );
-        })}
+            return (
+              <StyledTr key={`table-row-${i}`}>
+                <StyledTh>{headers[keys[i]]}</StyledTh>
+                <StyledTd>{parsedContents}</StyledTd>
+              </StyledTr>
+            );
+          })}
+        </StyledTbody>
       </StyledTable>
     );
   }

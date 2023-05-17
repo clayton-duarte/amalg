@@ -39,7 +39,7 @@ export default function SymbolPage({
     <>
       <Text.H1>{symbol.toLocaleUpperCase()}</Text.H1>
       <Table
-        data={[dividendHistory]}
+        data={[dividendHistory.quote]}
         headers={{
           name: 'Name',
           closePrice: 'Close Price',
@@ -50,7 +50,7 @@ export default function SymbolPage({
       />
       <Text.H2>Dividend History</Text.H2>
       <Table
-        data={dividendHistory.data}
+        data={dividendHistory.history}
         headers={{
           amount: 'Amount',
           exDate: 'Ex Date',
