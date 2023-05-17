@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [2.1.6](https://github.com/clayton-duarte/amalg/compare/button-2.1.5...button-2.1.6) (2023-05-17)
+
 ### [2.1.5](https://github.com/clayton-duarte/amalg/compare/button-2.1.4...button-2.1.5) (2023-05-17)
 
 ### [2.1.4](https://github.com/clayton-duarte/amalg/compare/button-2.1.3...button-2.1.4) (2023-05-17)
