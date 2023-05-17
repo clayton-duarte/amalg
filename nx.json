@@ -60,5 +60,10 @@
         "bundler": "vite"
       }
     }
+  },
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzeSourceFiles": true
+    }
   }
 }
