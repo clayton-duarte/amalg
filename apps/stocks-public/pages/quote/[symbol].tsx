@@ -38,22 +38,17 @@ export default function SymbolPage({
   return (
     <>
       <Text.H1>{symbol.toLocaleUpperCase()}</Text.H1>
+      <Table
+        data={[dividendHistory]}
+        headers={{
+          name: 'Name',
+          closePrice: 'Close Price',
+          divYieldPct: 'Yield %',
+          frequency: 'Frequency',
+          peRatio: 'PE',
+        }}
+      />
       <Text.H2>Dividend History</Text.H2>
-      <Text>
-        <Text.Strong>Name:</Text.Strong> {dividendHistory.name}
-      </Text>
-      <Text>
-        <Text.Strong>Close Price:</Text.Strong> {dividendHistory.closePrice}
-      </Text>
-      <Text>
-        <Text.Strong>Yield %:</Text.Strong> {dividendHistory.divYieldPct}%
-      </Text>
-      <Text>
-        <Text.Strong>Frequency:</Text.Strong> {dividendHistory.frequency}
-      </Text>
-      <Text>
-        <Text.Strong>PE:</Text.Strong> {dividendHistory.peRatio}
-      </Text>
       <Table
         data={dividendHistory.data}
         headers={{

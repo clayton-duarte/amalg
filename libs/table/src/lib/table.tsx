@@ -62,6 +62,30 @@ function RenderTable<D extends TableData>({
 }: Omit<DataTableProps<D>, 'scrollable'>) {
   const keys = Object.keys(headers);
 
+  if (data.length === 1) {
+    const row = data[0];
+
+    return (
+      <StyledTable>
+        {keys.map((key, i) => {
+          const contents = row[key];
+
+          const parsedContents =
+            typeof contents !== 'string'
+              ? JSON.stringify(contents, null, 1)
+              : contents;
+
+          return (
+            <StyledTr key={`table-row-${i}`}>
+              <StyledTh>{headers[keys[i]]}</StyledTh>
+              <StyledTd>{parsedContents}</StyledTd>
+            </StyledTr>
+          );
+        })}
+      </StyledTable>
+    );
+  }
+
   return (
     <StyledTable>
       <StyledThead>
