@@ -37,7 +37,7 @@ export default function SymbolPage({
 }: SymbolPageProps) {
   return (
     <>
-      <Text.H1>Symbol: {symbol}</Text.H1>
+      <Text.H1>{symbol.toLocaleUpperCase()}</Text.H1>
       <Text.H2>Dividend History</Text.H2>
       <Text>
         <Text.Strong>Name:</Text.Strong> {dividendHistory.name}
