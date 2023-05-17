@@ -1,5 +1,8 @@
+import Head from 'next/head';
+
 import Chart from '@amalg/chart';
 import { getDividendHistory, DividendData } from '@amalg/dividend-history';
+import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
 import Text from '@amalg/text';
@@ -41,37 +44,49 @@ export default function SymbolPage({
   dividendHistory,
   history,
 }: SymbolPageProps) {
+  const formattedSymbol = symbol.toLocaleUpperCase();
+
   return (
     <>
-      <Text.H1>{symbol.toLocaleUpperCase()}</Text.H1>
-      <Table
-        data={[dividendHistory.quote]}
-        headers={{
-          name: 'Name',
-          closePrice: 'Close Price',
-          divYieldPct: 'Yield %',
-          frequency: 'Frequency',
-          peRatio: 'PE',
-        }}
-      />
-      <Chart title="Price History" data={history} xAxis="date" yAxis="close" />
-      <Chart
-        title="Dividend History"
-        data={dividendHistory.history}
-        xAxis="payDate"
-        yAxis="amount"
-        reversed
-      />
-      <Text.H2>Dividend History</Text.H2>
-      <Table
-        data={dividendHistory.history}
-        headers={{
-          exDate: 'Ex Date',
-          amount: 'Amount',
-          payDate: 'Pay Date',
-          changePct: 'Change %',
-        }}
-      />
+      <Head>
+        <title>{formattedSymbol} - Stocks Public</title>
+      </Head>
+      <Grid.Article>
+        <Text.H1>{formattedSymbol}</Text.H1>
+        <Table
+          data={[dividendHistory.quote]}
+          headers={{
+            name: 'Name',
+            closePrice: 'Close Price',
+            divYieldPct: 'Yield %',
+            frequency: 'Frequency',
+            peRatio: 'PE',
+          }}
+        />
+        <Chart
+          title="Price History"
+          data={history}
+          xAxis="date"
+          yAxis="close"
+        />
+        <Chart
+          title="Dividend History"
+          data={dividendHistory.history}
+          xAxis="payDate"
+          yAxis="amount"
+          reversed
+        />
+        <Text.H2>Dividend History</Text.H2>
+        <Table
+          data={dividendHistory.history}
+          headers={{
+            exDate: 'Ex Date',
+            amount: 'Amount',
+            payDate: 'Pay Date',
+            changePct: 'Change %',
+          }}
+        />
+      </Grid.Article>
     </>
   );
 }

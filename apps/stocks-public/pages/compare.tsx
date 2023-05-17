@@ -20,9 +20,9 @@ export default function ComparePage({ title }: CompareProps) {
       <Head>
         <title>{title}</title>
       </Head>
-      <Grid>
+      <Grid.Article>
         <h1>Welcome to {title} page!</h1>
-      </Grid>
+      </Grid.Article>
     </>
   );
 }

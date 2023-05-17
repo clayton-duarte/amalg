@@ -62,9 +62,9 @@ export default function Chart<D extends ChartData = ChartData>({
   if (data.length < 1) return null;
 
   return (
-    <Grid height="100%" bg="DARK" p="1rem">
-      {title && <Text variant="h3">{title}</Text>}
-      <Grid height="100%">
+    <Grid minHeight="100%" bg="DARK" p="1rem">
+      {title && <Text.H3>{title}</Text.H3>}
+      <Grid minHeight="100%">
         {/* https://charts.ant.design/en/api/plots/line */}
         <Line
           data={parsedData}

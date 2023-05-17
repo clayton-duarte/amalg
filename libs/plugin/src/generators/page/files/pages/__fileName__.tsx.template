@@ -20,9 +20,9 @@ export default function <%= componentName %>Page({ title }: <%= componentName %>
       <Head>
         <title>{title}</title>
       </Head>
-      <Grid>
+      <Grid.Article>
         <h1>Welcome to {title} page!</h1>
-      </Grid>
+      </Grid.Article>
     </>
   );
 }
