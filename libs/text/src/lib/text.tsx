@@ -56,22 +56,22 @@ Text.P = (props: TextProps<HTMLParagraphElement>) =>
   Text<HTMLParagraphElement>({ variant: 'p', ...props });
 
 Text.H1 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h1', ...props });
+  Text<HTMLParagraphElement>({ variant: 'h1', bold: true, ...props });
 
 Text.H2 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h2', ...props });
+  Text<HTMLParagraphElement>({ variant: 'h2', bold: true, ...props });
 
 Text.H3 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h3', ...props });
+  Text<HTMLParagraphElement>({ variant: 'h3', bold: true, ...props });
 
 Text.H4 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h4', ...props });
+  Text<HTMLParagraphElement>({ variant: 'h4', bold: true, ...props });
 
 Text.H5 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h5', ...props });
+  Text<HTMLParagraphElement>({ variant: 'h5', bold: true, ...props });
 
 Text.H6 = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'h6', ...props });
+  Text<HTMLParagraphElement>({ variant: 'h6', bold: true, ...props });
 
 Text.Span = (props: TextProps<HTMLParagraphElement>) =>
   Text<HTMLParagraphElement>({ variant: 'span', ...props });
@@ -89,6 +89,6 @@ Text.Legend = (props: TextProps<HTMLParagraphElement>) =>
   Text<HTMLParagraphElement>({ variant: 'legend', ...props });
 
 Text.Label = (props: TextProps<HTMLParagraphElement>) =>
-  Text<HTMLParagraphElement>({ variant: 'label', ...props });
+  Text<HTMLParagraphElement>({ variant: 'label', bold: true, ...props });
 
 export default Text;
