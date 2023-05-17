@@ -59,7 +59,7 @@ export default function Chart<D extends ChartData = ChartData>({
     return data;
   }, [reversed, data]);
 
-  if (data.length < 1) return null;
+  if (parsedData == null) return null;
 
   return (
     <Grid minHeight="100%" bg="DARK" p="1rem">

@@ -59,27 +59,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup NPM
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+
       - name: Version Manual
         if: github.event.inputs.releaseAs
         run: |
           npx nx affected \
           -t=version \
           --parallel=1 \
-          --all=${{ github.event.inputs.all || false  }} \
-          --releaseAs=${{ github.event.inputs.releaseAs }} \
+          --allowEmptyRelease=${{ github.event.inputs.all || false  }} \
           --dryRun=${{ github.event.inputs.dryRun || false  }} \
-          --allowEmptyRelease=true \
+          --releaseAs=${{ github.event.inputs.releaseAs }} \
+          --all=${{ github.event.inputs.all || false  }} \
+          --postTargets=deploy \
           --noVerify \
           --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup NPM
-        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-
-      - name: Publish
-        run: |
-          npx nx affected \
-          --all=${{ github.event.inputs.all || false  }} \
-          --dry-run=${{ github.event.inputs.dryRun || false  }} \
-          -t=deploy
