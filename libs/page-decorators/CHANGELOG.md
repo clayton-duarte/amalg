@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.1.3](https://github.com/clayton-duarte/amalg/compare/page-decorators-0.1.2...page-decorators-0.1.3) (2023-05-17)
+
 ### [0.1.2](https://github.com/clayton-duarte/amalg/compare/page-decorators-0.1.1...page-decorators-0.1.2) (2023-05-17)
 
 ### [0.1.1](https://github.com/clayton-duarte/amalg/compare/page-decorators-0.1.0...page-decorators-0.1.1) (2023-05-17)
