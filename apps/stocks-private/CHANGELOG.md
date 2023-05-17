@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.2.0](https://github.com/clayton-duarte/amalg/compare/stocks-private-2.1.3...stocks-private-2.2.0) (2023-05-17)
+
+
+### Features
+
+* Updates static stocks page ([#6](https://github.com/clayton-duarte/amalg/issues/6)) ([da4552a](https://github.com/clayton-duarte/amalg/commit/da4552ad34c98f395af1242de64c965ed78393d3))
+
 ### [2.1.3](https://github.com/clayton-duarte/amalg/compare/stocks-private-2.1.2...stocks-private-2.1.3) (2023-05-17)
 
 ### [2.1.2](https://github.com/clayton-duarte/amalg/compare/stocks-private-2.1.1...stocks-private-2.1.2) (2023-05-16)
