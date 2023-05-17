@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+### [0.1.1](https://github.com/clayton-duarte/amalg/compare/plugin-0.1.0...plugin-0.1.1) (2023-05-17)
+
 ## 0.1.0 (2023-05-17)
 
 
