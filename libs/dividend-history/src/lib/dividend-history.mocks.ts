@@ -1,6 +1,6 @@
 import { DeepReadonly } from '@amalg/types';
 
-import { DividendData } from './dividend-history';
+import { DividendHistoryData } from './dividend-history';
 
 export const html = `
 <!DOCTYPE html>
@@ -915,7 +915,7 @@ export const html = `
 </html>
 `;
 
-export const result: DeepReadonly<DividendData> = {
+export const result: DeepReadonly<DividendHistoryData> = {
   quote: {
     symbol: 'VDY.TO',
     closePrice: '42.10',
@@ -924,7 +924,7 @@ export const result: DeepReadonly<DividendData> = {
     name: 'Vanguard FTSE Canadian High Dividend Yield Index',
     peRatio: '11.2',
   },
-  history: [
+  dividends: [
     {
       amount: 0.16198,
       changePct: 0,

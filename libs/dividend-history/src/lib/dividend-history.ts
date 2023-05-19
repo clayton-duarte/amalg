@@ -1,23 +1,15 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
+const COLUMN_COUNT = 5;
+const columnMap = ['exDate', 'payDate', 'amount', 'changePct'] as const;
+const DIVIDEND_TABLE_SELECTOR = '#dividend_table > tbody';
+
 const TICKER_NAME_SELECTOR =
   'body > div > div:nth-child(2) > div:nth-child(2) > h4';
 
 const QUOTE_DATA_SELECTOR =
   'body > div > div:nth-child(3) > div.col-md-8.col-xs-12.col-sm-12 > p';
-
-const DIVIDEND_TABLE_SELECTOR = '#dividend_table > tbody';
-
-export interface DividendHistoryData {
-  changePct: number;
-  payDate: string;
-  exDate: string;
-  amount: number;
-}
-
-const columnMap = ['exDate', 'payDate', 'amount', 'changePct'] as const;
-const COLUMN_COUNT = 5;
 
 export interface QuoteData {
   symbol: string;
@@ -29,8 +21,15 @@ export interface QuoteData {
 }
 
 export interface DividendData {
+  changePct: number;
+  payDate: string;
+  exDate: string;
+  amount: number;
+}
+
+export interface DividendHistoryData {
   quote: QuoteData;
-  history: DividendHistoryData[];
+  dividends: DividendData[];
 }
 
 const CLOSE_PRICE_LABEL = 'Last Close Price: $';
@@ -147,7 +146,7 @@ async function loadDividendHistoryOrg(
 
 export async function getDividendHistory(
   symbol: string
-): Promise<DividendData> {
+): Promise<DividendHistoryData> {
   const $ = await loadDividendHistoryOrg(symbol);
 
   const name = $(TICKER_NAME_SELECTOR)
@@ -190,7 +189,7 @@ export async function getDividendHistory(
     .replace(/\t/g, '')
     .split('\n')
     .reduce((acc, curr, index) => {
-      const rowIndex = Math.floor(index / COLUMN_COUNT);
+      const rowIndex = ~~(index / COLUMN_COUNT);
       const columnIndex = index % COLUMN_COUNT;
       const columnKey = columnMap[columnIndex];
 
@@ -200,7 +199,7 @@ export async function getDividendHistory(
           payDate: '',
           amount: 0,
           changePct: 0,
-        } as DividendHistoryData;
+        } as DividendData;
       }
 
       if (curr == null || curr === 'unconfirmed/estimated') {
@@ -235,7 +234,7 @@ export async function getDividendHistory(
       }
 
       return acc;
-    }, [] as DividendHistoryData[]);
+    }, [] as DividendData[]);
 
   return {
     quote: {
@@ -246,6 +245,6 @@ export async function getDividendHistory(
       frequency,
       peRatio,
     },
-    history: table,
+    dividends: table,
   };
 }
