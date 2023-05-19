@@ -16,6 +16,11 @@
       "factory": "./src/generators/page/generator",
       "schema": "./src/generators/page/schema.json",
       "description": "page generator"
+    },
+    "target": {
+      "factory": "./src/generators/target/generator",
+      "schema": "./src/generators/target/schema.json",
+      "description": "target generator"
     }
   }
 }
