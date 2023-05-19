@@ -5,6 +5,8 @@ import Grid from '@amalg/grid';
 import Text from '@amalg/text';
 import { ColorNames, Colors } from '@amalg/theme';
 
+// https://charts.ant.design/en/api/plots/line;
+
 const Line = dynamic(
   () => import('@ant-design/plots').then((mod) => mod.Line),
   { loading: () => <Text>Loading...</Text>, ssr: false }
@@ -16,12 +18,14 @@ export interface ChartProps<D extends ChartData = ChartData> {
   data: D[];
   yAxis: keyof D;
   xAxis: keyof D;
+  seriesField?: keyof D;
   reversed?: boolean;
-  title?: string;
   color?: ColorNames;
+  title?: string;
 }
 
 export default function Chart<D extends ChartData = ChartData>({
+  seriesField,
   reversed,
   color,
   title,
@@ -42,19 +46,28 @@ export default function Chart<D extends ChartData = ChartData>({
   if (parsedData == null) return null;
 
   return (
-    <Grid minHeight="100%" bg="DARK" p="1rem">
+    <Grid bg="DARK" p="1rem">
       {title && <Text.H3>{title}</Text.H3>}
-      <Grid minHeight="100%">
-        {/* https://charts.ant.design/en/api/plots/line */}
-        <Line
-          data={parsedData}
-          color={Colors[color || 'PRIMARY']}
-          yField={String(yAxis)}
-          xField={String(xAxis)}
-          yAxis={{ min: 100 }}
-          renderer="svg"
-        />
-      </Grid>
+      <Line
+        data={parsedData}
+        seriesField={seriesField && String(seriesField)}
+        yField={String(yAxis)}
+        xField={String(xAxis)}
+        renderer="svg"
+        color={
+          color
+            ? Colors[color]
+            : [
+                Colors.PRIMARY,
+                Colors.SUCCESS,
+                Colors.INFO,
+                Colors.DANGER,
+                Colors.WARNING,
+                Colors.WHITE,
+                Colors.SECONDARY,
+              ]
+        }
+      />
     </Grid>
   );
 }
