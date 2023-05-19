@@ -917,6 +917,7 @@ export const html = `
 
 export const result: DeepReadonly<DividendData> = {
   quote: {
+    symbol: 'VDY.TO',
     closePrice: '42.10',
     divYieldPct: '4.56',
     frequency: 'Monthly',

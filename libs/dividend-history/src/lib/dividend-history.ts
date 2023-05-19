@@ -20,6 +20,7 @@ const columnMap = ['exDate', 'payDate', 'amount', 'changePct'] as const;
 const COLUMN_COUNT = 5;
 
 export interface QuoteData {
+  symbol: string;
   name: string;
   closePrice: string;
   divYieldPct: string;
@@ -238,11 +239,12 @@ export async function getDividendHistory(
 
   return {
     quote: {
+      symbol: symbol.toLocaleUpperCase(),
       name,
       closePrice,
       divYieldPct,
-      peRatio,
       frequency,
+      peRatio,
     },
     history: table,
   };
