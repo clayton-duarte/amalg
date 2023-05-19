@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
 import Grid from '@amalg/grid';
+import Text from '@amalg/text';
 
 export interface <%= componentName %>Props {
   title: string;
@@ -21,7 +22,7 @@ export default function <%= componentName %>Page({ title }: <%= componentName %>
         <title>{title}</title>
       </Head>
       <Grid.Article>
-        <h1>Welcome to {title} page!</h1>
+        <Text.H1>Welcome to {title} page!</Text.H1>
       </Grid.Article>
     </>
   );
