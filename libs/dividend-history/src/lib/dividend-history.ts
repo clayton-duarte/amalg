@@ -21,6 +21,7 @@ export interface QuoteData {
 }
 
 export interface DividendData {
+  symbol: string;
   changePct: number;
   payDate: string;
   exDate: string;
@@ -163,6 +164,7 @@ export async function getDividendHistory(
   const marketCapIndex = rawData.indexOf(MARKETCAP_LABEL);
   const frequencyIndex = rawData.indexOf(FREQUENCY_LABEL);
   const tableIndex = rawData.indexOf(TABLE_LABEL);
+  const parsedSymbol = symbol.toLocaleUpperCase();
 
   const closePrice = rawData
     .slice(
@@ -195,6 +197,7 @@ export async function getDividendHistory(
 
       if (!acc[rowIndex]) {
         acc[rowIndex] = {
+          symbol: parsedSymbol,
           exDate: '',
           payDate: '',
           amount: 0,
@@ -238,7 +241,7 @@ export async function getDividendHistory(
 
   return {
     quote: {
-      symbol: symbol.toLocaleUpperCase(),
+      symbol: parsedSymbol,
       name,
       closePrice,
       divYieldPct,
