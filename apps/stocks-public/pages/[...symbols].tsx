@@ -1,13 +1,20 @@
 import Head from 'next/head';
 
-import { DividendData, getDividendHistory } from '@amalg/dividend-history';
+import {
+  getDividendHistory,
+  DividendData,
+  QuoteData,
+} from '@amalg/dividend-history';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
+import Table from '@amalg/table';
 import Text from '@amalg/text';
+import { HistoryData } from '@amalg/yahoo-events';
 
 export interface CompareProps {
-  title: string;
-  dividendHistoryList: DividendData[];
+  dividendHistoryList: DividendData[][];
+  quoteList: QuoteData[];
+  symbols: string[];
 }
 
 export const getStaticPaths = () => {
@@ -20,15 +27,21 @@ export const getStaticPaths = () => {
 export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
   async (ctx) => {
     const { symbols } = ctx.params;
+    const dividendDataList = await Promise.all(symbols.map(getDividendHistory));
 
-    const dividendHistoryList = await Promise.all(
-      symbols.map(getDividendHistory)
+    const quoteList = dividendDataList.map(
+      (dividendHistory) => dividendHistory.quote
+    );
+
+    const dividendHistoryList = dividendDataList.map(
+      (dividendHistory) => dividendHistory.dividends
     );
 
     return {
       props: {
-        title: 'compare',
         dividendHistoryList,
+        quoteList,
+        symbols,
       },
       revalidate: 60 * 60 * 24, // 24 hours
     };
@@ -36,18 +49,29 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
   'symbols'
 );
 
-export default function ComparePage({
-  title,
-  dividendHistoryList,
-}: CompareProps) {
+export default function ComparePage({ quoteList, symbols }: CompareProps) {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>
+          {symbols.join(' & ').toLocaleUpperCase()}
+          {' - Comparison - Stocks Public'}
+        </title>
       </Head>
       <Grid.Article>
-        <Text.H1>Welcome to {title} page!</Text.H1>
+        <Text.H1>Welcome</Text.H1>
+        <Table
+          data={quoteList}
+          headers={{
+            symbol: 'Symbol',
+            name: 'Name',
+            closePrice: 'Close Price',
+            divYieldPct: 'Dividend Yield',
+            frequency: 'Frequency',
+          }}
+        />
       </Grid.Article>
+      {/* <Chart data={quoteList} /> */}
     </>
   );
 }
