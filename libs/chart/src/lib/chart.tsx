@@ -59,8 +59,8 @@ export default function Chart<D extends ChartData = ChartData>({
             ? Colors[color]
             : [
                 Colors.PRIMARY,
-                Colors.SUCCESS,
                 Colors.INFO,
+                Colors.SUCCESS,
                 Colors.DANGER,
                 Colors.WARNING,
                 Colors.WHITE,

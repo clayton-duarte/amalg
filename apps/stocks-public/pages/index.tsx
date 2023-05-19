@@ -14,7 +14,7 @@ export default function HomePage() {
         <Text.H1>Welcome to stocks-public!</Text.H1>
         <Link href="/">home</Link>
         <NextLink href="/vdy.to">quote example</NextLink>
-        <NextLink href="/compare">compare example</NextLink>
+        <NextLink href="/vdy.to/vfv.to">compare example</NextLink>
       </Grid.Article>
     </>
   );
