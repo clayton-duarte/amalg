@@ -2,6 +2,10 @@ import axios from 'axios';
 import csv from 'csvtojson';
 import dayjs from 'dayjs';
 
+import { ChartData } from '@amalg/chart';
+
+const DATE_FORMAT = 'YYYY-MM';
+
 enum YahooEvents {
   history = 'history',
   div = 'div',
@@ -21,7 +25,7 @@ const getYahooUrl = (symbol: string, events: YahooEventNames) => {
     period1: initialDate.toString(),
     period2: finalDate.toString(),
     includeAdjustedClose: 'true',
-    interval: '1d',
+    interval: '1mo',
     events,
   });
 
@@ -40,8 +44,7 @@ interface YahooHistory {
   Volume: string;
 }
 
-export interface HistoryData {
-  symbol: string;
+export interface HistoryData extends ChartData {
   date: string;
   open: number;
   high: number;
@@ -56,12 +59,13 @@ interface YahooDividend {
   Dividends: string;
 }
 
-export interface DividendData {
+export interface DividendData extends ChartData {
   symbol: string;
   date: string;
   amount: number;
 }
 
+// overloads
 async function getYahooEvents(
   symbol: string,
   events: YahooEvents.history
@@ -86,7 +90,9 @@ function mapYahooHistory(symbol: string) {
   return function (history: YahooHistory): HistoryData {
     return {
       symbol,
-      date: dayjs(history.Date).format('YYYY-MM-DD'),
+      type: 'price',
+      amount: parseFloat(history.Close),
+      date: dayjs(history.Date).format(DATE_FORMAT),
       open: parseFloat(history.Open),
       high: parseFloat(history.High),
       low: parseFloat(history.Low),
@@ -101,17 +107,21 @@ function mapYahooDividend(symbol: string) {
   return function (dividend: YahooDividend): DividendData {
     return {
       symbol,
-      date: dayjs(dividend.Date).format('YYYY-MM-DD'),
+      type: 'dividend',
+      date: dayjs(dividend.Date).format(DATE_FORMAT),
       amount: parseFloat(dividend.Dividends),
     };
   };
 }
 
+function parseSymbol(symbol: string) {
+  return symbol.toLocaleUpperCase();
+}
+
 export async function getYahooHistory(symbol: string): Promise<HistoryData[]> {
   const csvData = await getYahooEvents(symbol, YahooEvents.history);
-  const parsedSymbol = symbol.toLocaleUpperCase();
 
-  return csvData.map(mapYahooHistory(parsedSymbol));
+  return csvData.map(mapYahooHistory(parseSymbol(symbol)));
 }
 
 export async function getYahooDividends(
