@@ -9,8 +9,12 @@ function isNumber(value: BigSource) {
   return !isNaN(Number(value));
 }
 
+function isZero(value: BigSource) {
+  return isNumber(value) && new Big(value).eq(0);
+}
+
 function notZero(value: BigSource) {
-  if (!isNumber(value) || new Big(value).eq(0)) {
+  if (!isNumber(value) || isZero(value)) {
     return ALMOST_ZERO;
   }
 
@@ -18,9 +22,9 @@ function notZero(value: BigSource) {
 }
 
 export function calcDividendDrip(divYieldPct: BigSource): Big {
-  const formattedDividend = new Big(divYieldPct).div(PERCENTAGE);
+  const yieldRatio = new Big(divYieldPct).div(PERCENTAGE);
 
-  return new Big(1).div(formattedDividend).times(MONTHS_IN_YEAR).round(0, 1);
+  return new Big(1).div(notZero(yieldRatio)).times(MONTHS_IN_YEAR).round(0, 1);
 }
 
 export function calcCompoundInterest({
@@ -203,7 +207,10 @@ export function calcCombinedCapitalAppreciation(
       type: 'dividend',
       date: historyData.date,
       symbol: historyData.symbol,
-      amount: new Big(historyData.close).plus(currentDividendAmount).toNumber(),
+      amount: new Big(historyData.close)
+        .plus(currentDividendAmount)
+        .div(2)
+        .toNumber(),
     });
   });
 

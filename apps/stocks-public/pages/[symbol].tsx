@@ -1,15 +1,24 @@
 import Head from 'next/head';
 
-import Chart from '@amalg/chart';
+import Chart, { ChartData } from '@amalg/chart';
 import {
   getDividendHistory,
   DividendHistoryData,
 } from '@amalg/dividend-history';
+import {
+  calcCombinedCapitalAppreciation,
+  calcComposedDividends,
+} from '@amalg/financials';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
 import Text from '@amalg/text';
-import { getYahooHistory, HistoryData } from '@amalg/yahoo-events';
+import {
+  getYahooDividends,
+  getYahooHistory,
+  DividendData,
+  HistoryData,
+} from '@amalg/yahoo-events';
 
 export const getStaticPaths = () => {
   return {
@@ -20,21 +29,33 @@ export const getStaticPaths = () => {
 
 interface SymbolPageProps {
   symbol: string;
-  dividendHistory: DividendHistoryData;
-  history: HistoryData[];
+  quoteDataList: DividendHistoryData;
+  dividendDataList: DividendData[];
+  historyDataList: HistoryData[];
+  totalGainsDataList: ChartData[];
 }
 
 export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
   async (ctx) => {
     const { symbol } = ctx.params;
-    const dividendHistory = await getDividendHistory(symbol);
-    const history = await getYahooHistory(symbol);
+
+    const [quoteDataList, dividendDataList, historyDataList] =
+      await Promise.all([
+        getDividendHistory(symbol),
+        getYahooDividends(symbol),
+        getYahooHistory(symbol),
+      ]);
 
     return {
       props: {
-        dividendHistory,
-        history,
-        symbol,
+        dividendDataList,
+        historyDataList,
+        quoteDataList,
+        symbol: symbol.toLocaleUpperCase(),
+        totalGainsDataList: calcCombinedCapitalAppreciation(
+          calcComposedDividends(dividendDataList, historyDataList),
+          historyDataList
+        ),
       },
       revalidate: 60 * 60 * 24, // 24 hours
     };
@@ -43,21 +64,21 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
 );
 
 export default function SymbolPage({
+  totalGainsDataList,
+  dividendDataList,
+  historyDataList,
+  quoteDataList,
   symbol,
-  dividendHistory,
-  history,
 }: SymbolPageProps) {
-  const formattedSymbol = symbol.toLocaleUpperCase();
-
   return (
     <>
       <Head>
-        <title>{formattedSymbol} - Stocks Public</title>
+        <title>{symbol} - Stocks Public</title>
       </Head>
       <Grid.Article>
-        <Text.H1>{formattedSymbol}</Text.H1>
+        <Text.H1>{symbol}</Text.H1>
         <Table
-          data={[dividendHistory.quote]}
+          data={[quoteDataList.quote]}
           headers={{
             name: 'Name',
             closePrice: 'Close Price',
@@ -67,27 +88,22 @@ export default function SymbolPage({
           }}
         />
         <Chart
-          title="Price History"
-          data={history}
+          title="Total Gains"
+          data={totalGainsDataList}
           xAxis="date"
+          yAxis="amount"
+        />
+        <Chart
+          title="Price History"
+          data={historyDataList}
           yAxis="close"
+          xAxis="date"
         />
         <Chart
           title="Dividend History"
-          data={dividendHistory.dividends}
-          xAxis="payDate"
+          data={dividendDataList}
           yAxis="amount"
-          reversed
-        />
-        <Text.H2>Dividend History</Text.H2>
-        <Table
-          data={dividendHistory.dividends}
-          headers={{
-            exDate: 'Ex Date',
-            amount: 'Amount',
-            payDate: 'Pay Date',
-            changePct: 'Change %',
-          }}
+          xAxis="date"
         />
       </Grid.Article>
     </>

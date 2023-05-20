@@ -8,6 +8,6 @@ describe('calcDividendDrip', () => {
 
     expect(calcDividendDrip(10)).toMatchInlineSnapshot('"120"');
 
-    expect(calcDividendDrip(0)).toMatchInlineSnapshot();
+    expect(calcDividendDrip(0)).toMatchInlineSnapshot('"0"');
   });
 });
