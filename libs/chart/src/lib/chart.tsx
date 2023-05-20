@@ -5,26 +5,59 @@ import Grid from '@amalg/grid';
 import Text from '@amalg/text';
 import { ColorNames, Colors } from '@amalg/theme';
 
-// https://charts.ant.design/en/api/plots/line;
+type GenericData = { [key: string]: any };
 
-const Line = dynamic(
-  () => import('@ant-design/plots').then((mod) => mod.Line),
-  { loading: () => <Text>Loading...</Text>, ssr: false }
-);
+export interface ChartData {
+  symbol: string;
+  type: string;
+  date: string;
+  amount: number;
+}
 
-type ChartData = { [key: string]: any };
+export type Dataset = {
+  seriesField?: string;
+  xAxis: string;
+  yAxis: number;
+};
 
-export interface ChartProps<D extends ChartData = ChartData> {
+enum PlotTypes {
+  line = 'Line',
+  area = 'Area',
+  // etc.
+}
+
+type PlotTypeNames = keyof typeof PlotTypes;
+
+const AsyncPlot = (type: PlotTypeNames) =>
+  dynamic(
+    () => import('@ant-design/plots').then((mod) => mod[PlotTypes[type]]),
+    { loading: () => <Text>Loading...</Text>, ssr: false }
+  );
+
+export interface ChartProps<D extends GenericData = GenericData> {
   data: D[];
   yAxis: keyof D;
   xAxis: keyof D;
   seriesField?: keyof D;
+  type?: PlotTypeNames;
   reversed?: boolean;
   color?: ColorNames;
   title?: string;
 }
 
-export default function Chart<D extends ChartData = ChartData>({
+const chartColorArray = [
+  Colors.PRIMARY,
+  Colors.INFO,
+  Colors.SUCCESS,
+  Colors.DANGER,
+  Colors.WARNING,
+  Colors.WHITE,
+  Colors.SECONDARY,
+];
+
+// https://charts.ant.design/en/api/plots/line;
+export default function Chart<D extends GenericData = GenericData>({
+  type = 'line',
   seriesField,
   reversed,
   color,
@@ -36,36 +69,28 @@ export default function Chart<D extends ChartData = ChartData>({
   const parsedData = useMemo(() => {
     if (data.length < 1) return null;
 
-    if (reversed) {
-      return [...data].reverse();
-    }
-
-    return data;
-  }, [reversed, data]);
+    return reversed ? [...data].reverse() : [...data];
+  }, [data, reversed]);
 
   if (parsedData == null) return null;
+
+  const ChartComponent = AsyncPlot(type);
 
   return (
     <Grid bg="DARK" p="1rem">
       {title && <Text.H3>{title}</Text.H3>}
-      <Line
+      <ChartComponent
         data={parsedData}
         seriesField={seriesField && String(seriesField)}
-        yField={String(yAxis)}
         xField={String(xAxis)}
+        yField={String(yAxis)}
         renderer="svg"
         color={
           color
             ? Colors[color]
-            : [
-                Colors.PRIMARY,
-                Colors.INFO,
-                Colors.SUCCESS,
-                Colors.DANGER,
-                Colors.WARNING,
-                Colors.WHITE,
-                Colors.SECONDARY,
-              ]
+            : seriesField == null
+            ? Colors.PRIMARY
+            : chartColorArray
         }
       />
     </Grid>

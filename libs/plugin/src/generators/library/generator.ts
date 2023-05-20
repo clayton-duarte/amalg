@@ -17,7 +17,6 @@ export default async function library(
 ) {
   const workspaceConfigs = readNxJson(tree);
   const importPath = `@${workspaceConfigs.npmScope}/${options.name}`;
-  const projectConfiguration = readProjectConfiguration(tree, options.name);
 
   await libraryGenerator(tree, {
     name: options.name,
@@ -35,8 +34,10 @@ export default async function library(
 
   await addDependenciesToPackageJson(tree, { [importPath]: 'latest' }, {});
 
+  const projectConfiguration = readProjectConfiguration(tree, options.name);
+
   await updateProjectConfiguration(tree, options.name, {
-    root: `libs/${options.name}`,
+    ...projectConfiguration,
     targets: {
       ...projectConfiguration.targets,
       version: {

@@ -1,7 +1,12 @@
 import Head from 'next/head';
 
-import Chart from '@amalg/chart';
+import Chart, { ChartData } from '@amalg/chart';
 import { getDividendHistory, QuoteData } from '@amalg/dividend-history';
+import {
+  calcCombinedCapitalAppreciationPercent,
+  mapDividendDataToProportional,
+  mapHistoryDataToProportional,
+} from '@amalg/financials';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
@@ -14,6 +19,7 @@ import {
 } from '@amalg/yahoo-events';
 
 export interface CompareProps {
+  totalGainsDataList: ChartData[];
   dividendList: DividendData[];
   historyList: HistoryData[];
   quoteList: QuoteData[];
@@ -39,18 +45,30 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
       ]);
 
     const quoteList = quoteDataList.map(({ quote }) => quote);
-    const historyList = historyDataList.flat();
+
+    const historyList = historyDataList
+      .map(mapHistoryDataToProportional)
+      .flat();
 
     const dividendList = dividendDataList
+      .map(mapDividendDataToProportional)
       .flat()
       .sort((a, b) => a.date.localeCompare(b.date));
 
     return {
       props: {
+        symbols,
         dividendList,
         historyList,
         quoteList,
-        symbols,
+        totalGainsDataList: symbols
+          .map((_, index) =>
+            calcCombinedCapitalAppreciationPercent(
+              dividendDataList[index],
+              historyDataList[index]
+            )
+          )
+          .flat(),
       },
       revalidate: 60 * 60 * 24, // 24 hours
     };
@@ -59,12 +77,13 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
 );
 
 export default function ComparePage({
+  totalGainsDataList,
   dividendList,
   historyList,
   quoteList,
   symbols,
 }: CompareProps) {
-  console.log(dividendList.flat());
+  const symbolList = symbols.join(', ').toLocaleUpperCase();
 
   return (
     <>
@@ -75,7 +94,27 @@ export default function ComparePage({
         </title>
       </Head>
       <Grid.Article>
-        <Text.H1>Welcome</Text.H1>
+        <Text.H1>{symbolList}</Text.H1>
+        <Table
+          data={quoteList}
+          renderLinks={{
+            symbol: (symbol) => `/${symbol}`,
+          }}
+          headers={{
+            symbol: 'Symbol',
+            name: 'Name',
+            closePrice: 'Close Price',
+            divYieldPct: 'Dividend Yield',
+            frequency: 'Frequency',
+          }}
+        />
+        <Chart
+          title="Performance History"
+          data={totalGainsDataList}
+          seriesField="symbol"
+          yAxis="amount"
+          xAxis="date"
+        />
         <Chart
           title="Price History"
           data={historyList}
@@ -89,16 +128,6 @@ export default function ComparePage({
           seriesField="symbol"
           yAxis="amount"
           xAxis="date"
-        />
-        <Table
-          data={quoteList}
-          headers={{
-            symbol: 'Symbol',
-            name: 'Name',
-            closePrice: 'Close Price',
-            divYieldPct: 'Dividend Yield',
-            frequency: 'Frequency',
-          }}
         />
       </Grid.Article>
     </>

@@ -1,7 +1,7 @@
-import { test } from './<%= fileName %>';
+import { <%= name %> } from './<%= fileName %>';
 
 describe('<%= name %>', () => {
   it('should work', () => {
-    expect(test()).toEqual('<%= name %>');
+    expect(<%= name %>()).toEqual('<%= name %>');
   });
 });

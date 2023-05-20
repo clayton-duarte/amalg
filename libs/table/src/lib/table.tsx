@@ -1,3 +1,4 @@
+import { NextLink } from '@amalg/link';
 import { ColorNames } from '@amalg/theme';
 import styled from '@emotion/styled';
 
@@ -50,10 +51,12 @@ type TableData = { [key: string]: any };
 export interface DataTableProps<D extends TableData> {
   data: D[];
   headers: { [key in keyof D]?: string };
+  renderLinks?: { [key in keyof D]?: (value: D[keyof D]) => string };
   scrollable?: boolean;
 }
 
 function RenderTable<D extends TableData>({
+  renderLinks,
   headers,
   data,
 }: Omit<DataTableProps<D>, 'scrollable'>) {
@@ -66,17 +69,26 @@ function RenderTable<D extends TableData>({
       <StyledTable>
         <StyledTbody>
           {keys.map((key, i) => {
+            const renderLink = renderLinks && renderLinks[key];
             const contents = row[key];
 
-            const parsedContents =
+            const stringifiedContents =
               typeof contents !== 'string'
                 ? JSON.stringify(contents, null, 1)
                 : contents;
 
+            const content = renderLink ? (
+              <NextLink href={renderLink(contents)}>
+                {stringifiedContents}
+              </NextLink>
+            ) : (
+              stringifiedContents
+            );
+
             return (
               <StyledTr key={`table-row-${i}`}>
                 <StyledTh>{headers[keys[i]]}</StyledTh>
-                <StyledTd>{parsedContents}</StyledTd>
+                <StyledTd>{content}</StyledTd>
               </StyledTr>
             );
           })}
@@ -98,17 +110,24 @@ function RenderTable<D extends TableData>({
         {data.map((row, i) => (
           <StyledTr key={`table-row-${i}`}>
             {keys.map((key, j) => {
+              const renderLink = renderLinks && renderLinks[key];
               const contents = row[key];
 
-              const parsedContents =
+              const stringifiedContents =
                 typeof contents !== 'string'
                   ? JSON.stringify(contents, null, 1)
                   : contents;
 
+              const content = renderLink ? (
+                <NextLink href={renderLink(contents)}>
+                  {stringifiedContents}
+                </NextLink>
+              ) : (
+                stringifiedContents
+              );
+
               return (
-                <StyledTd key={`table-cell-${key}-${j}`}>
-                  {parsedContents}
-                </StyledTd>
+                <StyledTd key={`table-cell-${key}-${j}`}>{content}</StyledTd>
               );
             })}
           </StyledTr>
