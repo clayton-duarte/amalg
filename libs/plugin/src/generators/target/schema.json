@@ -1,9 +1,8 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "Library",
+  "$id": "Target",
   "title": "",
   "type": "object",
-  "aliases": ["lib"],
   "properties": {
     "name": {
       "type": "string",
@@ -13,7 +12,14 @@
         "index": 0
       },
       "x-prompt": "What name would you like to use?"
+    },
+    "projects": {
+      "description": "Which projects should be configured?",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
-  "required": ["name", "projects"]
+  "required": ["name"]
 }

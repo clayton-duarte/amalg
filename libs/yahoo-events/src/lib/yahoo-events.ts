@@ -41,6 +41,7 @@ interface YahooHistory {
 }
 
 export interface HistoryData {
+  symbol: string;
   date: string;
   open: number;
   high: number;
@@ -56,8 +57,9 @@ interface YahooDividend {
 }
 
 export interface DividendData {
+  symbol: string;
   date: string;
-  dividends: number;
+  amount: number;
 }
 
 async function getYahooEvents(
@@ -80,33 +82,43 @@ async function getYahooEvents(
   return csv().fromString(data);
 }
 
-function mapYahooHistory(history: YahooHistory): HistoryData {
-  return {
-    date: dayjs(history.Date).format('YYYY-MM-DD'),
-    open: parseFloat(history.Open),
-    high: parseFloat(history.High),
-    low: parseFloat(history.Low),
-    close: parseFloat(history.Close),
-    adjClose: parseFloat(history['Adj Close']),
-    volume: parseInt(history.Volume),
+function mapYahooHistory(symbol: string) {
+  return function (history: YahooHistory): HistoryData {
+    return {
+      symbol,
+      date: dayjs(history.Date).format('YYYY-MM-DD'),
+      open: parseFloat(history.Open),
+      high: parseFloat(history.High),
+      low: parseFloat(history.Low),
+      close: parseFloat(history.Close),
+      adjClose: parseFloat(history['Adj Close']),
+      volume: parseInt(history.Volume),
+    };
   };
 }
 
-function mapYahooDividend(dividend: YahooDividend): DividendData {
-  return {
-    date: dayjs(dividend.Date).format('YYYY-MM-DD'),
-    dividends: parseFloat(dividend.Dividends),
+function mapYahooDividend(symbol: string) {
+  return function (dividend: YahooDividend): DividendData {
+    return {
+      symbol,
+      date: dayjs(dividend.Date).format('YYYY-MM-DD'),
+      amount: parseFloat(dividend.Dividends),
+    };
   };
 }
 
 export async function getYahooHistory(symbol: string): Promise<HistoryData[]> {
   const csvData = await getYahooEvents(symbol, YahooEvents.history);
+  const parsedSymbol = symbol.toLocaleUpperCase();
 
-  return csvData.map(mapYahooHistory);
+  return csvData.map(mapYahooHistory(parsedSymbol));
 }
 
-export async function getYahooDividends(symbol: string) {
+export async function getYahooDividends(
+  symbol: string
+): Promise<DividendData[]> {
   const csvData = await getYahooEvents(symbol, YahooEvents.div);
+  const parsedSymbol = symbol.toLocaleUpperCase();
 
-  return csvData.map(mapYahooDividend);
+  return csvData.map(mapYahooDividend(parsedSymbol));
 }

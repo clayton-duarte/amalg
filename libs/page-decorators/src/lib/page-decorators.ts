@@ -2,11 +2,10 @@ import { GetServerSidePropsContext } from 'next';
 
 import { ReType, TupleUnion } from '@amalg/types';
 
-type GetServerSidePropsWithParams<Q extends string> = ReType<
-  GetServerSidePropsContext,
-  'params',
-  { [key in Q]: string }
->;
+type GetServerSidePropsWithParams<
+  Q extends string,
+  T extends string | string[] = string
+> = ReType<GetServerSidePropsContext, 'params', { [key in Q]: T }>;
 
 /**
  * @description
@@ -21,7 +20,7 @@ type GetServerSidePropsWithParams<Q extends string> = ReType<
  * ```ts
  * import { withParams } from '@amalg/page-decorators';
  *
- * export const getServerSideProps = withParams(
+ * export const getServerSideProps = withParams<PageProps, 'id'>(
  *  async (ctx) => {
  *    return {
  *     props: {
@@ -37,14 +36,15 @@ export function withParams<
   // This is the type of the props returned by the getServerSideProps function
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   P extends { [key: string]: any },
-  Q extends string = string
+  Q extends string,
+  T extends string | string[] = string
 >(
   getServerSidePropsWithParams: (
-    ctx: GetServerSidePropsWithParams<Q>
+    ctx: GetServerSidePropsWithParams<Q, T>
   ) => Promise<{ props: P }>,
   ...params: TupleUnion<Q>
 ) {
-  return function (ctx: GetServerSidePropsWithParams<Q>) {
+  return function (ctx: GetServerSidePropsWithParams<Q, T>) {
     if (ctx.params == null) {
       throw new Error('Missing params');
     }

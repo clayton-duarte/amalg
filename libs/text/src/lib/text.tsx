@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 import { ColorNames } from '@amalg/theme';
 import styled from '@emotion/styled';
@@ -80,3 +80,5 @@ Text.Label = (props: TextProps) =>
   Text({ component: 'label', bold: true, ...props });
 
 export default Text;
+
+export { Text };

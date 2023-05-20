@@ -32,13 +32,13 @@ export const StyledGrid = styled.div<StyledGridProps>`
   display: grid;
   margin: ${(props) => (props.m ? props.m : props.container ? '0 auto' : 0)};
   max-width: ${(props) => (props.container ? Breakpoints.XL : '100%')};
-  justify-content: ${(props) => props.justify ?? 'start'};
+  max-height: ${(props) => props.maxHeight ?? 'max-content'};
   justify-self: ${(props) => props.justifySelf ?? 'start'};
+  justify-content: ${(props) => props.justify ?? 'start'};
   grid-template-columns: ${(props) => props.xs ?? '1fr'};
   grid-template-rows: ${(props) => props.xsy ?? 'auto'};
-  max-height: ${(props) => props.maxHeight ?? 'auto'};
-  align-items: ${(props) => props.align ?? 'start'};
   align-self: ${(props) => props.alignSelf ?? 'start'};
+  align-items: ${(props) => props.align ?? 'start'};
   grid-area: ${(props) => props.area ?? 'auto'};
   gap: ${(props) => props.gap ?? '1rem'};
   padding: ${(props) => props.p ?? 0};
@@ -48,7 +48,7 @@ export const StyledGrid = styled.div<StyledGridProps>`
       ? props.minHeight
       : props.xsy || props.mdy || props.lgy || props.xly
       ? '100%'
-      : 'auto'};
+      : 'min-content'};
   background: ${(props) => (props.bg ? props.theme[props.bg] : 'transparent')};
   // Responsive
   @media (min-width: ${Breakpoints.SM}) {

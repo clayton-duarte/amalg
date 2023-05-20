@@ -1,7 +1,10 @@
 import Head from 'next/head';
 
 import Chart from '@amalg/chart';
-import { getDividendHistory, DividendData } from '@amalg/dividend-history';
+import {
+  getDividendHistory,
+  DividendHistoryData,
+} from '@amalg/dividend-history';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
@@ -17,7 +20,7 @@ export const getStaticPaths = () => {
 
 interface SymbolPageProps {
   symbol: string;
-  dividendHistory: DividendData;
+  dividendHistory: DividendHistoryData;
   history: HistoryData[];
 }
 
@@ -71,14 +74,14 @@ export default function SymbolPage({
         />
         <Chart
           title="Dividend History"
-          data={dividendHistory.history}
+          data={dividendHistory.dividends}
           xAxis="payDate"
           yAxis="amount"
           reversed
         />
         <Text.H2>Dividend History</Text.H2>
         <Table
-          data={dividendHistory.history}
+          data={dividendHistory.dividends}
           headers={{
             exDate: 'Ex Date',
             amount: 'Amount',
