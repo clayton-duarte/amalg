@@ -5,10 +5,7 @@ import {
   getDividendHistory,
   DividendHistoryData,
 } from '@amalg/dividend-history';
-import {
-  calcCombinedCapitalAppreciation,
-  calcComposedDividends,
-} from '@amalg/financials';
+import { calcCombinedCapitalAppreciation } from '@amalg/financials';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
@@ -53,7 +50,7 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
         quoteDataList,
         symbol: symbol.toLocaleUpperCase(),
         totalGainsDataList: calcCombinedCapitalAppreciation(
-          calcComposedDividends(dividendDataList, historyDataList),
+          dividendDataList,
           historyDataList
         ),
       },

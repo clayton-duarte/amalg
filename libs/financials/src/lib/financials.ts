@@ -137,6 +137,17 @@ export function mapDividendDataToProportional(
   }));
 }
 
+export function mapHistoryDataToProportional(historyDataList: HistoryData[]) {
+  const [firstHistoryData] = historyDataList;
+
+  return historyDataList.map((historyData) => ({
+    ...historyData,
+    close: new Big(historyData.close)
+      .div(notZero(firstHistoryData.close))
+      .toNumber(),
+  }));
+}
+
 export function calcAccumulatedDividends(dividendDataList: DividendData[]) {
   let accumulatedDividends = new Big(0);
   const newDividendDataList = [];
@@ -186,10 +197,16 @@ export function calcCombinedCapitalAppreciation(
   historyDataList: HistoryData[]
 ): ChartData[] {
   const combinedData: ChartData[] = [];
-  let latestDividendAmount = dividendDataList[0].amount;
+
+  const composedDividendDataList = calcComposedDividends(
+    dividendDataList,
+    historyDataList
+  );
+
+  let latestDividendAmount = composedDividendDataList[0].amount;
 
   historyDataList.forEach((historyData) => {
-    const currentDividendData = dividendDataList.find(
+    const currentDividendData = composedDividendDataList.find(
       (dividendData) => dividendData.date === historyData.date
     );
 
@@ -215,4 +232,16 @@ export function calcCombinedCapitalAppreciation(
   });
 
   return combinedData;
+}
+
+export function calcCombinedCapitalAppreciationPercent(
+  dividendDataList: DividendData[],
+  historyDataList: HistoryData[]
+): ChartData[] {
+  const combinedData = calcCombinedCapitalAppreciation(
+    dividendDataList,
+    historyDataList
+  );
+
+  return mapDividendDataToProportional(combinedData);
 }

@@ -48,6 +48,16 @@ export interface ChartProps<D extends GenericData = GenericData> {
   title?: string;
 }
 
+const chartColorArray = [
+  Colors.PRIMARY,
+  Colors.INFO,
+  Colors.SUCCESS,
+  Colors.DANGER,
+  Colors.WARNING,
+  Colors.WHITE,
+  Colors.SECONDARY,
+];
+
 // https://charts.ant.design/en/api/plots/line;
 export default function Chart<D extends GenericData = GenericData>({
   type = 'line',
@@ -81,15 +91,9 @@ export default function Chart<D extends GenericData = GenericData>({
         color={
           color
             ? Colors[color]
-            : [
-                Colors.PRIMARY,
-                Colors.INFO,
-                Colors.SUCCESS,
-                Colors.DANGER,
-                Colors.WARNING,
-                Colors.WHITE,
-                Colors.SECONDARY,
-              ]
+            : seriesField == null
+            ? Colors.PRIMARY
+            : chartColorArray
         }
       />
     </Grid>
