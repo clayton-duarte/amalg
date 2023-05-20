@@ -3,7 +3,7 @@ import Big, { BigSource } from 'big.js';
 import { ChartData, Dataset } from '@amalg/chart';
 import { HistoryData, DividendData } from '@amalg/yahoo-events';
 
-import { ALMOST_ZERO, MONTHS_IN_YEAR, PERCENTAGE } from './consts';
+import { ALMOST_ZERO, MONTHS_IN_YEAR, PERCENTAGE, ZERO } from './consts';
 
 function isNumber(value: BigSource) {
   return !isNaN(Number(value));
@@ -62,8 +62,8 @@ export function mapValuesToPercent(arr: Dataset[], field: keyof Dataset) {
   return function (data: Dataset): Dataset {
     return {
       ...data,
-      [field]: new Big(data[field])
-        .div(notZero(first[field]))
+      [field]: new Big(data[field] ?? ZERO)
+        .div(notZero(first[field] ?? ZERO))
         .times(PERCENTAGE)
         .round(0, 1)
         .toNumber(),

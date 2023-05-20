@@ -23,9 +23,6 @@ export type Dataset = {
 enum PlotTypes {
   line = 'Line',
   area = 'Area',
-  column = 'Column',
-  bar = 'Bar',
-  pie = 'Pie',
   // etc.
 }
 
