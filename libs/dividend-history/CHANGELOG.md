@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.3.0](https://github.com/clayton-duarte/amalg/compare/dividend-history-1.2.2...dividend-history-1.3.0) (2023-05-20)
+
+
+### Features
+
+* comparison page ([#7](https://github.com/clayton-duarte/amalg/issues/7)) ([ae1e9ae](https://github.com/clayton-duarte/amalg/commit/ae1e9ae617d426c5566300060ba91a508b662042))
+
 ### [1.2.2](https://github.com/clayton-duarte/amalg/compare/dividend-history-1.2.1...dividend-history-1.2.2) (2023-05-17)
 
 ### [1.2.1](https://github.com/clayton-duarte/amalg/compare/dividend-history-1.2.0...dividend-history-1.2.1) (2023-05-17)
