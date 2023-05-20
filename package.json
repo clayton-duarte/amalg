@@ -13,6 +13,7 @@
     "@amalg/button": "latest",
     "@amalg/chart": "latest",
     "@amalg/dividend-history": "latest",
+    "@amalg/financials": "latest",
     "@amalg/grid": "latest",
     "@amalg/letter-icon": "latest",
     "@amalg/link": "latest",

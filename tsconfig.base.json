@@ -20,6 +20,7 @@
       "@amalg/button": ["libs/button/src/index.ts"],
       "@amalg/chart": ["libs/chart/src/index.ts"],
       "@amalg/dividend-history": ["libs/dividend-history/src/index.ts"],
+      "@amalg/financials": ["libs/financials/src/index.ts"],
       "@amalg/grid": ["libs/grid/src/index.ts"],
       "@amalg/letter-icon": ["libs/letter-icon/src/index.ts"],
       "@amalg/link": ["libs/link/src/index.ts"],
