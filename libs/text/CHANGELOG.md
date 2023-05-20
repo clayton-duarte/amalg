@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.4.0](https://github.com/clayton-duarte/amalg/compare/text-2.3.2...text-2.4.0) (2023-05-20)
+
+
+### Features
+
+* comparison page ([#7](https://github.com/clayton-duarte/amalg/issues/7)) ([ae1e9ae](https://github.com/clayton-duarte/amalg/commit/ae1e9ae617d426c5566300060ba91a508b662042))
+
 ### [2.3.2](https://github.com/clayton-duarte/amalg/compare/text-2.3.1...text-2.3.2) (2023-05-17)
 
 ### [2.3.1](https://github.com/clayton-duarte/amalg/compare/text-2.3.0...text-2.3.1) (2023-05-17)
