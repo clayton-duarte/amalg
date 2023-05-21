@@ -54,7 +54,7 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
           historyDataList
         ),
       },
-      revalidate: 60 * 60 * 24, // 24 hours
+      revalidate: 60 * 60,
     };
   },
   'symbol'

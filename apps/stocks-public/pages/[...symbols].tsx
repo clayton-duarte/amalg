@@ -1,27 +1,25 @@
 import Head from 'next/head';
 
-import Chart, { ChartData } from '@amalg/chart';
+import Chart from '@amalg/chart';
 import { getDividendHistory, QuoteData } from '@amalg/dividend-history';
 import {
   calcCombinedCapitalAppreciationPercent,
-  mapDividendDataToProportional,
-  mapHistoryDataToProportional,
+  calcComposedDividendsPercent,
+  mapChartDataToPercent,
+  ChartData,
 } from '@amalg/financials';
 import Grid from '@amalg/grid';
+import { NextLink } from '@amalg/link';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
 import Text from '@amalg/text';
-import {
-  getYahooDividends,
-  getYahooHistory,
-  DividendData,
-  HistoryData,
-} from '@amalg/yahoo-events';
+import { getYahooDividends, getYahooHistory } from '@amalg/yahoo-events';
 
 export interface CompareProps {
+  dividendAccumulatedList: ChartData[];
   totalGainsDataList: ChartData[];
-  dividendList: DividendData[];
-  historyList: HistoryData[];
+  historyList: ChartData[];
+  dividendList: ChartData[];
   quoteList: QuoteData[];
   symbols: string[];
 }
@@ -44,23 +42,24 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
         Promise.all(symbols.map(getYahooHistory)),
       ]);
 
-    const quoteList = quoteDataList.map(({ quote }) => quote);
-
-    const historyList = historyDataList
-      .map(mapHistoryDataToProportional)
-      .flat();
-
-    const dividendList = dividendDataList
-      .map(mapDividendDataToProportional)
-      .flat()
-      .sort((a, b) => a.date.localeCompare(b.date));
-
     return {
       props: {
         symbols,
-        dividendList,
-        historyList,
-        quoteList,
+        quoteList: quoteDataList.map(({ quote }) => quote),
+        historyList: historyDataList.map(mapChartDataToPercent).flat(),
+        dividendList: dividendDataList
+          .map(mapChartDataToPercent)
+          .flat()
+          .sort((a, b) => a.date.localeCompare(b.date)),
+        dividendAccumulatedList: symbols
+          .map((_, index) =>
+            calcComposedDividendsPercent(
+              dividendDataList[index],
+              historyDataList[index]
+            )
+          )
+          .flat()
+          .sort((a, b) => a.date.localeCompare(b.date)),
         totalGainsDataList: symbols
           .map((_, index) =>
             calcCombinedCapitalAppreciationPercent(
@@ -70,65 +69,84 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
           )
           .flat(),
       },
-      revalidate: 60 * 60 * 24, // 24 hours
+      revalidate: 60 * 60,
     };
   },
   'symbols'
 );
 
 export default function ComparePage({
+  dividendAccumulatedList,
   totalGainsDataList,
   dividendList,
   historyList,
   quoteList,
   symbols,
 }: CompareProps) {
-  const symbolList = symbols.join(', ').toLocaleUpperCase();
+  const symbolList = symbols.join(' & ').toLocaleUpperCase();
 
   return (
     <>
       <Head>
-        <title>
-          {symbols.join(' & ').toLocaleUpperCase()}
-          {' - Comparison - Stocks Public'}
-        </title>
+        <title>{`${symbolList} - Comparison - Stocks Public`}</title>
       </Head>
       <Grid.Article>
         <Text.H1>{symbolList}</Text.H1>
         <Table
           data={quoteList}
-          renderLinks={{
-            symbol: (symbol) => `/${symbol}`,
-          }}
           headers={{
-            symbol: 'Symbol',
+            symbol: {
+              label: 'Symbol',
+              format: (symbol: string) => (
+                <NextLink href={`/${symbol}`}>{symbol}</NextLink>
+              ),
+            },
             name: 'Name',
-            closePrice: 'Close Price',
-            divYieldPct: 'Dividend Yield',
+            closePrice: {
+              label: 'Close Price',
+              format: 'currency',
+            },
+            divYieldPct: {
+              label: 'Dividend Yield',
+              format: 'percent',
+            },
             frequency: 'Frequency',
           }}
         />
-        <Chart
-          title="Performance History"
-          data={totalGainsDataList}
-          seriesField="symbol"
-          yAxis="amount"
-          xAxis="date"
-        />
-        <Chart
-          title="Price History"
-          data={historyList}
-          seriesField="symbol"
-          yAxis="close"
-          xAxis="date"
-        />
-        <Chart
-          title="Dividend History"
-          data={dividendList}
-          seriesField="symbol"
-          yAxis="amount"
-          xAxis="date"
-        />
+        <Grid md="1fr 1fr">
+          <Chart
+            title="Total Gains"
+            data={totalGainsDataList}
+            seriesField="symbol"
+            format="percent"
+            yAxis="amount"
+            xAxis="date"
+          />
+          <Chart
+            title="Dividend Accumulation"
+            data={dividendAccumulatedList}
+            seriesField="symbol"
+            format="percent"
+            yAxis="amount"
+            xAxis="date"
+          />
+          <Chart
+            title="Price History"
+            data={historyList}
+            seriesField="symbol"
+            format="percent"
+            yAxis="amount"
+            xAxis="date"
+          />
+          <Chart
+            title="Dividend History"
+            data={dividendList}
+            seriesField="symbol"
+            format="percent"
+            yAxis="amount"
+            xAxis="date"
+          />
+        </Grid>
       </Grid.Article>
     </>
   );
