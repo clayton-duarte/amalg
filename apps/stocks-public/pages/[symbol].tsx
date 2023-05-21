@@ -1,11 +1,11 @@
 import Head from 'next/head';
 
-import Chart, { ChartData } from '@amalg/chart';
+import Chart from '@amalg/chart';
 import {
   getDividendHistory,
   DividendHistoryData,
 } from '@amalg/dividend-history';
-import { calcCombinedCapitalAppreciation } from '@amalg/financials';
+import { ChartData, calcCombinedCapitalAppreciation } from '@amalg/financials';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
@@ -54,7 +54,7 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
           historyDataList
         ),
       },
-      revalidate: 60 * 60 * 24, // 24 hours
+      revalidate: 60 * 60,
     };
   },
   'symbol'

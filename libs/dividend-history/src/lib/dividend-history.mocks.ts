@@ -918,11 +918,11 @@ export const html = `
 export const result: DeepReadonly<DividendHistoryData> = {
   quote: {
     symbol: 'VDY.TO',
-    closePrice: '42.10',
-    divYieldPct: '4.56',
+    closePrice: 42.1,
+    divYieldPct: 0.0456,
     frequency: 'Monthly',
     name: 'Vanguard FTSE Canadian High Dividend Yield Index',
-    peRatio: '11.2',
+    peRatio: 11.2,
   },
   dividends: [
     {

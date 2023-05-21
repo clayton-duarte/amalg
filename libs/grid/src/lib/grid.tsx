@@ -127,6 +127,6 @@ Grid.Ul = (props: GridProps) =>
 Grid.Ol = (props: GridProps) =>
   Grid({ component: 'ol', p: '0 0 0 1rem', ...props });
 
-Grid.Li = (props: GridProps) => Grid({ component: 'li', p: '1rem', ...props });
+Grid.Li = (props: GridProps) => Grid({ component: 'li', ...props });
 
 export default Grid;

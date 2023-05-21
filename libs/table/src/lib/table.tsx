@@ -1,10 +1,13 @@
-import { NextLink } from '@amalg/link';
+import { ReactNode } from 'react';
+
+import { formatCurrency, formatPercent } from '@amalg/financials';
 import { ColorNames } from '@amalg/theme';
 import styled from '@emotion/styled';
 
 export const StyledTable = styled.table`
-  border-collapse: collapse;
   border: 1px solid ${(props) => props.theme.DARK};
+  border-collapse: collapse;
+  white-space: nowrap;
   width: 100%;
   margin: 0;
 `;
@@ -46,20 +49,65 @@ const ScrollWrapper = styled.div`
   }
 `;
 
-type TableData = { [key: string]: any };
+type TableData = { [key: string]: unknown };
+
+function defaultFormatter(value: unknown) {
+  return typeof value === 'string' ? value : JSON.stringify(value, null, 1);
+}
+
+const formatters = {
+  currency: formatCurrency,
+  percent: formatPercent,
+} as const;
+
+interface HeaderMetaData<T> {
+  format?: keyof typeof formatters | ((value: T) => ReactNode);
+  label: string;
+}
 
 export interface DataTableProps<D extends TableData> {
+  headers: { [K in keyof D]?: HeaderMetaData<D[K]> | string };
   data: D[];
-  headers: { [key in keyof D]?: string };
-  renderLinks?: { [key in keyof D]?: (value: D[keyof D]) => string };
-  scrollable?: boolean;
+}
+
+function parseHeaderMetadata<D extends TableData>(
+  headersProp: DataTableProps<D>['headers']
+): {
+  [key in keyof D]?: {
+    formatter: (...params: unknown[]) => string;
+    label: string;
+  };
+} {
+  return Object.entries(headersProp).reduce(
+    (acc, [key, value]: [keyof D, HeaderMetaData<D[keyof D]> | string]) => {
+      if (typeof value === 'string') {
+        return { ...acc, [key]: { label: value, formatter: defaultFormatter } };
+      }
+
+      const formatter =
+        typeof value.format === 'function'
+          ? value.format
+          : typeof value.format === 'string'
+          ? formatters[value.format]
+          : defaultFormatter;
+
+      return {
+        ...acc,
+        [key]: {
+          label: value.label,
+          formatter,
+        },
+      };
+    },
+    {}
+  );
 }
 
 function RenderTable<D extends TableData>({
-  renderLinks,
   headers,
   data,
 }: Omit<DataTableProps<D>, 'scrollable'>) {
+  const headerMetadata = parseHeaderMetadata(headers);
   const keys = Object.keys(headers);
 
   if (data.length === 1) {
@@ -69,26 +117,10 @@ function RenderTable<D extends TableData>({
       <StyledTable>
         <StyledTbody>
           {keys.map((key, i) => {
-            const renderLink = renderLinks && renderLinks[key];
-            const contents = row[key];
-
-            const stringifiedContents =
-              typeof contents !== 'string'
-                ? JSON.stringify(contents, null, 1)
-                : contents;
-
-            const content = renderLink ? (
-              <NextLink href={renderLink(contents)}>
-                {stringifiedContents}
-              </NextLink>
-            ) : (
-              stringifiedContents
-            );
-
             return (
               <StyledTr key={`table-row-${i}`}>
-                <StyledTh>{headers[keys[i]]}</StyledTh>
-                <StyledTd>{content}</StyledTd>
+                <StyledTh>{headerMetadata[key]?.label}</StyledTh>
+                <StyledTd>{headerMetadata[key]?.formatter(row[key])}</StyledTd>
               </StyledTr>
             );
           })}
@@ -102,7 +134,9 @@ function RenderTable<D extends TableData>({
       <StyledThead>
         <StyledTr>
           {keys.map((key) => (
-            <StyledTh key={`table-header-${key}`}>{headers[key]}</StyledTh>
+            <StyledTh key={`table-header-${key}`}>
+              {headerMetadata[key]?.label}
+            </StyledTh>
           ))}
         </StyledTr>
       </StyledThead>
@@ -110,24 +144,10 @@ function RenderTable<D extends TableData>({
         {data.map((row, i) => (
           <StyledTr key={`table-row-${i}`}>
             {keys.map((key, j) => {
-              const renderLink = renderLinks && renderLinks[key];
-              const contents = row[key];
-
-              const stringifiedContents =
-                typeof contents !== 'string'
-                  ? JSON.stringify(contents, null, 1)
-                  : contents;
-
-              const content = renderLink ? (
-                <NextLink href={renderLink(contents)}>
-                  {stringifiedContents}
-                </NextLink>
-              ) : (
-                stringifiedContents
-              );
-
               return (
-                <StyledTd key={`table-cell-${key}-${j}`}>{content}</StyledTd>
+                <StyledTd key={`table-cell-${key}-${j}`}>
+                  {headerMetadata[key]?.formatter(row[key])}
+                </StyledTd>
               );
             })}
           </StyledTr>
@@ -138,16 +158,11 @@ function RenderTable<D extends TableData>({
 }
 
 export default function DataTable<D extends TableData>({
-  scrollable,
   ...tableProps
 }: DataTableProps<D>) {
-  if (scrollable) {
-    return (
-      <ScrollWrapper>
-        <RenderTable<D> {...tableProps} />
-      </ScrollWrapper>
-    );
-  }
-
-  return <RenderTable<D> {...tableProps} />;
+  return (
+    <ScrollWrapper>
+      <RenderTable<D> {...tableProps} />
+    </ScrollWrapper>
+  );
 }

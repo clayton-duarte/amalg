@@ -1,8 +1,5 @@
 import Big, { BigSource } from 'big.js';
 
-import { ChartData, Dataset } from '@amalg/chart';
-import { HistoryData, DividendData } from '@amalg/yahoo-events';
-
 import { ALMOST_ZERO, MONTHS_IN_YEAR, PERCENTAGE, ZERO } from './consts';
 
 function isNumber(value: BigSource) {
@@ -20,6 +17,23 @@ function notZero(value: BigSource) {
 
   return value;
 }
+
+export interface ChartData {
+  symbol: string;
+  date: string;
+  amount: number;
+  type: string;
+}
+
+export const formatPercent = new Intl.NumberFormat('en-CA', {
+  maximumFractionDigits: 2,
+  style: 'percent',
+}).format;
+
+export const formatCurrency = new Intl.NumberFormat('en-CA', {
+  style: 'currency',
+  currency: 'CAD',
+}).format;
 
 export function calcDividendDrip(divYieldPct: BigSource): Big {
   const yieldRatio = new Big(divYieldPct).div(PERCENTAGE);
@@ -56,10 +70,10 @@ export function calcAnnualizedGrowth(data: BigSource[]) {
   return growthPct.div(notZero(data.length)).times(MONTHS_IN_YEAR);
 }
 
-export function mapValuesToPercent(arr: Dataset[], field: keyof Dataset) {
+export function mapValuesToPercent(arr: ChartData[], field: keyof ChartData) {
   const [first] = arr;
 
-  return function (data: Dataset): Dataset {
+  return function (data: ChartData): ChartData {
     return {
       ...data,
       [field]: new Big(data[field] ?? ZERO)
@@ -71,84 +85,19 @@ export function mapValuesToPercent(arr: Dataset[], field: keyof Dataset) {
   };
 }
 
-export function combinePriceAndDividendHistory(
-  priceHistory: HistoryData[],
-  dividendHistory: DividendData[],
-  drip = 1
-): Dataset[] {
-  const mappedPriceHistory = priceHistory.reduce((acc, price) => {
-    acc[price.date] = price.close * drip;
+export function mapChartDataToPercent(chartDataList: ChartData[]) {
+  const [firstDividendData] = chartDataList;
 
-    return acc;
-  }, {} as { [key: string]: number });
-
-  const mappedDividendHistory = dividendHistory.reduce((acc, dividend) => {
-    acc[dividend.date] = dividend.amount * drip;
-
-    return acc;
-  }, {} as { [key: string]: number });
-
-  // const reinvestedDividend = Object.entries(mappedPriceHistory).reduce(
-  //   (acc, [date, amount], i) => {
-  //     const currentDividend = new Big(mappedDividendHistory[date] || 0);
-  //     const currentPrice = new Big(amount);
-  //     const dripped = drip % i === 0;
-
-  //     console.log({ currentDividend, currentPrice, drip, i, dripped });
-
-  //     acc[date] = amount;
-
-  //     return acc;
-  //   },
-  //   {} as { [key: string]: number }
-  // );
-
-  return Object.entries(mappedPriceHistory).map(([date, value]) => {
-    return {
-      seriesField: priceHistory[0].symbol,
-      yAxis: new Big(value).plus(mappedDividendHistory[date] || 0).toNumber(),
-      xAxis: date,
-    };
-  });
-}
-
-export function combinePriceAndDividendHistoryPercent(
-  priceHistory: HistoryData[],
-  dividendHistory: DividendData[]
-): Dataset[] {
-  const combined = combinePriceAndDividendHistory(
-    priceHistory,
-    dividendHistory
-  );
-
-  return combined.map(mapValuesToPercent(combined, 'yAxis'));
-}
-
-export function mapDividendDataToProportional(
-  dividendDataList: DividendData[]
-) {
-  const [firstDividendData] = dividendDataList;
-
-  return dividendDataList.map((dividendData) => ({
+  return chartDataList.map((dividendData) => ({
     ...dividendData,
     amount: new Big(dividendData.amount)
       .div(notZero(firstDividendData.amount))
+      .minus(1)
       .toNumber(),
   }));
 }
 
-export function mapHistoryDataToProportional(historyDataList: HistoryData[]) {
-  const [firstHistoryData] = historyDataList;
-
-  return historyDataList.map((historyData) => ({
-    ...historyData,
-    close: new Big(historyData.close)
-      .div(notZero(firstHistoryData.close))
-      .toNumber(),
-  }));
-}
-
-export function calcAccumulatedDividends(dividendDataList: DividendData[]) {
+export function calcAccumulatedDividends(dividendDataList: ChartData[]) {
   let accumulatedDividends = new Big(0);
   const newDividendDataList = [];
 
@@ -165,10 +114,10 @@ export function calcAccumulatedDividends(dividendDataList: DividendData[]) {
 }
 
 export function calcComposedDividends(
-  dividendDataList: DividendData[],
-  historyDataList: HistoryData[]
+  dividendDataList: ChartData[],
+  historyDataList: ChartData[]
 ) {
-  const initialValue = historyDataList[0].close;
+  const initialValue = historyDataList[0].amount;
   let totalCapital = new Big(initialValue);
   const data = [];
 
@@ -177,7 +126,7 @@ export function calcComposedDividends(
       (historyData) => historyData.date === dividendData.date
     );
 
-    const currentPrice = currentHistoryData?.close ?? 0;
+    const currentPrice = currentHistoryData?.amount ?? 0;
     const currentShares = new Big(totalCapital).div(currentPrice);
     const currentValueReinvested = currentShares.times(dividendData.amount);
 
@@ -192,9 +141,21 @@ export function calcComposedDividends(
   return data;
 }
 
+export function calcComposedDividendsPercent(
+  dividendDataList: ChartData[],
+  historyDataList: ChartData[]
+) {
+  const composedDividendDataList = calcComposedDividends(
+    dividendDataList,
+    historyDataList
+  );
+
+  return mapChartDataToPercent(composedDividendDataList);
+}
+
 export function calcCombinedCapitalAppreciation(
-  dividendDataList: DividendData[],
-  historyDataList: HistoryData[]
+  dividendDataList: ChartData[],
+  historyDataList: ChartData[]
 ): ChartData[] {
   const combinedData: ChartData[] = [];
 
@@ -224,7 +185,7 @@ export function calcCombinedCapitalAppreciation(
       type: 'dividend',
       date: historyData.date,
       symbol: historyData.symbol,
-      amount: new Big(historyData.close)
+      amount: new Big(historyData.amount)
         .plus(currentDividendAmount)
         .div(2)
         .toNumber(),
@@ -235,13 +196,13 @@ export function calcCombinedCapitalAppreciation(
 }
 
 export function calcCombinedCapitalAppreciationPercent(
-  dividendDataList: DividendData[],
-  historyDataList: HistoryData[]
+  dividendDataList: ChartData[],
+  historyDataList: ChartData[]
 ): ChartData[] {
   const combinedData = calcCombinedCapitalAppreciation(
     dividendDataList,
     historyDataList
   );
 
-  return mapDividendDataToProportional(combinedData);
+  return mapChartDataToPercent(combinedData);
 }
