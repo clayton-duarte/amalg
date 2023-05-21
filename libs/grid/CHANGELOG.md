@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.4.0](https://github.com/clayton-duarte/amalg/compare/grid-2.3.0...grid-2.4.0) (2023-05-21)
+
+
+### Features
+
+* modal component and sector comparison pages ([#9](https://github.com/clayton-duarte/amalg/issues/9)) ([f08efe3](https://github.com/clayton-duarte/amalg/commit/f08efe34ebf4ecebf490813c542d6fc8f3638cd3))
+
 ## [2.3.0](https://github.com/clayton-duarte/amalg/compare/grid-2.2.2...grid-2.3.0) (2023-05-20)
 
 
