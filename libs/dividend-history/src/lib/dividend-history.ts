@@ -1,5 +1,8 @@
 import axios from 'axios';
+import Big from 'big.js';
 import * as cheerio from 'cheerio';
+
+import { ZERO } from '@amalg/financials';
 
 const COLUMN_COUNT = 5;
 const columnMap = ['exDate', 'payDate', 'amount', 'changePct'] as const;
@@ -11,14 +14,14 @@ const TICKER_NAME_SELECTOR =
 const QUOTE_DATA_SELECTOR =
   'body > div > div:nth-child(3) > div.col-md-8.col-xs-12.col-sm-12 > p';
 
-export interface QuoteData {
+export type QuoteData = {
   symbol: string;
   name: string;
-  closePrice: string;
-  divYieldPct: string;
-  peRatio: string;
+  closePrice: number;
+  divYieldPct: number;
+  peRatio: number;
   frequency: string;
-}
+};
 
 export interface DividendData {
   symbol: string;
@@ -241,12 +244,12 @@ export async function getDividendHistory(
 
   return {
     quote: {
-      symbol: parsedSymbol,
       name,
-      closePrice,
-      divYieldPct,
+      symbol: parsedSymbol,
+      closePrice: new Big(closePrice || ZERO).toNumber(),
+      divYieldPct: new Big(divYieldPct || ZERO).div(100).toNumber(),
+      peRatio: peRatio && new Big(peRatio).toNumber(),
       frequency,
-      peRatio,
     },
     dividends: table,
   };
