@@ -2,7 +2,7 @@ import axios from 'axios';
 import csv from 'csvtojson';
 import dayjs from 'dayjs';
 
-import { ChartData } from '@amalg/chart';
+import { ChartData } from '@amalg/financials';
 
 const DATE_FORMAT = 'YYYY-MM';
 
