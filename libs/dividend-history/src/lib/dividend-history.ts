@@ -248,7 +248,7 @@ export async function getDividendHistory(
       symbol: parsedSymbol,
       closePrice: new Big(closePrice || ZERO).toNumber(),
       divYieldPct: new Big(divYieldPct || ZERO).div(100).toNumber(),
-      peRatio: peRatio && new Big(peRatio).toNumber(),
+      peRatio: new Big(peRatio || ZERO).toNumber(),
       frequency,
     },
     dividends: table,

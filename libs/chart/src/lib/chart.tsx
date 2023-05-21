@@ -1,8 +1,10 @@
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { AiOutlineExpandAlt } from 'react-icons/ai';
 
 import { formatCurrency, formatPercent } from '@amalg/financials';
 import Grid from '@amalg/grid';
+import Modal from '@amalg/modal';
 import Text from '@amalg/text';
 import { ColorNames, Colors } from '@amalg/theme';
 
@@ -26,13 +28,13 @@ export interface ChartProps<D extends GenericData = GenericData> {
   data: D[];
   yAxis: keyof D;
   xAxis: keyof D;
+  format?: keyof typeof formatters;
   seriesField?: keyof D;
   type?: PlotTypeNames;
   reversed?: boolean;
   color?: ColorNames;
   isStack?: boolean;
   title?: string;
-  format?: keyof typeof formatters;
 }
 
 const chartColorArray = [
@@ -63,19 +65,20 @@ export default function Chart<D extends GenericData = GenericData>({
   xAxis,
   data,
 }: ChartProps<D>) {
+  const [open, setOpen] = useState(false);
+
   const parsedData = useMemo(() => {
     if (data.length < 1) return null;
 
     return reversed ? [...data].reverse() : [...data];
   }, [data, reversed]);
 
-  if (parsedData == null) return null;
+  const renderedChart = useMemo(() => {
+    if (parsedData == null) return null;
 
-  const ChartComponent = AsyncPlot(type);
+    const ChartComponent = AsyncPlot(type);
 
-  return (
-    <Grid bg="DARK" p="1rem">
-      {title && <Text.H3>{title}</Text.H3>}
+    return (
       <ChartComponent
         data={parsedData}
         seriesField={seriesField && String(seriesField)}
@@ -102,6 +105,28 @@ export default function Chart<D extends GenericData = GenericData>({
             : chartColorArray
         }
       />
+    );
+  }, [color, format, isStack, parsedData, seriesField, type, xAxis, yAxis]);
+
+  return (
+    <Grid bg="DARK" p="1rem">
+      <Grid xs="1fr auto" align="center">
+        {title ? <Text.H3>{title}</Text.H3> : <span />}
+        <AiOutlineExpandAlt
+          onClick={() => setOpen(true)}
+          fontSize="1.5rem"
+          role="button"
+        />
+      </Grid>
+      {renderedChart}
+      <Modal
+        onClose={() => setOpen(false)}
+        title={title}
+        open={open}
+        fullScreen
+      >
+        {renderedChart}
+      </Modal>
     </Grid>
   );
 }

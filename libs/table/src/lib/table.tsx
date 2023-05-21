@@ -78,26 +78,29 @@ function parseHeaderMetadata<D extends TableData>(
     label: string;
   };
 } {
-  return Object.entries(headersProp).reduce((acc, [key, value]) => {
-    if (typeof value === 'string') {
-      return { ...acc, [key]: { label: value, formatter: defaultFormatter } };
-    }
+  return Object.entries(headersProp).reduce(
+    (acc, [key, value]: [keyof D, HeaderMetaData<D[keyof D]> | string]) => {
+      if (typeof value === 'string') {
+        return { ...acc, [key]: { label: value, formatter: defaultFormatter } };
+      }
 
-    const formatter =
-      typeof value.format === 'function'
-        ? value.format
-        : typeof value.format === 'string'
-        ? formatters[value.format]
-        : defaultFormatter;
+      const formatter =
+        typeof value.format === 'function'
+          ? value.format
+          : typeof value.format === 'string'
+          ? formatters[value.format]
+          : defaultFormatter;
 
-    return {
-      ...acc,
-      [key]: {
-        label: value.label,
-        formatter,
-      },
-    };
-  }, {});
+      return {
+        ...acc,
+        [key]: {
+          label: value.label,
+          formatter,
+        },
+      };
+    },
+    {}
+  );
 }
 
 function RenderTable<D extends TableData>({
@@ -116,8 +119,8 @@ function RenderTable<D extends TableData>({
           {keys.map((key, i) => {
             return (
               <StyledTr key={`table-row-${i}`}>
-                <StyledTh>{headerMetadata[key].label}</StyledTh>
-                <StyledTd>{headerMetadata[key].formatter(row[key])}</StyledTd>
+                <StyledTh>{headerMetadata[key]?.label}</StyledTh>
+                <StyledTd>{headerMetadata[key]?.formatter(row[key])}</StyledTd>
               </StyledTr>
             );
           })}
@@ -132,7 +135,7 @@ function RenderTable<D extends TableData>({
         <StyledTr>
           {keys.map((key) => (
             <StyledTh key={`table-header-${key}`}>
-              {headerMetadata[key].label}
+              {headerMetadata[key]?.label}
             </StyledTh>
           ))}
         </StyledTr>
@@ -143,7 +146,7 @@ function RenderTable<D extends TableData>({
             {keys.map((key, j) => {
               return (
                 <StyledTd key={`table-cell-${key}-${j}`}>
-                  {headerMetadata[key].formatter(row[key])}
+                  {headerMetadata[key]?.formatter(row[key])}
                 </StyledTd>
               );
             })}

@@ -69,6 +69,10 @@ function GlobalStyles() {
       padding: 0;
       margin: 0;
     }
+
+    *[role="button"] {
+      cursor: pointer;
+    }
   `}
     />
   );
