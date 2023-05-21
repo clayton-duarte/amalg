@@ -1,24 +1,12 @@
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 
+import { formatCurrency, formatPercent } from '@amalg/financials';
 import Grid from '@amalg/grid';
 import Text from '@amalg/text';
 import { ColorNames, Colors } from '@amalg/theme';
 
 type GenericData = { [key: string]: any };
-
-export interface ChartData {
-  symbol: string;
-  type: string;
-  date: string;
-  amount: number;
-}
-
-export type Dataset = {
-  seriesField?: string;
-  xAxis: string;
-  yAxis: number;
-};
 
 enum PlotTypes {
   line = 'Line',
@@ -42,7 +30,9 @@ export interface ChartProps<D extends GenericData = GenericData> {
   type?: PlotTypeNames;
   reversed?: boolean;
   color?: ColorNames;
+  isStack?: boolean;
   title?: string;
+  format?: keyof typeof formatters;
 }
 
 const chartColorArray = [
@@ -55,11 +45,18 @@ const chartColorArray = [
   Colors.SECONDARY,
 ];
 
+const formatters = {
+  currency: formatCurrency,
+  percent: formatPercent,
+};
+
 // https://charts.ant.design/en/api/plots/line;
 export default function Chart<D extends GenericData = GenericData>({
   type = 'line',
   seriesField,
   reversed,
+  isStack,
+  format,
   color,
   title,
   yAxis,
@@ -84,7 +81,19 @@ export default function Chart<D extends GenericData = GenericData>({
         seriesField={seriesField && String(seriesField)}
         xField={String(xAxis)}
         yField={String(yAxis)}
-        renderer="svg"
+        isStack={isStack}
+        height={250}
+        width={100}
+        autoFit
+        meta={{
+          [String(yAxis)]: {
+            formatter: format && formatters[format],
+          },
+        }}
+        yAxis={{
+          nice: true,
+          min: 100,
+        }}
         color={
           color
             ? Colors[color]
