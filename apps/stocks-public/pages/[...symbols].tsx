@@ -46,7 +46,10 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
       props: {
         symbols,
         quoteList: quoteDataList.map(({ quote }) => quote),
-        historyList: historyDataList.map(mapChartDataToPercent).flat(),
+        historyList: historyDataList
+          .map(mapChartDataToPercent)
+          .flat()
+          .sort((a, b) => a.date.localeCompare(b.date)),
         dividendList: dividendDataList
           .map(mapChartDataToPercent)
           .flat()
@@ -67,7 +70,8 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
               historyDataList[index]
             )
           )
-          .flat(),
+          .flat()
+          .sort((a, b) => a.date.localeCompare(b.date)),
       },
       revalidate: 60 * 60,
     };
@@ -110,7 +114,11 @@ export default function ComparePage({
               label: 'Dividend Yield',
               format: 'percent',
             },
-            frequency: 'Frequency',
+            frequency: {
+              label: 'Frequency',
+              format: (frequency: string) =>
+                frequency.replace('Unknown', 'N/A'),
+            },
           }}
         />
         <Grid md="1fr 1fr">

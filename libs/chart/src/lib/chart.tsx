@@ -95,7 +95,7 @@ export default function Chart<D extends GenericData = GenericData>({
         }}
         yAxis={{
           nice: true,
-          min: 100,
+          min: isStack ? 0 : 100,
         }}
         color={
           color

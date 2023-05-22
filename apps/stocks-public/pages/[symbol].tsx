@@ -5,7 +5,7 @@ import {
   getDividendHistory,
   DividendHistoryData,
 } from '@amalg/dividend-history';
-import { ChartData, calcCombinedCapitalAppreciation } from '@amalg/financials';
+import { calcAccumulatedDividends, ChartData } from '@amalg/financials';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
 import Table from '@amalg/table';
@@ -32,6 +32,12 @@ interface SymbolPageProps {
   totalGainsDataList: ChartData[];
 }
 
+function trimArrays(...dataLists: ChartData[][]) {
+  const minLen = Math.min(...dataLists.map((data) => data.length));
+
+  return dataLists.map((list) => list.slice(0, minLen));
+}
+
 export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
   async (ctx) => {
     const { symbol } = ctx.params;
@@ -45,14 +51,16 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
 
     return {
       props: {
+        symbol: symbol.toLocaleUpperCase(),
         dividendDataList,
         historyDataList,
         quoteDataList,
-        symbol: symbol.toLocaleUpperCase(),
-        totalGainsDataList: calcCombinedCapitalAppreciation(
-          dividendDataList,
-          historyDataList
-        ),
+        totalGainsDataList: trimArrays(
+          historyDataList,
+          calcAccumulatedDividends(dividendDataList)
+        )
+          .flat()
+          .sort((a, b) => a.date.localeCompare(b.date)),
       },
       revalidate: 60 * 60,
     };
@@ -87,21 +95,25 @@ export default function SymbolPage({
         <Chart
           title="Total Gains"
           data={totalGainsDataList}
-          xAxis="date"
-          yAxis="amount"
-        />
-        <Chart
-          title="Price History"
-          data={historyDataList}
-          yAxis="close"
-          xAxis="date"
-        />
-        <Chart
-          title="Dividend History"
-          data={dividendDataList}
+          seriesField="type"
           yAxis="amount"
           xAxis="date"
+          isStack
         />
+        <Grid.Section md="1fr 1fr">
+          <Chart
+            title="Price History"
+            data={historyDataList}
+            yAxis="amount"
+            xAxis="date"
+          />
+          <Chart
+            title="Dividend History"
+            data={dividendDataList}
+            yAxis="amount"
+            xAxis="date"
+          />
+        </Grid.Section>
       </Grid.Article>
     </>
   );
