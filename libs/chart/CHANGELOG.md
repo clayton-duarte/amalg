@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.5.0](https://github.com/clayton-duarte/amalg/compare/chart-0.4.0...chart-0.5.0) (2023-05-22)
+
+
+### Features
+
+* updates symbol page ([#10](https://github.com/clayton-duarte/amalg/issues/10)) ([1b78fe0](https://github.com/clayton-duarte/amalg/commit/1b78fe02bffc892da48a7f331f2de78ce9f88da0))
+
 ## [0.4.0](https://github.com/clayton-duarte/amalg/compare/chart-0.3.0...chart-0.4.0) (2023-05-21)
 
 
