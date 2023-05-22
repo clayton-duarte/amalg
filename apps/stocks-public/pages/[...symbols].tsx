@@ -46,7 +46,10 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
       props: {
         symbols,
         quoteList: quoteDataList.map(({ quote }) => quote),
-        historyList: historyDataList.map(mapChartDataToPercent).flat(),
+        historyList: historyDataList
+          .map(mapChartDataToPercent)
+          .flat()
+          .sort((a, b) => a.date.localeCompare(b.date)),
         dividendList: dividendDataList
           .map(mapChartDataToPercent)
           .flat()
@@ -67,7 +70,8 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
               historyDataList[index]
             )
           )
-          .flat(),
+          .flat()
+          .sort((a, b) => a.date.localeCompare(b.date)),
       },
       revalidate: 60 * 60,
     };

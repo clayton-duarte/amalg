@@ -3,7 +3,7 @@ import Big, { BigSource } from 'big.js';
 import { ALMOST_ZERO, MONTHS_IN_YEAR, PERCENTAGE, ZERO } from './consts';
 
 function isNumber(value: BigSource) {
-  return !isNaN(Number(value));
+  return value && !isNaN(Number(value));
 }
 
 function isZero(value: BigSource) {
@@ -16,6 +16,10 @@ function notZero(value: BigSource) {
   }
 
   return value;
+}
+
+export function validNumberOrZero(value: BigSource) {
+  return isNumber(value) ? value : ZERO;
 }
 
 export interface ChartData {
@@ -77,7 +81,7 @@ export function mapValuesToPercent(arr: ChartData[], field: keyof ChartData) {
     return {
       ...data,
       [field]: new Big(data[field] ?? ZERO)
-        .div(notZero(first[field] ?? ZERO))
+        .div(notZero(first[field]))
         .times(PERCENTAGE)
         .round(0, 1)
         .toNumber(),
@@ -127,7 +131,7 @@ export function calcComposedDividends(
     );
 
     const currentPrice = currentHistoryData?.amount ?? 0;
-    const currentShares = new Big(totalCapital).div(currentPrice);
+    const currentShares = new Big(totalCapital).div(notZero(currentPrice));
     const currentValueReinvested = currentShares.times(dividendData.amount);
 
     totalCapital = totalCapital.plus(currentValueReinvested);
@@ -164,7 +168,9 @@ export function calcCombinedCapitalAppreciation(
     historyDataList
   );
 
-  let latestDividendAmount = composedDividendDataList[0].amount;
+  let latestDividendAmount = validNumberOrZero(
+    composedDividendDataList[0]?.amount
+  ) as number;
 
   historyDataList.forEach((historyData) => {
     const currentDividendData = composedDividendDataList.find(

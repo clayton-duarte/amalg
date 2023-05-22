@@ -2,7 +2,7 @@ import axios from 'axios';
 import Big from 'big.js';
 import * as cheerio from 'cheerio';
 
-import { ZERO } from '@amalg/financials';
+import { validNumberOrZero } from '@amalg/financials';
 
 const COLUMN_COUNT = 5;
 const columnMap = ['exDate', 'payDate', 'amount', 'changePct'] as const;
@@ -246,9 +246,9 @@ export async function getDividendHistory(
     quote: {
       name,
       symbol: parsedSymbol,
-      closePrice: new Big(closePrice || ZERO).toNumber(),
-      divYieldPct: new Big(divYieldPct || ZERO).div(100).toNumber(),
-      peRatio: new Big(peRatio || ZERO).toNumber(),
+      closePrice: new Big(validNumberOrZero(closePrice)).toNumber(),
+      divYieldPct: new Big(validNumberOrZero(divYieldPct)).div(100).toNumber(),
+      peRatio: new Big(validNumberOrZero(peRatio)).toNumber(),
       frequency,
     },
     dividends: table,
