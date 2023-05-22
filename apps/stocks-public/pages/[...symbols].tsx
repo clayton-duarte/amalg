@@ -114,7 +114,11 @@ export default function ComparePage({
               label: 'Dividend Yield',
               format: 'percent',
             },
-            frequency: 'Frequency',
+            frequency: {
+              label: 'Frequency',
+              format: (frequency: string) =>
+                frequency.replace('Unknown', 'N/A'),
+            },
           }}
         />
         <Grid md="1fr 1fr">
