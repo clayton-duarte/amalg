@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
@@ -73,6 +74,16 @@ export default function Chart<D extends GenericData = GenericData>({
     return reversed ? [...data].reverse() : [...data];
   }, [data, reversed]);
 
+  const { min, max } = useMemo(() => {
+    if (parsedData == null) return { min: 0, max: 0 };
+
+    const values = parsedData.map((d) => new Big(d[yAxis]).toNumber());
+    const max = new Big(Math.max(...values)).times(1.1).toNumber();
+    const min = new Big(Math.min(...values)).times(0.9).toNumber();
+
+    return { min, max };
+  }, [parsedData, yAxis]);
+
   const renderedChart = useMemo(() => {
     if (parsedData == null) return null;
 
@@ -95,7 +106,8 @@ export default function Chart<D extends GenericData = GenericData>({
         }}
         yAxis={{
           nice: true,
-          min: isStack ? 0 : 100,
+          min: isStack ? undefined : min,
+          max: isStack ? undefined : max,
         }}
         color={
           color
@@ -106,7 +118,18 @@ export default function Chart<D extends GenericData = GenericData>({
         }
       />
     );
-  }, [color, format, isStack, parsedData, seriesField, type, xAxis, yAxis]);
+  }, [
+    color,
+    format,
+    isStack,
+    max,
+    min,
+    parsedData,
+    seriesField,
+    type,
+    xAxis,
+    yAxis,
+  ]);
 
   return (
     <Grid bg="DARK" p="1rem">
