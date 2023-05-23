@@ -86,10 +86,19 @@ export default function SymbolPage({
           data={[quoteDataList.quote]}
           headers={{
             name: 'Name',
-            closePrice: 'Close Price',
-            divYieldPct: 'Yield %',
+            closePrice: {
+              label: 'Close Price',
+              format: 'currency',
+            },
+            divYieldPct: {
+              label: 'Div Yield %',
+              format: 'percent',
+            },
             frequency: 'Frequency',
-            peRatio: 'PE',
+            peRatio: {
+              label: 'P/E Ratio',
+              format: (pe) => pe.toFixed(2),
+            },
           }}
         />
         <Chart
