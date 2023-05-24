@@ -228,7 +228,7 @@ export function mapCalcCombinedCapitalAppreciationPercent(
   dividendDataList: ChartData[][],
   historyDataList: ChartData[][]
 ) {
-  return function (_, index: number): ChartData[] {
+  return function (_: unknown, index: number): ChartData[] {
     return calcCombinedCapitalAppreciationPercent(
       dividendDataList[index],
       historyDataList[index]
