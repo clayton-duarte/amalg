@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.6.0](https://github.com/clayton-duarte/amalg/compare/dividend-history-1.5.0...dividend-history-1.6.0) (2023-05-24)
+
+
+### Features
+
+* updates symbol page to add 52w price range ([#11](https://github.com/clayton-duarte/amalg/issues/11)) ([674341c](https://github.com/clayton-duarte/amalg/commit/674341cbc22c7945174e87f257325dfe9d7c834a))
+
 ## [1.5.0](https://github.com/clayton-duarte/amalg/compare/dividend-history-1.4.0...dividend-history-1.5.0) (2023-05-22)
 
 
