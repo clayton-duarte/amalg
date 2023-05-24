@@ -1,11 +1,12 @@
 import Head from 'next/head';
 
 import Chart from '@amalg/chart';
-import { getDividendHistory, QuoteData } from '@amalg/dividend-history';
+import { getQuote, QuoteData } from '@amalg/dividend-history';
 import {
-  calcCombinedCapitalAppreciationPercent,
-  calcComposedDividendsPercent,
-  mapChartDataToPercent,
+  mapCalcCombinedCapitalAppreciationPercent,
+  flattenChartDataPercent,
+  calcAccumulatedDividends,
+  flattenChartData,
   ChartData,
 } from '@amalg/financials';
 import Grid from '@amalg/grid';
@@ -18,9 +19,9 @@ import { getYahooDividends, getYahooHistory } from '@amalg/yahoo-events';
 export interface CompareProps {
   dividendAccumulatedList: ChartData[];
   totalGainsDataList: ChartData[];
-  historyList: ChartData[];
+  quoteDataList: QuoteData[];
   dividendList: ChartData[];
-  quoteList: QuoteData[];
+  historyList: ChartData[];
   symbols: string[];
 }
 
@@ -37,7 +38,7 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
 
     const [quoteDataList, dividendDataList, historyDataList] =
       await Promise.all([
-        Promise.all(symbols.map(getDividendHistory)),
+        Promise.all(symbols.map(getQuote)),
         Promise.all(symbols.map(getYahooDividends)),
         Promise.all(symbols.map(getYahooHistory)),
       ]);
@@ -45,33 +46,20 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
     return {
       props: {
         symbols,
-        quoteList: quoteDataList.map(({ quote }) => quote),
-        historyList: historyDataList
-          .map(mapChartDataToPercent)
-          .flat()
-          .sort((a, b) => a.date.localeCompare(b.date)),
-        dividendList: dividendDataList
-          .map(mapChartDataToPercent)
-          .flat()
-          .sort((a, b) => a.date.localeCompare(b.date)),
-        dividendAccumulatedList: symbols
-          .map((_, index) =>
-            calcComposedDividendsPercent(
-              dividendDataList[index],
-              historyDataList[index]
+        quoteDataList,
+        historyList: flattenChartDataPercent(...historyDataList),
+        dividendList: flattenChartDataPercent(...dividendDataList),
+        dividendAccumulatedList: flattenChartData(
+          ...dividendDataList.map(calcAccumulatedDividends)
+        ),
+        totalGainsDataList: flattenChartData(
+          ...symbols.map(
+            mapCalcCombinedCapitalAppreciationPercent(
+              dividendDataList,
+              historyDataList
             )
           )
-          .flat()
-          .sort((a, b) => a.date.localeCompare(b.date)),
-        totalGainsDataList: symbols
-          .map((_, index) =>
-            calcCombinedCapitalAppreciationPercent(
-              dividendDataList[index],
-              historyDataList[index]
-            )
-          )
-          .flat()
-          .sort((a, b) => a.date.localeCompare(b.date)),
+        ),
       },
       revalidate: 60 * 60,
     };
@@ -82,9 +70,9 @@ export const getStaticProps = withParams<CompareProps, 'symbols', string[]>(
 export default function ComparePage({
   dividendAccumulatedList,
   totalGainsDataList,
+  quoteDataList,
   dividendList,
   historyList,
-  quoteList,
   symbols,
 }: CompareProps) {
   const symbolList = symbols.join(' & ').toLocaleUpperCase();
@@ -97,7 +85,7 @@ export default function ComparePage({
       <Grid.Article>
         <Text.H1>{symbolList}</Text.H1>
         <Table
-          data={quoteList}
+          data={quoteDataList}
           headers={{
             symbol: {
               label: 'Symbol',

@@ -29,6 +29,17 @@ export interface ChartData {
   type: string;
 }
 
+export function flattenChartData(...data: ChartData[][]): ChartData[] {
+  return data.flat().sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export function flattenChartDataPercent(...data: ChartData[][]): ChartData[] {
+  return data
+    .map(mapChartDataToPercent)
+    .flat()
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
 export const formatPercent = new Intl.NumberFormat('en-CA', {
   maximumFractionDigits: 2,
   style: 'percent',
@@ -188,7 +199,7 @@ export function calcCombinedCapitalAppreciation(
     }
 
     combinedData.push({
-      type: 'dividend',
+      type: 'total gains',
       date: historyData.date,
       symbol: historyData.symbol,
       amount: new Big(historyData.amount)
@@ -211,4 +222,16 @@ export function calcCombinedCapitalAppreciationPercent(
   );
 
   return mapChartDataToPercent(combinedData);
+}
+
+export function mapCalcCombinedCapitalAppreciationPercent(
+  dividendDataList: ChartData[][],
+  historyDataList: ChartData[][]
+) {
+  return function (_: unknown, index: number): ChartData[] {
+    return calcCombinedCapitalAppreciationPercent(
+      dividendDataList[index],
+      historyDataList[index]
+    );
+  };
 }

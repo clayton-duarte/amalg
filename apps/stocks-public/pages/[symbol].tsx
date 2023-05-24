@@ -1,13 +1,16 @@
 import Head from 'next/head';
 
 import Chart from '@amalg/chart';
+import { QuoteData, getQuote } from '@amalg/dividend-history';
 import {
-  getDividendHistory,
-  DividendHistoryData,
-} from '@amalg/dividend-history';
-import { calcAccumulatedDividends, ChartData } from '@amalg/financials';
+  calcCombinedCapitalAppreciation,
+  calcAccumulatedDividends,
+  flattenChartData,
+  ChartData,
+} from '@amalg/financials';
 import Grid from '@amalg/grid';
 import { withParams } from '@amalg/page-decorators';
+import PriceFluctuation from '@amalg/price-fluctuation';
 import Table from '@amalg/table';
 import Text from '@amalg/text';
 import {
@@ -26,41 +29,37 @@ export const getStaticPaths = () => {
 
 interface SymbolPageProps {
   symbol: string;
-  quoteDataList: DividendHistoryData;
-  dividendDataList: DividendData[];
-  historyDataList: HistoryData[];
-  totalGainsDataList: ChartData[];
-}
-
-function trimArrays(...dataLists: ChartData[][]) {
-  const minLen = Math.min(...dataLists.map((data) => data.length));
-
-  return dataLists.map((list) => list.slice(0, minLen));
+  dividendAccumulated: ChartData[];
+  dividendData: DividendData[];
+  totalGainsData: ChartData[];
+  historyData: HistoryData[];
+  quoteData: QuoteData;
 }
 
 export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
   async (ctx) => {
     const { symbol } = ctx.params;
 
-    const [quoteDataList, dividendDataList, historyDataList] =
-      await Promise.all([
-        getDividendHistory(symbol),
-        getYahooDividends(symbol),
-        getYahooHistory(symbol),
-      ]);
+    const [quoteData, dividendData, historyData] = await Promise.all([
+      getQuote(symbol),
+      getYahooDividends(symbol),
+      getYahooHistory(symbol),
+    ]);
+
+    const dividendAccumulated = calcAccumulatedDividends(dividendData);
 
     return {
       props: {
         symbol: symbol.toLocaleUpperCase(),
-        dividendDataList,
-        historyDataList,
-        quoteDataList,
-        totalGainsDataList: trimArrays(
-          historyDataList,
-          calcAccumulatedDividends(dividendDataList)
-        )
-          .flat()
-          .sort((a, b) => a.date.localeCompare(b.date)),
+        dividendData,
+        historyData,
+        quoteData,
+        dividendAccumulated,
+        totalGainsData: flattenChartData(
+          calcCombinedCapitalAppreciation(dividendData, historyData),
+          dividendAccumulated,
+          historyData
+        ),
       },
       revalidate: 60 * 60,
     };
@@ -69,47 +68,64 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
 );
 
 export default function SymbolPage({
-  totalGainsDataList,
-  dividendDataList,
-  historyDataList,
-  quoteDataList,
+  dividendAccumulated,
+  totalGainsData,
+  dividendData,
+  historyData,
+  quoteData,
   symbol,
 }: SymbolPageProps) {
   return (
     <>
       <Head>
-        <title>{symbol} - Stocks Public</title>
+        <title>{`${symbol} - Stocks Public`}</title>
       </Head>
       <Grid.Article>
         <Text.H1>{symbol}</Text.H1>
         <Table
-          data={[quoteDataList.quote]}
+          data={[quoteData]}
           headers={{
             name: 'Name',
-            closePrice: 'Close Price',
-            divYieldPct: 'Yield %',
+            closePrice: {
+              label: 'Close Price',
+              format: 'currency',
+            },
+            divYieldPct: {
+              label: 'Div Yield %',
+              format: 'percent',
+            },
             frequency: 'Frequency',
-            peRatio: 'PE',
+            peRatio: {
+              label: 'P/E Ratio',
+              format: (pe) => pe.toFixed(2),
+            },
           }}
         />
-        <Chart
-          title="Total Gains"
-          data={totalGainsDataList}
-          seriesField="type"
-          yAxis="amount"
-          xAxis="date"
-          isStack
-        />
+        <PriceFluctuation historyData={historyData} />
         <Grid.Section md="1fr 1fr">
           <Chart
+            title="Total Gains"
+            data={totalGainsData}
+            seriesField="type"
+            yAxis="amount"
+            xAxis="date"
+          />
+          <Chart
+            title="Total Gains"
+            data={dividendAccumulated}
+            seriesField="type"
+            yAxis="amount"
+            xAxis="date"
+          />
+          <Chart
             title="Price History"
-            data={historyDataList}
+            data={historyData}
             yAxis="amount"
             xAxis="date"
           />
           <Chart
             title="Dividend History"
-            data={dividendDataList}
+            data={dividendData}
             yAxis="amount"
             xAxis="date"
           />

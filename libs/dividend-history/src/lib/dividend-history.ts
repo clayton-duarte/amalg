@@ -254,3 +254,7 @@ export async function getDividendHistory(
     dividends: table,
   };
 }
+
+export function getQuote(symbol: string): Promise<QuoteData> {
+  return getDividendHistory(symbol).then(({ quote }) => quote);
+}

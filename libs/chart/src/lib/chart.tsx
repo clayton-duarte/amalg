@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
@@ -8,6 +9,7 @@ import Modal from '@amalg/modal';
 import Text from '@amalg/text';
 import { ColorNames, Colors } from '@amalg/theme';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type GenericData = { [key: string]: any };
 
 enum PlotTypes {
@@ -33,7 +35,7 @@ export interface ChartProps<D extends GenericData = GenericData> {
   type?: PlotTypeNames;
   reversed?: boolean;
   color?: ColorNames;
-  isStack?: boolean;
+  heigth?: number;
   title?: string;
 }
 
@@ -55,9 +57,9 @@ const formatters = {
 // https://charts.ant.design/en/api/plots/line;
 export default function Chart<D extends GenericData = GenericData>({
   type = 'line',
+  heigth = 300,
   seriesField,
   reversed,
-  isStack,
   format,
   color,
   title,
@@ -73,6 +75,16 @@ export default function Chart<D extends GenericData = GenericData>({
     return reversed ? [...data].reverse() : [...data];
   }, [data, reversed]);
 
+  const { min, max } = useMemo(() => {
+    if (parsedData == null) return { min: 0, max: 0 };
+
+    const values = parsedData.map((d) => new Big(d[yAxis]).toNumber());
+    const max = new Big(Math.max(...values)).times(1.1).toNumber();
+    const min = new Big(Math.min(...values)).times(0.9).toNumber();
+
+    return { min, max };
+  }, [parsedData, yAxis]);
+
   const renderedChart = useMemo(() => {
     if (parsedData == null) return null;
 
@@ -84,8 +96,7 @@ export default function Chart<D extends GenericData = GenericData>({
         seriesField={seriesField && String(seriesField)}
         xField={String(xAxis)}
         yField={String(yAxis)}
-        isStack={isStack}
-        height={250}
+        height={heigth}
         width={100}
         autoFit
         meta={{
@@ -95,7 +106,8 @@ export default function Chart<D extends GenericData = GenericData>({
         }}
         yAxis={{
           nice: true,
-          min: isStack ? 0 : 100,
+          max,
+          min,
         }}
         color={
           color
@@ -106,7 +118,18 @@ export default function Chart<D extends GenericData = GenericData>({
         }
       />
     );
-  }, [color, format, isStack, parsedData, seriesField, type, xAxis, yAxis]);
+  }, [
+    color,
+    format,
+    heigth,
+    max,
+    min,
+    parsedData,
+    seriesField,
+    type,
+    xAxis,
+    yAxis,
+  ]);
 
   return (
     <Grid bg="DARK" p="1rem">

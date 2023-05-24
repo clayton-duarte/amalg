@@ -20,6 +20,7 @@
     "@amalg/modal": "latest",
     "@amalg/page-decorators": "latest",
     "@amalg/plugin": "latest",
+    "@amalg/price-fluctuation": "latest",
     "@amalg/table": "latest",
     "@amalg/text": "latest",
     "@amalg/theme": "latest",

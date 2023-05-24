@@ -3,6 +3,23 @@ import { HTMLAttributes } from 'react';
 import { Breakpoints, ColorNames } from '@amalg/theme';
 import styled from '@emotion/styled';
 
+type FourAxisProp =
+  | string
+  | [string, string]
+  | [string, string, string, string];
+
+function fromFourAxisToString(prop?: FourAxisProp): string | undefined {
+  if (typeof prop === 'string') {
+    return prop;
+  }
+
+  if (Array.isArray(prop)) {
+    return prop.join(' ');
+  }
+
+  return undefined;
+}
+
 export interface StyledGridProps {
   bg?: ColorNames;
   justify?: string;
@@ -20,29 +37,33 @@ export interface StyledGridProps {
   lgy?: string;
   xly?: string;
   gap?: string;
-  m?: string;
-  p?: string;
+  m?: FourAxisProp;
+  p?: FourAxisProp;
   minHeight?: string;
   maxHeight?: string;
   container?: boolean;
+  height?: string;
   area?: string;
 }
 
 export const StyledGrid = styled.div<StyledGridProps>`
   display: grid;
-  margin: ${(props) => (props.m ? props.m : props.container ? '0 auto' : 0)};
   max-width: ${(props) => (props.container ? Breakpoints.XL : '100%')};
   max-height: ${(props) => props.maxHeight ?? 'max-content'};
+  padding: ${(props) => fromFourAxisToString(props.p) ?? 0};
   justify-self: ${(props) => props.justifySelf ?? 'start'};
   justify-content: ${(props) => props.justify ?? 'start'};
   grid-template-columns: ${(props) => props.xs ?? '1fr'};
   grid-template-rows: ${(props) => props.xsy ?? 'auto'};
-  align-self: ${(props) => props.alignSelf ?? 'start'};
+  align-self: ${(props) => props.alignSelf ?? 'auto'};
   align-items: ${(props) => props.align ?? 'start'};
   grid-area: ${(props) => props.area ?? 'auto'};
+  height: ${(props) => props.height ?? 'auto'};
   gap: ${(props) => props.gap ?? '1rem'};
-  padding: ${(props) => props.p ?? 0};
+  position: relative;
   width: 100%;
+  margin: ${(props) =>
+    props.m ? fromFourAxisToString(props.m) : props.container ? '0 auto' : 0};
   min-height: ${(props) =>
     props.minHeight
       ? props.minHeight
