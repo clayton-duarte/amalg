@@ -27,6 +27,7 @@
       "@amalg/modal": ["libs/modal/src/index.ts"],
       "@amalg/page-decorators": ["libs/page-decorators/src/index.ts"],
       "@amalg/plugin": ["libs/plugin/src/index.ts"],
+      "@amalg/price-fluctuation": ["libs/price-fluctuation/src/index.ts"],
       "@amalg/table": ["libs/table/src/index.ts"],
       "@amalg/text": ["libs/text/src/index.ts"],
       "@amalg/theme": ["libs/theme/src/index.ts"],
