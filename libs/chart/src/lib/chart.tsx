@@ -9,6 +9,7 @@ import Modal from '@amalg/modal';
 import Text from '@amalg/text';
 import { ColorNames, Colors } from '@amalg/theme';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type GenericData = { [key: string]: any };
 
 enum PlotTypes {
@@ -34,7 +35,7 @@ export interface ChartProps<D extends GenericData = GenericData> {
   type?: PlotTypeNames;
   reversed?: boolean;
   color?: ColorNames;
-  isStack?: boolean;
+  heigth?: number;
   title?: string;
 }
 
@@ -56,9 +57,9 @@ const formatters = {
 // https://charts.ant.design/en/api/plots/line;
 export default function Chart<D extends GenericData = GenericData>({
   type = 'line',
+  heigth = 300,
   seriesField,
   reversed,
-  isStack,
   format,
   color,
   title,
@@ -95,8 +96,7 @@ export default function Chart<D extends GenericData = GenericData>({
         seriesField={seriesField && String(seriesField)}
         xField={String(xAxis)}
         yField={String(yAxis)}
-        isStack={isStack}
-        height={250}
+        height={heigth}
         width={100}
         autoFit
         meta={{
@@ -106,8 +106,8 @@ export default function Chart<D extends GenericData = GenericData>({
         }}
         yAxis={{
           nice: true,
-          min: isStack ? undefined : min,
-          max: isStack ? undefined : max,
+          max,
+          min,
         }}
         color={
           color
@@ -121,7 +121,7 @@ export default function Chart<D extends GenericData = GenericData>({
   }, [
     color,
     format,
-    isStack,
+    heigth,
     max,
     min,
     parsedData,

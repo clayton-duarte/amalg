@@ -17,6 +17,13 @@ function capitalize(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+function fromKebabCaseToPascalCase(word: string) {
+  return word
+    .split('-')
+    .map((word) => capitalize(word))
+    .join('');
+}
+
 export default async function component(
   tree: Tree,
   options: ComponentGeneratorSchema
@@ -36,7 +43,7 @@ export default async function component(
   });
 
   await generateFiles(tree, `${__dirname}/files`, `libs/${options.name}`, {
-    componentName: capitalize(options.name),
+    componentName: fromKebabCaseToPascalCase(options.name),
     fileName: options.name,
   });
 

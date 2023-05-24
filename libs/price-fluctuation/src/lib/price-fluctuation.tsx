@@ -5,11 +5,10 @@ import { ChartData, formatCurrency } from '@amalg/financials';
 import Grid from '@amalg/grid';
 import Text from '@amalg/text';
 import { size } from '@amalg/theme';
-import { HistoryData } from '@amalg/yahoo-events';
 import styled from '@emotion/styled';
 
 export interface PriceFluctuationProps {
-  historyData: HistoryData[];
+  historyData: ChartData[];
 }
 
 function getLatestValue(data: ChartData[]) {

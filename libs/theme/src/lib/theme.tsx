@@ -1,5 +1,9 @@
 import { ThemeProvider as Provider, Global, Theme } from '@emotion/react';
 
+export function size(number: number) {
+  return `calc(1rem * ${number})`;
+}
+
 export enum Breakpoints {
   XS = '0px',
   SM = '425px',

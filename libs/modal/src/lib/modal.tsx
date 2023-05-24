@@ -17,7 +17,7 @@ const StyledOverlay = styled(Grid)<{ open: ModalProps['open'] }>`
   pointer-events: ${({ open }) => (open ? 'all' : 'none')};
   background: ${({ theme }) => theme.BLACK}cc;
   opacity: ${({ open }) => (open ? 1 : 0)};
-  position: absolute;
+  position: fixed;
   z-index: 999;
   height: 100%;
   bottom: 0;
