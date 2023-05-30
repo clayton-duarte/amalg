@@ -1,54 +1,9 @@
 import Big, { BigSource } from 'big.js';
 
-import { ALMOST_ZERO, MONTHS_IN_YEAR, PERCENTAGE, ZERO } from './consts';
-
-function isNumber(value: BigSource) {
-  return value && !isNaN(Number(value));
-}
-
-function isZero(value: BigSource) {
-  return isNumber(value) && new Big(value).eq(0);
-}
-
-function notZero(value: BigSource) {
-  if (!isNumber(value) || isZero(value)) {
-    return ALMOST_ZERO;
-  }
-
-  return value;
-}
-
-export function validNumberOrZero(value: BigSource) {
-  return isNumber(value) ? value : ZERO;
-}
-
-export interface ChartData {
-  symbol: string;
-  date: string;
-  amount: number;
-  type: string;
-}
-
-export function flattenChartData(...data: ChartData[][]): ChartData[] {
-  return data.flat().sort((a, b) => a.date.localeCompare(b.date));
-}
-
-export function flattenChartDataPercent(...data: ChartData[][]): ChartData[] {
-  return data
-    .map(mapChartDataToPercent)
-    .flat()
-    .sort((a, b) => a.date.localeCompare(b.date));
-}
-
-export const formatPercent = new Intl.NumberFormat('en-CA', {
-  maximumFractionDigits: 2,
-  style: 'percent',
-}).format;
-
-export const formatCurrency = new Intl.NumberFormat('en-CA', {
-  style: 'currency',
-  currency: 'CAD',
-}).format;
+import { MONTHS_IN_YEAR, PERCENTAGE } from './consts';
+import { mapChartDataToPercent } from './map';
+import { ChartData } from './type';
+import { notZero, validNumberOrZero } from './utils';
 
 export function calcDividendDrip(divYieldPct: BigSource): Big {
   const yieldRatio = new Big(divYieldPct).div(PERCENTAGE);
@@ -83,33 +38,6 @@ export function calcAnnualizedGrowth(data: BigSource[]) {
   const growthPct = calcTotalGrowth(data).div(notZero(first)).times(PERCENTAGE);
 
   return growthPct.div(notZero(data.length)).times(MONTHS_IN_YEAR);
-}
-
-export function mapValuesToPercent(arr: ChartData[], field: keyof ChartData) {
-  const [first] = arr;
-
-  return function (data: ChartData): ChartData {
-    return {
-      ...data,
-      [field]: new Big(data[field] ?? ZERO)
-        .div(notZero(first[field]))
-        .times(PERCENTAGE)
-        .round(0, 1)
-        .toNumber(),
-    };
-  };
-}
-
-export function mapChartDataToPercent(chartDataList: ChartData[]) {
-  const [firstDividendData] = chartDataList;
-
-  return chartDataList.map((dividendData) => ({
-    ...dividendData,
-    amount: new Big(dividendData.amount)
-      .div(notZero(firstDividendData.amount))
-      .minus(1)
-      .toNumber(),
-  }));
 }
 
 export function calcAccumulatedDividends(dividendDataList: ChartData[]) {
@@ -179,6 +107,8 @@ export function calcCombinedCapitalAppreciation(
     historyDataList
   );
 
+  const firstPrice = validNumberOrZero(historyDataList[0]?.amount);
+
   let latestDividendAmount = validNumberOrZero(
     composedDividendDataList[0]?.amount
   ) as number;
@@ -204,7 +134,7 @@ export function calcCombinedCapitalAppreciation(
       symbol: historyData.symbol,
       amount: new Big(historyData.amount)
         .plus(currentDividendAmount)
-        .div(2)
+        .minus(firstPrice)
         .toNumber(),
     });
   });
@@ -224,14 +154,10 @@ export function calcCombinedCapitalAppreciationPercent(
   return mapChartDataToPercent(combinedData);
 }
 
-export function mapCalcCombinedCapitalAppreciationPercent(
-  dividendDataList: ChartData[][],
-  historyDataList: ChartData[][]
-) {
-  return function (_: unknown, index: number): ChartData[] {
-    return calcCombinedCapitalAppreciationPercent(
-      dividendDataList[index],
-      historyDataList[index]
-    );
-  };
+export function calcGrowth(data: ChartData[]): Big {
+  const first = new Big(data[0].amount);
+  const last = new Big(data[data.length - 1].amount);
+  const diff = last.minus(first);
+
+  return diff.div(first);
 }

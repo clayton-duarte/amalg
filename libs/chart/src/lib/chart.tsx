@@ -3,11 +3,13 @@ import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
 
-import { formatCurrency, formatPercent } from '@amalg/financials';
+import { formatPercent, isChartData, calcGrowth } from '@amalg/financials';
 import Grid from '@amalg/grid';
 import Modal from '@amalg/modal';
 import Text from '@amalg/text';
-import { ColorNames, Colors } from '@amalg/theme';
+import { ColorNames } from '@amalg/theme';
+
+import { getChartColor, getSemanticColor, formatters } from './utils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type GenericData = { [key: string]: any };
@@ -30,29 +32,14 @@ export interface ChartProps<D extends GenericData = GenericData> {
   data: D[];
   yAxis: keyof D;
   xAxis: keyof D;
+  color?: ColorNames | ColorNames[];
   format?: keyof typeof formatters;
   seriesField?: keyof D;
   type?: PlotTypeNames;
   reversed?: boolean;
-  color?: ColorNames;
   heigth?: number;
   title?: string;
 }
-
-const chartColorArray = [
-  Colors.PRIMARY,
-  Colors.INFO,
-  Colors.SUCCESS,
-  Colors.DANGER,
-  Colors.WARNING,
-  Colors.WHITE,
-  Colors.SECONDARY,
-];
-
-const formatters = {
-  currency: formatCurrency,
-  percent: formatPercent,
-};
 
 // https://charts.ant.design/en/api/plots/line;
 export default function Chart<D extends GenericData = GenericData>({
@@ -85,15 +72,22 @@ export default function Chart<D extends GenericData = GenericData>({
     return { min, max };
   }, [parsedData, yAxis]);
 
+  const growth = useMemo(() => {
+    if (seriesField != null || !isChartData(data)) return null;
+
+    return calcGrowth(data);
+  }, [seriesField, data]);
+
   const renderedChart = useMemo(() => {
     if (parsedData == null) return null;
 
     const ChartComponent = AsyncPlot(type);
+    const seriesFieldString = String(seriesField);
 
     return (
       <ChartComponent
         data={parsedData}
-        seriesField={seriesField && String(seriesField)}
+        seriesField={seriesField && seriesFieldString}
         xField={String(xAxis)}
         yField={String(yAxis)}
         height={heigth}
@@ -109,32 +103,34 @@ export default function Chart<D extends GenericData = GenericData>({
           max,
           min,
         }}
-        color={
-          color
-            ? Colors[color]
-            : seriesField == null
-            ? Colors.PRIMARY
-            : chartColorArray
-        }
+        color={getChartColor(color, seriesField, growth)}
       />
     );
   }, [
-    color,
-    format,
-    heigth,
-    max,
-    min,
     parsedData,
-    seriesField,
     type,
+    seriesField,
     xAxis,
     yAxis,
+    heigth,
+    format,
+    max,
+    min,
+    color,
+    growth,
   ]);
 
   return (
     <Grid bg="DARK" p="1rem">
-      <Grid xs="1fr auto" align="center">
+      <Grid xs="1fr auto auto" align="center">
         {title ? <Text.H3>{title}</Text.H3> : <span />}
+        {growth ? (
+          <Text bold small color={getSemanticColor(growth)}>
+            {formatPercent(growth.toNumber())}
+          </Text>
+        ) : (
+          <span />
+        )}
         <AiOutlineExpandAlt
           onClick={() => setOpen(true)}
           fontSize="1.5rem"

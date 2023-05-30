@@ -1,11 +1,12 @@
 import Head from 'next/head';
 
-import Chart from '@amalg/chart';
+import Chart, { getSemanticColor } from '@amalg/chart';
 import { QuoteData, getQuote } from '@amalg/dividend-history';
 import {
   calcCombinedCapitalAppreciation,
   calcAccumulatedDividends,
   flattenChartData,
+  calcGrowth,
   ChartData,
 } from '@amalg/financials';
 import Grid from '@amalg/grid';
@@ -51,14 +52,14 @@ export const getStaticProps = withParams<SymbolPageProps, 'symbol'>(
     return {
       props: {
         symbol: symbol.toLocaleUpperCase(),
+        dividendAccumulated,
         dividendData,
         historyData,
         quoteData,
-        dividendAccumulated,
         totalGainsData: flattenChartData(
-          calcCombinedCapitalAppreciation(dividendData, historyData),
           dividendAccumulated,
-          historyData
+          historyData,
+          calcCombinedCapitalAppreciation(dividendData, historyData)
         ),
       },
       revalidate: 60 * 60,
@@ -109,13 +110,19 @@ export default function SymbolPage({
             seriesField="type"
             yAxis="amount"
             xAxis="date"
+            color={[
+              'INFO',
+              getSemanticColor(calcGrowth(historyData)),
+              'PRIMARY',
+            ]}
           />
           <Chart
-            title="Total Gains"
+            title="Accumulated Dividends"
             data={dividendAccumulated}
             seriesField="type"
             yAxis="amount"
             xAxis="date"
+            color="INFO"
           />
           <Chart
             title="Price History"

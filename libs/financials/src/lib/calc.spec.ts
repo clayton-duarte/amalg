@@ -1,4 +1,4 @@
-import { calcDividendDrip } from './financials';
+import { calcDividendDrip } from './calc';
 
 describe('calcDividendDrip', () => {
   it('should work', () => {
