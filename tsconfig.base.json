@@ -25,6 +25,7 @@
       "@amalg/letter-icon": ["libs/letter-icon/src/index.ts"],
       "@amalg/link": ["libs/link/src/index.ts"],
       "@amalg/modal": ["libs/modal/src/index.ts"],
+      "@amalg/next-auth": ["libs/next-auth/src/index.ts"],
       "@amalg/page-decorators": ["libs/page-decorators/src/index.ts"],
       "@amalg/plugin": ["libs/plugin/src/index.ts"],
       "@amalg/price-fluctuation": ["libs/price-fluctuation/src/index.ts"],

@@ -18,6 +18,7 @@
     "@amalg/letter-icon": "latest",
     "@amalg/link": "latest",
     "@amalg/modal": "latest",
+    "@amalg/next-auth": "latest",
     "@amalg/page-decorators": "latest",
     "@amalg/plugin": "latest",
     "@amalg/price-fluctuation": "latest",
