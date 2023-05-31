@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.5.0](https://github.com/clayton-duarte/amalg/compare/financials-0.4.0...financials-0.5.0) (2023-05-31)
+
+
+### Features
+
+* adds extra info to single data charts ([05da672](https://github.com/clayton-duarte/amalg/commit/05da6720a7878d0d7e0db127c25e8059482f035a))
+
 ## [0.4.0](https://github.com/clayton-duarte/amalg/compare/financials-0.3.0...financials-0.4.0) (2023-05-24)
 
 
