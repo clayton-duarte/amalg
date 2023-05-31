@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 
-import { ReType, TupleUnion } from '@amalg/types';
+import { GenericObject, ReType, TupleUnion } from '@amalg/types';
 
 type GetServerSidePropsWithParams<
   Q extends string,
@@ -33,9 +33,7 @@ type GetServerSidePropsWithParams<
  * ```
  */
 export function withParams<
-  // This is the type of the props returned by the getServerSideProps function
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  P extends { [key: string]: any },
+  P extends GenericObject,
   Q extends string,
   T extends string | string[] = string
 >(

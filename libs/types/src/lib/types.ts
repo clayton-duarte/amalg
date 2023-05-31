@@ -44,3 +44,7 @@ export type TupleUnion<U extends string, R extends string[] = []> = {
     : TupleUnion<Exclude<U, S>, [...R, S]>;
 }[U] &
   string[];
+
+/** @description A generic object, use it carefully */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type GenericObject = { [key: string]: any };

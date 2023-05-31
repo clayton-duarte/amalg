@@ -8,11 +8,9 @@ import Grid from '@amalg/grid';
 import Modal from '@amalg/modal';
 import Text from '@amalg/text';
 import { ColorNames } from '@amalg/theme';
+import { GenericObject } from '@amalg/types';
 
 import { getChartColor, getSemanticColor, formatters } from './utils';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GenericData = { [key: string]: any };
 
 enum PlotTypes {
   line = 'Line',
@@ -28,7 +26,7 @@ const AsyncPlot = (type: PlotTypeNames) =>
     { loading: () => <Text>Loading...</Text>, ssr: false }
   );
 
-export interface ChartProps<D extends GenericData = GenericData> {
+export interface ChartProps<D extends GenericObject = GenericObject> {
   data: D[];
   yAxis: keyof D;
   xAxis: keyof D;
@@ -42,7 +40,7 @@ export interface ChartProps<D extends GenericData = GenericData> {
 }
 
 // https://charts.ant.design/en/api/plots/line;
-export default function Chart<D extends GenericData = GenericData>({
+export default function Chart<D extends GenericObject = GenericObject>({
   type = 'line',
   heigth = 300,
   seriesField,

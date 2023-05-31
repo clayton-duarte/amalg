@@ -12,17 +12,7 @@ import {
 import { Linter } from '@nx/linter';
 
 import { ComponentGeneratorSchema } from './schema';
-
-function capitalize(word: string) {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
-function fromKebabCaseToPascalCase(word: string) {
-  return word
-    .split('-')
-    .map((word) => capitalize(word))
-    .join('');
-}
+import { fromKebabCaseToPascalCase } from '../../utils/format';
 
 export default async function component(
   tree: Tree,

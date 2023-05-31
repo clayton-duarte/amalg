@@ -10,6 +10,7 @@ import {
 import { libraryGenerator } from '@nx/js';
 
 import { LibraryGeneratorSchema } from './schema';
+import { fromKebabCaseToCamelCase } from '../../utils/format';
 
 export default async function library(
   tree: Tree,
@@ -28,8 +29,8 @@ export default async function library(
   });
 
   await generateFiles(tree, `${__dirname}/files`, `libs/${options.name}`, {
+    name: fromKebabCaseToCamelCase(options.name),
     fileName: options.name,
-    name: options.name,
   });
 
   await addDependenciesToPackageJson(tree, { [importPath]: 'latest' }, {});
