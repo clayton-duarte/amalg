@@ -59,6 +59,7 @@ function GlobalStyles() {
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
       background-color: ${theme.BLACK};
       color: ${theme.WHITE};
+      min-height: 100vh;
       font-size: 16px;
       height: 100%;
       padding: 0;

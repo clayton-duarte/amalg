@@ -24,12 +24,6 @@ export const authOptions: AuthOptions = {
       clientSecret: requiredEnvVars('GOOGLE_SECRET'),
     }),
   ],
-  // https://next-auth.js.org/configuration/callbacks
-  callbacks: {
-    async signIn({ user }) {
-      return user.email === process.env.NEXT_PUBLIC_AUTHORIZED_EMAIL;
-    },
-  },
 };
 
 export async function requireAuth<Props extends GenericObject>(
@@ -67,4 +61,6 @@ export function withAuth<Props extends GenericObject>(
   };
 }
 
-export default NextAuth(authOptions);
+export default function authHandler(options: Partial<AuthOptions> = {}) {
+  return NextAuth({ ...authOptions, ...options });
+}
