@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.11.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.10.0...stocks-public-2.11.0) (2024-10-11)
+
+
+### Features
+
+* **dividend-history:** adds vdy.to to calendar feed ([303c291](https://github.com/clayton-duarte/amalg/commit/303c29155e77548c241af2b8197b40877e0d2dc9))
+
 ## [2.10.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.9.0...stocks-public-2.10.0) (2024-10-11)
 
 
