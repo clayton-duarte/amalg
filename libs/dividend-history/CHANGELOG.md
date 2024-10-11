@@ -2,6 +2,19 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.7.0](https://github.com/clayton-duarte/amalg/compare/dividend-history-1.6.0...dividend-history-1.7.0) (2024-10-11)
+
+
+### Features
+
+* **stocks-public:** exports ics link ([c386584](https://github.com/clayton-duarte/amalg/commit/c3865843197404f7683568b637947695e5820ed9))
+
+
+### Bug Fixes
+
+* **dividend-history:** adds support to SCHD ([ffe26ec](https://github.com/clayton-duarte/amalg/commit/ffe26ece1546a06520b24ce8d62c5660cb397975))
+* **dividend-history:** fixes how we get quote data ([3a21f49](https://github.com/clayton-duarte/amalg/commit/3a21f49aa176e6632c56f9eb0b031685a12c3399))
+
 ## [1.6.0](https://github.com/clayton-duarte/amalg/compare/dividend-history-1.5.0...dividend-history-1.6.0) (2023-05-24)
 
 
