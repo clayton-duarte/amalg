@@ -88,7 +88,7 @@ type Exchange = keyof typeof mapExchange;
 
 function decomposeSymbol(symbol: string): {
   ticker: string;
-  exchange: Exchange;
+  exchange?: Exchange;
 } {
   const symbolMembers = symbol.toLocaleUpperCase().split('.');
 
@@ -97,7 +97,6 @@ function decomposeSymbol(symbol: string): {
 
     return {
       ticker,
-      exchange: 'TO',
     };
   }
 
@@ -128,10 +127,11 @@ function decomposeSymbol(symbol: string): {
 
 function getUrl(symbol: string) {
   const { ticker, exchange } = decomposeSymbol(symbol);
+  const exchangeCode = mapExchange[exchange];
 
-  return `https://dividendhistory.org/payout/${mapExchange[
-    exchange
-  ]?.toLowerCase()}/${ticker}`;
+  if (!exchangeCode) return `https://dividendhistory.org/payout/${ticker}`;
+
+  return `https://dividendhistory.org/payout/${exchangeCode?.toLowerCase()}/${ticker}`;
 }
 
 async function loadDividendHistoryOrg(
