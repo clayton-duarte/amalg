@@ -4,15 +4,9 @@ import * as cheerio from 'cheerio';
 
 import { validNumberOrZero } from '@amalg/financials';
 
-const COLUMN_COUNT = 5;
-const columnMap = ['exDate', 'payDate', 'amount', 'changePct'] as const;
 const DIVIDEND_TABLE_SELECTOR = '#dividend_table > tbody';
-
-const TICKER_NAME_SELECTOR =
-  'body > div > div:nth-child(2) > div:nth-child(2) > h4';
-
-const QUOTE_DATA_SELECTOR =
-  'body > div > div:nth-child(3) > div.col-md-8.col-xs-12.col-sm-12 > p';
+const TICKER_NAME_SELECTOR = 'h4:nth-child(1)';
+const QUOTE_DATA_SELECTOR = '.col-md-8 > p';
 
 export type QuoteData = {
   symbol: string;
@@ -148,6 +142,12 @@ async function loadDividendHistoryOrg(
   return cheerio.load(data);
 }
 
+const parseNumber = (value: string) => {
+  const parsed = parseFloat(value.replace(/[^0-9.-]+/g, ''));
+
+  return isNaN(parsed) ? null : parsed;
+};
+
 export async function getDividendHistory(
   symbol: string
 ): Promise<DividendHistoryData> {
@@ -188,59 +188,52 @@ export async function getDividendHistory(
     .slice(frequencyIndex + FREQUENCY_LABEL.length, tableIndex)
     .trim();
 
-  const table = $(DIVIDEND_TABLE_SELECTOR)
-    .text()
-    .trim()
-    .replace(/\t/g, '')
-    .split('\n')
-    .reduce((acc, curr, index) => {
-      const rowIndex = ~~(index / COLUMN_COUNT);
-      const columnIndex = index % COLUMN_COUNT;
-      const columnKey = columnMap[columnIndex];
+  const table = [];
 
-      if (!acc[rowIndex]) {
-        acc[rowIndex] = {
-          symbol: parsedSymbol,
-          exDate: '',
-          payDate: '',
-          amount: 0,
-          changePct: 0,
-        } as DividendData;
-      }
+  $(DIVIDEND_TABLE_SELECTOR)
+    .children()
+    .each((rowIndex, rowEl) => {
+      const row = $(rowEl);
 
-      if (curr == null || curr === 'unconfirmed/estimated') {
-        return acc;
-      }
+      const rowData = {
+        symbol: parsedSymbol,
+        exDate: '',
+        payDate: '',
+        amount: 0,
+        changePct: 0,
+      } as DividendData;
 
-      switch (columnKey) {
-        case 'amount':
-          acc[rowIndex].amount = Number(
-            curr.replace('$', '').replace(/\*/g, '')
-          );
+      row.children('td').each((cellIndex, cellEl) => {
+        const cellText = $(cellEl).text();
 
-          break;
+        switch (cellIndex) {
+          case 0:
+            rowData.exDate = cellText;
 
-        case 'changePct':
-          acc[rowIndex].changePct = Number(curr.replace('%', ''));
+            break;
 
-          break;
+          case 1:
+            rowData.payDate = cellText;
 
-        case 'exDate':
-          acc[rowIndex].exDate = curr;
+            break;
 
-          break;
+          case 2:
+            rowData.amount = parseNumber(cellText.replace('$', ''));
 
-        case 'payDate':
-          acc[rowIndex].payDate = curr;
+            break;
 
-          break;
+          case 3:
+            rowData.changePct = parseNumber(cellText.replace('%', ''));
 
-        default:
-          break;
-      }
+            break;
 
-      return acc;
-    }, [] as DividendData[]);
+          default:
+            break;
+        }
+      });
+
+      table[rowIndex] = rowData;
+    });
 
   return {
     quote: {
