@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.10.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.9.0...stocks-public-2.10.0) (2024-10-11)
+
+
+### Features
+
+* **stocks-public:** exports ics link ([c386584](https://github.com/clayton-duarte/amalg/commit/c3865843197404f7683568b637947695e5820ed9))
+
 ## [2.9.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.8.0...stocks-public-2.9.0) (2023-05-31)
 
 
