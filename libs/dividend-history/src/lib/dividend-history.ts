@@ -127,7 +127,7 @@ function decomposeSymbol(symbol: string): {
 
 function getUrl(symbol: string) {
   const { ticker, exchange } = decomposeSymbol(symbol);
-  const exchangeCode = mapExchange[exchange];
+  const exchangeCode = exchange && mapExchange[exchange];
 
   if (!exchangeCode) return `https://dividendhistory.org/payout/${ticker}`;
 
@@ -145,7 +145,7 @@ async function loadDividendHistoryOrg(
 const parseNumber = (value: string) => {
   const parsed = parseFloat(value.replace(/[^0-9.-]+/g, ''));
 
-  return isNaN(parsed) ? null : parsed;
+  return isNaN(parsed) ? 0 : parsed;
 };
 
 export async function getDividendHistory(
@@ -188,7 +188,7 @@ export async function getDividendHistory(
     .slice(frequencyIndex + FREQUENCY_LABEL.length, tableIndex)
     .trim();
 
-  const table = [];
+  const table: DividendData[] = [];
 
   $(DIVIDEND_TABLE_SELECTOR)
     .children()

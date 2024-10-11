@@ -24,14 +24,14 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2024-11-29',
       payDate: '2024-12-09',
       amount: 0.211634,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
       exDate: '2024-10-31',
       payDate: '2024-11-08',
       amount: 0.211634,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -185,7 +185,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2022-12-29',
       payDate: '2023-01-09',
       amount: 1.503428,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -255,7 +255,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2022-03-31',
       payDate: '2022-04-08',
       amount: 0.155,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -276,7 +276,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2021-12-30',
       payDate: '2022-01-10',
       amount: 0.158938,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -479,7 +479,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2019-08-30',
       payDate: '2019-09-10',
       amount: 0.204,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -500,7 +500,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2019-05-31',
       payDate: '2019-06-10',
       amount: 0.1985,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -542,7 +542,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2018-11-30',
       payDate: '2018-12-10',
       amount: 0.1876,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -563,7 +563,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2018-08-31',
       payDate: '2018-09-11',
       amount: 0.188,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -584,7 +584,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2018-05-31',
       payDate: '2018-06-08',
       amount: 0.1891,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -647,7 +647,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2017-08-22',
       payDate: '2017-08-31',
       amount: 0.1438,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -1032,7 +1032,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2013-01-29',
       payDate: '2013-02-08',
       amount: 0.068,
-      changePct: null,
+      changePct: 0,
     },
     {
       symbol: 'VDY.TO',
@@ -1046,7 +1046,7 @@ export const result: DeepReadonly<DividendHistoryData> = {
       exDate: '2012-11-28',
       payDate: '2012-12-10',
       amount: 0.003,
-      changePct: null,
+      changePct: 0,
     },
   ],
 } as const;

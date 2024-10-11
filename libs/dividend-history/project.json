@@ -42,6 +42,14 @@
       "options": {
         "access": "public"
       }
+    },
+    "tsc": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc -p tsconfig.lib.json --noEmit"],
+        "cwd": "libs/dividend-history",
+        "forwardAllArgs": false
+      }
     }
   },
   "tags": []
