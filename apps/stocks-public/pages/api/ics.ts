@@ -3,7 +3,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { getDividendHistory } from '@amalg/dividend-history';
 
-const SYMBOLS = ['SCHD', 'ZRE.TO', 'ZAG.TO', 'HEQT.TO', 'CASH.TO', 'VDY.TO'];
+const SYMBOLS = [
+  'SCHD', // US Dividend ETF
+  'ZAG.TO', // Bond ETF
+  'VDY.TO', // Dividend ETF
+  'ZRE.TO', // Real Estate ETF
+  'HTA.TO', // Tech Income ETF
+  'CASH.TO', // Cash
+];
 
 export default async function handler(
   req: NextApiRequest,
