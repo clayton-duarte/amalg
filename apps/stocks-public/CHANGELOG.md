@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.13.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.12.0...stocks-public-2.13.0) (2024-11-04)
+
+
+### Features
+
+* **stocks-public:** updates the list of ics ETFs ([317cc58](https://github.com/clayton-duarte/amalg/commit/317cc58393bf16c0f4f418321a41c09a44cc660f))
+
 ## [2.12.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.11.0...stocks-public-2.12.0) (2024-10-16)
 
 
