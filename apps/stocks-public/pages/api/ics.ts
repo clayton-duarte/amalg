@@ -4,26 +4,23 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getDividendHistory } from '@amalg/dividend-history';
 
 const SYMBOLS = [
-  // RRSP
-  'SCHD', // US Dividend ETF
-  'ZAG.TO', // Bond ETF
+  'QQCC.TO', // Tech CC ETF *
+  'QQCL.TO', // Tech CC Leveraged ETF
+  'USCC.TO', // S&P 500 CC ETF
+  'USCL.TO', // S&P 500 CC Leveraged ETF *
 
-  // TFSA
+  'VFV.TO', // S&P 500 ETF
   'VDY.TO', // CA Dividend ETF
 
-  // FHSA
-  'XRE.TO', // Real Estate ETF
-  // 'ZRE.TO', // Real Estate ETF
-
-  // Non-Registered/Margin
-  'HTA.TO', // Tech Income ETF
-  'CASH.TO', // Cash ETF
-
-  // Misc
-  'VFV.TO', // S&P 500 ETF
-  'VEQT.TO', // All Equity ETF
+  'VEQT.TO', // All Equity ETF *
   'XEQT.TO', // All Equity ETF
   'HEQT.TO', // All Equity ETF
+  'EQCL.TO', // All Equity CC Leveraged ETF
+
+  'XRE.TO', // Real Estate ETF
+  'ZRE.TO', // Real Estate ETF
+
+  'CASH.TO', // Cash ETF
 ];
 
 export default async function handler(
