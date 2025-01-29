@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [1.3.0](https://github.com/clayton-duarte/amalg/compare/types-1.2.4...types-1.3.0) (2025-01-29)
+
+
+### Features
+
+* add new type ([9583990](https://github.com/clayton-duarte/amalg/commit/958399098e35850afbf526b5bffb19aed81cee69))
+
 ### [1.2.4](https://github.com/clayton-duarte/amalg/compare/types-1.2.3...types-1.2.4) (2023-05-17)
 
 ### [1.2.3](https://github.com/clayton-duarte/amalg/compare/types-1.2.2...types-1.2.3) (2023-05-17)
