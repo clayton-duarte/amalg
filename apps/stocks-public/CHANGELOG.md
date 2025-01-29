@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [2.15.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.14.0...stocks-public-2.15.0) (2025-01-29)
+
+
+### Features
+
+* updates symbol list ([d543a37](https://github.com/clayton-duarte/amalg/commit/d543a37eb03327776bfd66597e5c9c254a65c0a8))
+
 ## [2.14.0](https://github.com/clayton-duarte/amalg/compare/stocks-public-2.13.0...stocks-public-2.14.0) (2024-11-25)
 
 
