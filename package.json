@@ -6,6 +6,7 @@
     "start": "nx run-many -t serve",
     "g:version": "nx g @jscutlery/semver:install",
     "g:deploy": "nx g ngx-deploy-npm:install",
+    "format": "nx format:write --all",
     "prepare": "husky install"
   },
   "private": true,
