@@ -4,21 +4,20 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getDividendHistory } from '@amalg/dividend-history';
 
 const SYMBOLS = [
-  'QQCC.TO', // Tech CC ETF *
-  'QQCL.TO', // Tech CC Leveraged ETF
-  'USCC.TO', // S&P 500 CC ETF
+  'HTAE.TO', // Tech CC Leveraged ETF *
   'USCL.TO', // S&P 500 CC Leveraged ETF *
 
   'VFV.TO', // S&P 500 ETF
-  'VDY.TO', // CA Dividend ETF
+  'XQQ.TO', // Tech ETF
+  'VDY.TO', // CA ETF
 
   'VEQT.TO', // All Equity ETF *
   'XEQT.TO', // All Equity ETF
   'HEQT.TO', // All Equity ETF
-  'EQCL.TO', // All Equity CC Leveraged ETF
+  'ZEQT.TO', // All Equity ETF
 
+  'ZRE.TO', // Real Estate ETF *
   'XRE.TO', // Real Estate ETF
-  'ZRE.TO', // Real Estate ETF
 
   'CASH.TO', // Cash ETF
 ];
@@ -53,19 +52,19 @@ export default async function handler(
         const today = new Date().toLocaleDateString();
 
         events.push({
-          title: `${quote.symbol} - EX Date`,
           description: `Dividend: $${dividend.amount.toFixed(2)}`,
           duration: { days: 1 },
-          start: exDateArr,
           lastModified: today,
+          start: exDateArr,
+          title: `${quote.symbol} - EX Date`,
         });
 
         events.push({
-          title: `${quote.symbol} - Pay Date`,
           description: `Dividend: $${dividend.amount.toFixed(2)}`,
           duration: { days: 1 },
-          start: payDateArr,
           lastModified: today,
+          start: payDateArr,
+          title: `${quote.symbol} - Pay Date`,
         });
       });
 
